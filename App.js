@@ -1,4 +1,4 @@
-const AUTH_API = "https://your-auth-api.onrender.com"; // replace with actual Auth API URL
+const AUTH_API = "https://auth-service-okqn.onrender.com/register"; // replace with actual Auth API URL
 
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
