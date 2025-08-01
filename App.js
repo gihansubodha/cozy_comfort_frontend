@@ -1,36 +1,99 @@
-let token = "", role="";
+const BASE_URL = {
+  auth: "https://auth-service-okqn.onrender.com/register",
+  manufacturer: "https://manufacturer-api-ez0s.onrender.com/blankets",
+  distributor: "https://distributor-service-smne.onrender.com/inventory",
+  seller: "https://seller-service-viqu.onrender.com/orders"
+};
 
-async function doLogin(){
-  const res = await fetch("https://your-auth-url/login", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({username:document.getElementById("u").value,
-                        password:document.getElementById("p").value})
+let token = "";
+let role = "";
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const res = await fetch(`${BASE_URL.auth}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
   });
-  const j = await res.json();
-  if(res.ok){ token = j.token; role = j.role; localStorage.setItem("tk",token);
-    document.getElementById("loginDiv").style.display="none";
-    document.getElementById("panel").style.display="block";
-    document.getElementById("roleSpan").innerText = role;
-    showArea();
-  } else alert(j.error);
+  const data = await res.json();
+  if (res.ok) {
+    token = data.token;
+    role = data.role;
+    showDashboard();
+  } else {
+    document.getElementById("loginError").innerText = data.message || "Login failed";
+  }
+});
+
+document.getElementById("logoutBtn").onclick = () => location.reload();
+
+function showDashboard() {
+  document.getElementById("loginSection").style.display = "none";
+  document.getElementById("dashboardSection").style.display = "block";
+  document.getElementById("roleTitle").innerText = role.charAt(0).toUpperCase() + role.slice(1) + " Dashboard";
+  document.getElementById(`${role}Panel`).style.display = "block";
+  if (role === "admin") loadAdminPanel();
+  if (role === "manufacturer") loadManufacturer();
+  if (role === "distributor") loadDistributor();
+  if (role === "seller") loadSeller();
 }
 
-function logout(){
-  token=""; role=""; localStorage.removeItem("tk");
-  location.reload();
+// Admin create user
+document.getElementById("createUserForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const user = {
+    username: document.getElementById("newUsername").value,
+    password: document.getElementById("newPassword").value,
+    role: document.getElementById("newRole").value
+  };
+  const res = await fetch(`${BASE_URL.auth}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(user)
+  });
+  document.getElementById("userStatus").innerText = res.ok ? "✅ User created!" : "❌ Failed to create.";
+});
+
+function loadAdminPanel() {
+  document.getElementById("adminPanel").style.display = "block";
 }
 
-function showArea(){
-  document.getElementById("adminArea").style.display = (role==="admin")?"block":"none";
-  document.getElementById("manufacturerArea").style.display = (role==="manufacturer")?"block":"none";
-  document.getElementById("distributorArea").style.display = (role==="distributor")?"block":"none";
-  document.getElementById("sellerArea").style.display = (role==="seller")?"block":"none";
+// Example: Manufacturer Functions
+async function loadManufacturer() {
+  const res = await fetch(`${BASE_URL.manufacturer}/blankets`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await res.json();
+  const table = document.querySelector("#manufacturerTable tbody");
+  table.innerHTML = "";
+  data.forEach(b => {
+    const row = `<tr><td>${b.name}</td><td>${b.material}</td><td>${b.stock}</td></tr>`;
+    table.innerHTML += row;
+    if (b.stock <= b.min_stock) {
+      document.getElementById("manufacturerAlert").innerText = "⚠️ Low Stock Alert!";
+    }
+  });
 }
 
-function authFetch(url,opts={}){
-  opts.headers = opts.headers || {};
-  opts.headers["Authorization"] = "Bearer "+localStorage.getItem("tk");
-  return fetch(url,opts);
-}
+document.getElementById("addBlanketForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const body = {
+    name: document.getElementById("blanketName").value,
+    material: document.getElementById("blanketMaterial").value,
+    stock: +document.getElementById("blanketStock").value
+  };
+  await fetch(`${BASE_URL.manufacturer}/blankets`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(body)
+  });
+  loadManufacturer();
+});
 
-// you would then implement functions like createUser(), loadBlankets(), addBlanket(), manLoadOrders(), etc. calling authFetch to the corresponding APIs
+// Repeat similar logic for Distributor and Seller panels...
+
