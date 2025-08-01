@@ -44,7 +44,19 @@
     <h2>Manufacturer Dashboard</h2>
     <button onclick="logout()">Logout</button>
     <div id="manufacturerContent">
-      <!-- Content will be filled by JS -->
+      <h3>Add Blanket Stock</h3>
+      <form id="addBlanketForm">
+        <input type="text" id="blanketName" placeholder="Blanket Name" required />
+        <input type="number" id="blanketQuantity" placeholder="Quantity" required />
+        <input type="number" id="minStock" placeholder="Minimum Stock Alert" required />
+        <button type="submit">Add</button>
+      </form>
+
+      <h3>Blanket Inventory</h3>
+      <div id="manufacturerInventory"></div>
+
+      <h3>Distributor Orders</h3>
+      <div id="manufacturerOrders"></div>
     </div>
   </div>
 
@@ -53,7 +65,26 @@
     <h2>Distributor Dashboard</h2>
     <button onclick="logout()">Logout</button>
     <div id="distributorContent">
-      <!-- Content will be filled by JS -->
+      <h3>Add Inventory</h3>
+      <form id="addDistributorInventoryForm">
+        <input type="text" id="distItemName" placeholder="Item Name" required />
+        <input type="number" id="distQuantity" placeholder="Quantity" required />
+        <input type="number" id="distMinStock" placeholder="Minimum Stock Alert" required />
+        <button type="submit">Add</button>
+      </form>
+
+      <h3>Distributor Inventory</h3>
+      <div id="distributorInventory"></div>
+
+      <h3>Seller Orders</h3>
+      <div id="sellerOrdersForDistributor"></div>
+
+      <h3>Request From Manufacturer</h3>
+      <form id="requestManufacturerForm">
+        <input type="text" id="manufacturerItemName" placeholder="Item to Request" required />
+        <input type="number" id="manufacturerRequestQty" placeholder="Quantity" required />
+        <button type="submit">Request</button>
+      </form>
     </div>
   </div>
 
@@ -62,7 +93,22 @@
     <h2>Seller Dashboard</h2>
     <button onclick="logout()">Logout</button>
     <div id="sellerContent">
-      <!-- Content will be filled by JS -->
+      <h3>Place Customer Order</h3>
+      <form id="placeCustomerOrderForm">
+        <input type="text" id="customerItem" placeholder="Item Name" required />
+        <input type="number" id="customerQty" placeholder="Quantity" required />
+        <button type="submit">Place Order</button>
+      </form>
+
+      <h3>My Orders</h3>
+      <div id="sellerOrders"></div>
+
+      <h3>Request from Distributor</h3>
+      <form id="requestFromDistributorForm">
+        <input type="text" id="distributorItem" placeholder="Item Name" required />
+        <input type="number" id="distributorQty" placeholder="Quantity" required />
+        <button type="submit">Request</button>
+      </form>
     </div>
   </div>
 
