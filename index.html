@@ -1,0 +1,51 @@
+﻿<!-- cozy_comfort_frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cozy Comfort Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="loginDiv">
+            <h2>Login</h2>
+            <input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password">
+            <button onclick="doLogin()">Login</button>
+        </div>
+        <div id="panel" style="display:none;">
+            <h2>Dashboard <span id="roleSpan"></span></h2>
+            <button onclick="logout()">Logout</button>
+            <div id="adminArea">
+                <h3>Admin Area</h3>
+                <input id="newu" placeholder="New Username"><input id="newp" type="password" placeholder="Pass">
+                <select id="newr">
+                    <option value="manufacturer">Manufacturer</option>
+                    <option value="distributor">Distributor</option>
+                    <option value="seller">Seller</option>
+                </select>
+                <button onclick="createUser()">Create User</button>
+            </div>
+            <!-- Role sections -->
+            <div id="manufacturerArea">
+                <h3>Manage Blankets</h3><button onclick="loadBlankets()">Load</button>
+                <button onclick="addBlanket()">Add</button><table id="tbl">...</table>
+                <h3>Distributor Orders</h3><button onclick="manLoadOrders()">Load Orders</button><table id="mos">...</table>
+            </div>
+            <div id="distributorArea">
+                <h3>Manage Inventory</h3><button onclick="loadInv()">Load</button>
+                <button onclick="addInv()">Add</button><table id="ditbl">...</table>
+                <h3>Seller Orders</h3><button onclick="distLoadOrders()">Load Orders</button><table id="dostbl">...</table>
+                <button onclick="reqMan()">Request From Manufacturer</button>
+            </div>
+            <div id="sellerArea">
+                <h3>Manage Orders</h3><button onclick="loadOrders()">Load</button>
+                <button onclick="addOrder()">Add</button><table id="setbl">...</table>
+                <button onclick="reqDist()">Request Inventory</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
