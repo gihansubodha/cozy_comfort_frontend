@@ -1,99 +1,106 @@
-const BASE_URL = {
-  auth: "https://auth-service-okqn.onrender.com/register",
-  manufacturer: "https://manufacturer-api-ez0s.onrender.com/blankets",
-  distributor: "https://distributor-service-smne.onrender.com/inventory",
-  seller: "https://seller-service-viqu.onrender.com/orders"
-};
+const AUTH_API = "https://your-auth-api.onrender.com"; // replace with actual Auth API URL
 
-let token = "";
-let role = "";
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const res = await fetch(`${BASE_URL.auth}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
-  });
-  const data = await res.json();
-  if (res.ok) {
-    token = data.token;
-    role = data.role;
-    showDashboard();
-  } else {
-    document.getElementById("loginError").innerText = data.message || "Login failed";
+  if (token && role) {
+    showDashboard(role);
   }
-});
 
-document.getElementById("logoutBtn").onclick = () => location.reload();
+  // Login form submit
+  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-function showDashboard() {
-  document.getElementById("loginSection").style.display = "none";
-  document.getElementById("dashboardSection").style.display = "block";
-  document.getElementById("roleTitle").innerText = role.charAt(0).toUpperCase() + role.slice(1) + " Dashboard";
-  document.getElementById(`${role}Panel`).style.display = "block";
-  if (role === "admin") loadAdminPanel();
-  if (role === "manufacturer") loadManufacturer();
-  if (role === "distributor") loadDistributor();
-  if (role === "seller") loadSeller();
-}
+    const res = await fetch(`${AUTH_API}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
 
-// Admin create user
-document.getElementById("createUserForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const user = {
-    username: document.getElementById("newUsername").value,
-    password: document.getElementById("newPassword").value,
-    role: document.getElementById("newRole").value
-  };
-  const res = await fetch(`${BASE_URL.auth}/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(user)
-  });
-  document.getElementById("userStatus").innerText = res.ok ? "✅ User created!" : "❌ Failed to create.";
-});
-
-function loadAdminPanel() {
-  document.getElementById("adminPanel").style.display = "block";
-}
-
-// Example: Manufacturer Functions
-async function loadManufacturer() {
-  const res = await fetch(`${BASE_URL.manufacturer}/blankets`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const data = await res.json();
-  const table = document.querySelector("#manufacturerTable tbody");
-  table.innerHTML = "";
-  data.forEach(b => {
-    const row = `<tr><td>${b.name}</td><td>${b.material}</td><td>${b.stock}</td></tr>`;
-    table.innerHTML += row;
-    if (b.stock <= b.min_stock) {
-      document.getElementById("manufacturerAlert").innerText = "⚠️ Low Stock Alert!";
+    const data = await res.json();
+    if (res.ok) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      showDashboard(data.role);
+    } else {
+      document.getElementById("loginError").textContent = data.message || "Login failed";
     }
   });
-}
 
-document.getElementById("addBlanketForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const body = {
-    name: document.getElementById("blanketName").value,
-    material: document.getElementById("blanketMaterial").value,
-    stock: +document.getElementById("blanketStock").value
-  };
-  await fetch(`${BASE_URL.manufacturer}/blankets`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    body: JSON.stringify(body)
+  // Admin create user
+  document.getElementById("createUserForm")?.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const username = document.getElementById("newUsername").value.trim();
+    const password = document.getElementById("newPassword").value.trim();
+    const role = document.getElementById("newRole").value;
+
+    const res = await fetch(`${AUTH_API}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ username, password, role }),
+    });
+
+    const data = await res.json();
+    alert(data.message || "User created");
   });
-  loadManufacturer();
+
+  // Admin delete user
+  document.getElementById("deleteUserForm")?.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const username = document.getElementById("deleteUsername").value.trim();
+
+    const res = await fetch(`${AUTH_API}/delete_user`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ username }),
+    });
+
+    const data = await res.json();
+    alert(data.message || "User deleted");
+  });
 });
 
-// Repeat similar logic for Distributor and Seller panels...
+function showDashboard(role) {
+  document.getElementById("loginContainer").style.display = "none";
 
+  if (role === "admin") {
+    document.getElementById("adminDashboard").style.display = "block";
+  } else if (role === "manufacturer") {
+    document.getElementById("manufacturerDashboard").style.display = "block";
+    loadManufacturerUI();
+  } else if (role === "distributor") {
+    document.getElementById("distributorDashboard").style.display = "block";
+    loadDistributorUI();
+  } else if (role === "seller") {
+    document.getElementById("sellerDashboard").style.display = "block";
+    loadSellerUI();
+  }
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  location.reload();
+}
+
+// The following 3 functions can later be used to inject specific forms/UI
+function loadManufacturerUI() {
+  document.getElementById("manufacturerContent").innerHTML = `<p>✔ Add/edit/delete blankets, handle distributor orders, low stock alerts.</p>`;
+}
+function loadDistributorUI() {
+  document.getElementById("distributorContent").innerHTML = `<p>✔ Manage inventory, handle seller orders, request from manufacturer, low stock alerts.</p>`;
+}
+function loadSellerUI() {
+  document.getElementById("sellerContent").innerHTML = `<p>✔ Manage orders, request from distributor, customer list, low stock alerts.</p>`;
+}
