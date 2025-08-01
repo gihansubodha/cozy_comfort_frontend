@@ -1,51 +1,102 @@
-﻿<!-- cozy_comfort_frontend/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Cozy Comfort Portal</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>🧺 Cozy Comfort Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div id="loginDiv">
-            <h2>Login</h2>
-            <input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password">
-            <button onclick="doLogin()">Login</button>
+  <div class="container py-4">
+    <h1 class="text-center mb-4">🧺 Cozy Comfort Portal</h1>
+
+    <!-- Login Form -->
+    <div id="loginSection">
+      <form id="loginForm" class="row g-3">
+        <div class="col-md-6">
+          <input type="text" class="form-control" id="username" placeholder="Username" required>
         </div>
-        <div id="panel" style="display:none;">
-            <h2>Dashboard <span id="roleSpan"></span></h2>
-            <button onclick="logout()">Logout</button>
-            <div id="adminArea">
-                <h3>Admin Area</h3>
-                <input id="newu" placeholder="New Username"><input id="newp" type="password" placeholder="Pass">
-                <select id="newr">
-                    <option value="manufacturer">Manufacturer</option>
-                    <option value="distributor">Distributor</option>
-                    <option value="seller">Seller</option>
-                </select>
-                <button onclick="createUser()">Create User</button>
-            </div>
-            <!-- Role sections -->
-            <div id="manufacturerArea">
-                <h3>Manage Blankets</h3><button onclick="loadBlankets()">Load</button>
-                <button onclick="addBlanket()">Add</button><table id="tbl">...</table>
-                <h3>Distributor Orders</h3><button onclick="manLoadOrders()">Load Orders</button><table id="mos">...</table>
-            </div>
-            <div id="distributorArea">
-                <h3>Manage Inventory</h3><button onclick="loadInv()">Load</button>
-                <button onclick="addInv()">Add</button><table id="ditbl">...</table>
-                <h3>Seller Orders</h3><button onclick="distLoadOrders()">Load Orders</button><table id="dostbl">...</table>
-                <button onclick="reqMan()">Request From Manufacturer</button>
-            </div>
-            <div id="sellerArea">
-                <h3>Manage Orders</h3><button onclick="loadOrders()">Load</button>
-                <button onclick="addOrder()">Add</button><table id="setbl">...</table>
-                <button onclick="reqDist()">Request Inventory</button>
-            </div>
+        <div class="col-md-6">
+          <input type="password" class="form-control" id="password" placeholder="Password" required>
         </div>
+        <div class="col-12 d-grid">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+        <div class="text-danger" id="loginError"></div>
+      </form>
     </div>
-    <script src="js/app.js"></script>
+
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" style="display:none;">
+      <div class="d-flex justify-content-between my-3">
+        <h4 id="roleTitle">Dashboard</h4>
+        <button class="btn btn-danger" id="logoutBtn">Logout</button>
+      </div>
+
+      <!-- ADMIN PANEL -->
+      <div id="adminPanel" style="display:none;">
+        <h5>🛠️ Manage Users</h5>
+        <form id="createUserForm" class="row g-2 mb-3">
+          <div class="col-md-3"><input type="text" class="form-control" id="newUsername" placeholder="Username" required></div>
+          <div class="col-md-3"><input type="password" class="form-control" id="newPassword" placeholder="Password" required></div>
+          <div class="col-md-3">
+            <select class="form-select" id="newRole" required>
+              <option value="">Select Role</option>
+              <option value="manufacturer">Manufacturer</option>
+              <option value="distributor">Distributor</option>
+              <option value="seller">Seller</option>
+            </select>
+          </div>
+          <div class="col-md-3"><button type="submit" class="btn btn-success">Create User</button></div>
+        </form>
+        <div id="userStatus" class="text-success mb-3"></div>
+      </div>
+
+      <!-- MANUFACTURER PANEL -->
+      <div id="manufacturerPanel" style="display:none;">
+        <h5>➕ Add Blanket</h5>
+        <form id="addBlanketForm" class="row g-2 mb-3">
+          <div class="col-md-3"><input type="text" class="form-control" id="blanketName" placeholder="Name" required></div>
+          <div class="col-md-3"><input type="text" class="form-control" id="blanketMaterial" placeholder="Material" required></div>
+          <div class="col-md-3"><input type="number" class="form-control" id="blanketStock" placeholder="Stock" required></div>
+          <div class="col-md-3"><button type="submit" class="btn btn-primary">Add</button></div>
+        </form>
+        <h6>📋 Inventory</h6>
+        <table class="table table-bordered" id="manufacturerTable"><thead><tr><th>Name</th><th>Material</th><th>Stock</th></tr></thead><tbody></tbody></table>
+        <div id="manufacturerAlert" class="text-danger"></div>
+      </div>
+
+      <!-- DISTRIBUTOR PANEL -->
+      <div id="distributorPanel" style="display:none;">
+        <h5>➕ Add Inventory</h5>
+        <form id="addInventoryForm" class="row g-2 mb-3">
+          <div class="col-md-4"><input type="text" class="form-control" id="inventoryName" placeholder="Name" required></div>
+          <div class="col-md-4"><input type="number" class="form-control" id="inventoryQty" placeholder="Quantity" required></div>
+          <div class="col-md-4"><button type="submit" class="btn btn-primary">Add</button></div>
+        </form>
+        <h6>📦 Inventory</h6>
+        <table class="table table-bordered" id="distributorTable"><thead><tr><th>Name</th><th>Quantity</th></tr></thead><tbody></tbody></table>
+        <div id="distributorAlert" class="text-danger"></div>
+      </div>
+
+      <!-- SELLER PANEL -->
+      <div id="sellerPanel" style="display:none;">
+        <h5>➕ Add Order</h5>
+        <form id="addOrderForm" class="row g-2 mb-3">
+          <div class="col-md-4"><input type="text" class="form-control" id="orderBlanket" placeholder="Name" required></div>
+          <div class="col-md-4"><input type="text" class="form-control" id="customerName" placeholder="Customer" required></div>
+          <div class="col-md-4"><input type="number" class="form-control" id="orderQty" placeholder="Quantity" required></div>
+          <div class="col-md-12"><button type="submit" class="btn btn-primary">Add</button></div>
+        </form>
+        <h6>🧾 Orders</h6>
+        <table class="table table-bordered" id="ordersTable"><thead><tr><th>Name</th><th>Customer</th><th>Qty</th></tr></thead><tbody></tbody></table>
+        <div id="sellerAlert" class="text-danger"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
