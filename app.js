@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value.trim();
 
     try {
-      const res = await fetch("https://auth-service-<your>.onrender.com/login", {
+      const res = await fetch("https://auth-service-okqn.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         role: document.getElementById("new-role").value
       };
 
-      const res = await fetch("https://auth-service-<your>.onrender.com/users", {
+      const res = await fetch("https://auth-service-okqn.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadUsers() {
-    const res = await fetch("https://auth-service-<your>.onrender.com/users", {
+    const res = await fetch("https://auth-service-okqn.onrender.com/users", {
       headers: { Authorization: `Bearer ${token}` }
     });
     const users = await res.json();
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         min_stock: parseInt(document.getElementById("blanket-min").value)
       };
 
-      const res = await fetch("https://manufacturer-service-<your>.onrender.com/blankets", {
+      const res = await fetch("https://manufacturer-service-1uh3.onrender.com/blankets", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadManufacturerInventory() {
-    const res = await fetch("https://manufacturer-service-<your>.onrender.com/blankets", {
+    const res = await fetch("https://manufacturer-service-1uh3.onrender.com/blankets", {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
@@ -159,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ====================
   const addInventoryForm = document.getElementById("addInventoryForm");
   const distributorTable = document.getElementById("distributor-inventory");
+  const sellerOrderList = document.getElementById("seller-orders");
 
   if (addInventoryForm) {
     addInventoryForm.addEventListener("submit", async (e) => {
@@ -169,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         min_stock: parseInt(document.getElementById("inventory-min").value)
       };
 
-      const res = await fetch("https://distributor-service-<your>.onrender.com/inventory", {
+      const res = await fetch("https://distributor-service-5f9m.onrender.com/inventory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -190,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadDistributorInventory() {
-    const res = await fetch("https://distributor-service-<your>.onrender.com/inventory", {
+    const res = await fetch("https://distributor-service-5f9m.onrender.com/inventory", {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
@@ -202,6 +203,19 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${item.stock}</td>
           <td>${item.min_stock}</td>
         </tr>`;
+    });
+  }
+
+  async function loadSellerOrders() {
+    const res = await fetch("https://distributor-service-5f9m.onrender.com/orders", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const orders = await res.json();
+    sellerOrderList.innerHTML = "";
+    orders.forEach(order => {
+      const li = document.createElement("li");
+      li.textContent = `${order.customer} requested ${order.name} x${order.quantity}`;
+      sellerOrderList.appendChild(li);
     });
   }
 
@@ -220,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
         customer: document.getElementById("order-customer").value.trim()
       };
 
-      const res = await fetch("https://seller-service-<your>.onrender.com/orders", {
+      const res = await fetch("https://seller-service-59bq.onrender.com/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -241,17 +255,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadSellerInventory() {
-    const res = await fetch("https://seller-service-<your>.onrender.com/orders", {
+    const res = await fetch("https://seller-service-59bq.onrender.com/inventory", {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
-    sellerTable.innerHTML = "<tr><th>Item</th><th>Qty</th><th>Customer</th></tr>";
+    sellerTable.innerHTML = "<tr><th>Name</th><th>Stock</th><th>Min</th></tr>";
     data.forEach((item) => {
       sellerTable.innerHTML += `
         <tr>
           <td>${item.name}</td>
-          <td>${item.quantity}</td>
-          <td>${item.customer}</td>
+          <td>${item.stock}</td>
+          <td>${item.min_stock}</td>
         </tr>`;
     });
   }
@@ -262,7 +276,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadDashboard(role) {
     if (role === "admin") loadUsers();
     if (role === "manufacturer") loadManufacturerInventory();
-    if (role === "distributor") loadDistributorInventory();
+    if (role === "distributor") {
+      loadDistributorInventory();
+      loadSellerOrders();
+    }
     if (role === "seller") loadSellerInventory();
   }
 });
