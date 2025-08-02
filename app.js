@@ -1,285 +1,76 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("loginForm");
-  const loginSection = document.getElementById("login-section");
-  const dashboard = document.getElementById("dashboard");
-  const loginError = document.getElementById("loginError");
-  const logoutBtns = document.querySelectorAll("#logout-btn");
+const AUTH_URL = "https://auth-service-okqn.onrender.com";
+const SELLER_URL = "https://seller-service-viqu.onrender.com";
 
-  let token = "";
-  let role = "";
+//  Login Function
+async function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    try {
-      const res = await fetch("https://auth-service-okqn.onrender.com/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        token = data.token;
-        role = data.role;
-        showDashboard(role);
-        loginSection.style.display = "none";
-        dashboard.style.display = "block";
-        loginError.textContent = "";
-        loadDashboard(role);
-      } else {
-        loginError.textContent = data.error || "Invalid credentials";
-      }
-    } catch (err) {
-      loginError.textContent = "Login error: " + err.message;
-    }
+  const res = await fetch(`${AUTH_URL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
   });
+  const data = await res.json();
+  if (res.ok) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('role', data.role);
+    localStorage.setItem('username', username);
 
-  logoutBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      token = "";
-      role = "";
-      document.getElementById("dashboard").style.display = "none";
-      document.getElementById("login-section").style.display = "block";
-    });
+    if (data.role === "seller") window.location.href = "seller.html";
+    if (data.role === "distributor") window.location.href = "distributor.html";
+    if (data.role === "manufacturer") window.location.href = "manufacturer.html";
+  } else {
+    document.getElementById('login-msg').innerText = data.msg;
+  }
+}
+
+//  Show Add Stock Popup
+function showAddStockPopup() {
+  document.getElementById('popup-form').classList.add('active');
+}
+
+//  Hide Add Stock Popup
+function hideAddStockPopup() {
+  document.getElementById('popup-form').classList.remove('active');
+}
+
+//  Add Seller Stock
+async function addSellerStock() {
+  const seller_id = 2; // replace with logged-in seller ID
+  const blanket_model = document.getElementById('add-model').value;
+  const quantity = parseInt(document.getElementById('add-qty').value);
+
+  const res = await fetch(`${SELLER_URL}/stock`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ seller_id, blanket_model, quantity })
   });
+  const data = await res.json();
+  alert(data.msg);
+  hideAddStockPopup();
+}
 
-  function showDashboard(role) {
-    const dashboards = ["admin", "manufacturer", "distributor", "seller"];
-    dashboards.forEach((r) => {
-      document.getElementById(`${r}-dashboard`).style.display = (r === role) ? "block" : "none";
-    });
-  }
+//  Check Low Stock
+async function checkLowStock() {
+  const seller_id = 2; // replace with logged-in seller ID
+  const res = await fetch(`${SELLER_URL}/check-low-stock/${seller_id}`);
+  const data = await res.json();
+  document.getElementById('low-stock-msg').innerText = JSON.stringify(data.low_stock);
+}
 
-  // ====================
-  // Admin Dashboard
-  // ====================
-  const createUserForm = document.getElementById("createUserForm");
-  const userList = document.getElementById("user-list");
+//  Send Stock Request
+async function sendStockRequest() {
+  const seller_id = 2; // replace with logged-in seller ID
+  const distributor_id = parseInt(document.getElementById('distributor-id').value);
+  const blanket_model = document.getElementById('request-model').value;
+  const quantity = parseInt(document.getElementById('request-qty').value);
 
-  if (createUserForm) {
-    createUserForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const newUser = {
-        username: document.getElementById("new-username").value.trim(),
-        password: document.getElementById("new-password").value.trim(),
-        role: document.getElementById("new-role").value
-      };
-
-      const res = await fetch("https://auth-service-okqn.onrender.com/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(newUser),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        alert("User created!");
-        loadUsers();
-        createUserForm.reset();
-      } else {
-        alert(data.error || "Failed to create user");
-      }
-    });
-  }
-
-  async function loadUsers() {
-    const res = await fetch("https://auth-service-okqn.onrender.com/users", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const users = await res.json();
-    userList.innerHTML = "";
-    users.forEach(user => {
-      const li = document.createElement("li");
-      li.textContent = `${user.username} (${user.role})`;
-      userList.appendChild(li);
-    });
-  }
-
-  // ====================
-  // Manufacturer Dashboard
-  // ====================
-  const addBlanketForm = document.getElementById("addBlanketForm");
-  const manufacturerTable = document.getElementById("manufacturer-inventory");
-
-  if (addBlanketForm) {
-    addBlanketForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const blanket = {
-        name: document.getElementById("blanket-name").value.trim(),
-        material: document.getElementById("blanket-material").value.trim(),
-        stock: parseInt(document.getElementById("blanket-stock").value),
-        min_stock: parseInt(document.getElementById("blanket-min").value)
-      };
-
-      const res = await fetch("https://manufacturer-service-1uh3.onrender.com/blankets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(blanket),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        alert("Blanket added");
-        loadManufacturerInventory();
-        addBlanketForm.reset();
-      } else {
-        alert(data.error || "Error adding blanket");
-      }
-    });
-  }
-
-  async function loadManufacturerInventory() {
-    const res = await fetch("https://manufacturer-service-1uh3.onrender.com/blankets", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-    manufacturerTable.innerHTML = "<tr><th>Name</th><th>Material</th><th>Stock</th><th>Min</th></tr>";
-    data.forEach((item) => {
-      manufacturerTable.innerHTML += `
-        <tr>
-          <td>${item.name}</td>
-          <td>${item.material}</td>
-          <td>${item.stock}</td>
-          <td>${item.min_stock}</td>
-        </tr>`;
-    });
-  }
-
-  // ====================
-  // Distributor Dashboard
-  // ====================
-  const addInventoryForm = document.getElementById("addInventoryForm");
-  const distributorTable = document.getElementById("distributor-inventory");
-  const sellerOrderList = document.getElementById("seller-orders");
-
-  if (addInventoryForm) {
-    addInventoryForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const item = {
-        name: document.getElementById("inventory-name").value.trim(),
-        stock: parseInt(document.getElementById("inventory-stock").value),
-        min_stock: parseInt(document.getElementById("inventory-min").value)
-      };
-
-      const res = await fetch("https://distributor-service-5f9m.onrender.com/inventory", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(item),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        alert("Item added");
-        loadDistributorInventory();
-        addInventoryForm.reset();
-      } else {
-        alert(data.error || "Error adding inventory");
-      }
-    });
-  }
-
-  async function loadDistributorInventory() {
-    const res = await fetch("https://distributor-service-5f9m.onrender.com/inventory", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-    distributorTable.innerHTML = "<tr><th>Name</th><th>Stock</th><th>Min</th></tr>";
-    data.forEach((item) => {
-      distributorTable.innerHTML += `
-        <tr>
-          <td>${item.name}</td>
-          <td>${item.stock}</td>
-          <td>${item.min_stock}</td>
-        </tr>`;
-    });
-  }
-
-  async function loadSellerOrders() {
-    const res = await fetch("https://distributor-service-5f9m.onrender.com/orders", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const orders = await res.json();
-    sellerOrderList.innerHTML = "";
-    orders.forEach(order => {
-      const li = document.createElement("li");
-      li.textContent = `${order.customer} requested ${order.name} x${order.quantity}`;
-      sellerOrderList.appendChild(li);
-    });
-  }
-
-  // ====================
-  // Seller Dashboard
-  // ====================
-  const placeOrderForm = document.getElementById("placeOrderForm");
-  const sellerTable = document.getElementById("seller-inventory");
-
-  if (placeOrderForm) {
-    placeOrderForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const order = {
-        name: document.getElementById("order-name").value.trim(),
-        quantity: parseInt(document.getElementById("order-qty").value),
-        customer: document.getElementById("order-customer").value.trim()
-      };
-
-      const res = await fetch("https://seller-service-59bq.onrender.com/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(order),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        alert("Order placed");
-        loadSellerInventory();
-        placeOrderForm.reset();
-      } else {
-        alert(data.error || "Error placing order");
-      }
-    });
-  }
-
-  async function loadSellerInventory() {
-    const res = await fetch("https://seller-service-59bq.onrender.com/inventory", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-    sellerTable.innerHTML = "<tr><th>Name</th><th>Stock</th><th>Min</th></tr>";
-    data.forEach((item) => {
-      sellerTable.innerHTML += `
-        <tr>
-          <td>${item.name}</td>
-          <td>${item.stock}</td>
-          <td>${item.min_stock}</td>
-        </tr>`;
-    });
-  }
-
-  // ================
-  // Load dashboards
-  // ================
-  function loadDashboard(role) {
-    if (role === "admin") loadUsers();
-    if (role === "manufacturer") loadManufacturerInventory();
-    if (role === "distributor") {
-      loadDistributorInventory();
-      loadSellerOrders();
-    }
-    if (role === "seller") loadSellerInventory();
-  }
-});
+  const res = await fetch(`${SELLER_URL}/request-stock`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ seller_id, distributor_id, blanket_model, quantity })
+  });
+  const data = await res.json();
+  document.getElementById('request-msg').innerText = data.msg;
+}
