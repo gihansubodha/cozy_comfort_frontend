@@ -8,9 +8,9 @@
 </head>
 <body>
 
-  <!-- 🔐 Login Section Wrapper -->
+  <!-- 🔐 Login Section -->
   <div id="login-section">
-    <div id="loginContainer">
+    <div>
       <h2>Login</h2>
       <form id="loginForm">
         <input type="text" id="username" placeholder="Username" required />
@@ -21,102 +21,71 @@
     </div>
   </div>
 
-  <!-- 📊 Dashboard Wrapper -->
+  <!-- 📊 Dashboard Section -->
   <div id="dashboard" style="display:none;">
 
     <!-- Admin Dashboard -->
-    <div id="adminDashboard" class="dashboard" style="display:none">
+    <div id="admin-dashboard" style="display:none;">
       <h2>Welcome Admin</h2>
-      <button onclick="logout()">Logout</button>
+      <button id="logout-btn">Logout</button>
       <h3>Create User</h3>
       <form id="createUserForm">
-        <input type="text" id="newUsername" placeholder="New Username" required />
-        <input type="password" id="newPassword" placeholder="New Password" required />
-        <select id="newRole">
+        <input type="text" id="new-username" placeholder="New Username" required />
+        <input type="password" id="new-password" placeholder="New Password" required />
+        <select id="new-role">
           <option value="manufacturer">Manufacturer</option>
           <option value="distributor">Distributor</option>
           <option value="seller">Seller</option>
         </select>
         <button type="submit">Create User</button>
       </form>
-      <h3>Delete User</h3>
-      <form id="deleteUserForm">
-        <input type="text" id="deleteUsername" placeholder="Username to delete" required />
-        <button type="submit">Delete User</button>
-      </form>
+      <h3>User List</h3>
+      <ul id="user-list"></ul>
     </div>
 
     <!-- Manufacturer Dashboard -->
-    <div id="manufacturerDashboard" class="dashboard" style="display:none">
+    <div id="manufacturer-dashboard" style="display:none;">
       <h2>Manufacturer Dashboard</h2>
-      <button onclick="logout()">Logout</button>
-      <div id="manufacturerContent">
-        <h3>Add Blanket Stock</h3>
-        <form id="addBlanketForm">
-          <input type="text" id="blanketName" placeholder="Blanket Name" required />
-          <input type="number" id="blanketQuantity" placeholder="Quantity" required />
-          <input type="number" id="minStock" placeholder="Minimum Stock Alert" required />
-          <button type="submit">Add</button>
-        </form>
-
-        <h3>Blanket Inventory</h3>
-        <div id="manufacturerInventory"></div>
-
-        <h3>Distributor Orders</h3>
-        <div id="manufacturerOrders"></div>
-      </div>
+      <button id="logout-btn">Logout</button>
+      <form id="addBlanketForm">
+        <input type="text" id="blanket-name" placeholder="Blanket Name" required />
+        <input type="text" id="blanket-material" placeholder="Material" required />
+        <input type="number" id="blanket-stock" placeholder="Stock" required />
+        <input type="number" id="blanket-min" placeholder="Min Stock" required />
+        <button type="submit">Add Blanket</button>
+      </form>
+      <h3>Inventory</h3>
+      <table id="manufacturer-inventory"></table>
     </div>
 
     <!-- Distributor Dashboard -->
-    <div id="distributorDashboard" class="dashboard" style="display:none">
+    <div id="distributor-dashboard" style="display:none;">
       <h2>Distributor Dashboard</h2>
-      <button onclick="logout()">Logout</button>
-      <div id="distributorContent">
-        <h3>Add Inventory</h3>
-        <form id="addDistributorInventoryForm">
-          <input type="text" id="distItemName" placeholder="Item Name" required />
-          <input type="number" id="distQuantity" placeholder="Quantity" required />
-          <input type="number" id="distMinStock" placeholder="Minimum Stock Alert" required />
-          <button type="submit">Add</button>
-        </form>
-
-        <h3>Distributor Inventory</h3>
-        <div id="distributorInventory"></div>
-
-        <h3>Seller Orders</h3>
-        <div id="sellerOrdersForDistributor"></div>
-
-        <h3>Request From Manufacturer</h3>
-        <form id="requestManufacturerForm">
-          <input type="text" id="manufacturerItemName" placeholder="Item to Request" required />
-          <input type="number" id="manufacturerRequestQty" placeholder="Quantity" required />
-          <button type="submit">Request</button>
-        </form>
-      </div>
+      <button id="logout-btn">Logout</button>
+      <form id="addInventoryForm">
+        <input type="text" id="inventory-name" placeholder="Item Name" required />
+        <input type="number" id="inventory-stock" placeholder="Stock" required />
+        <input type="number" id="inventory-min" placeholder="Min Stock" required />
+        <button type="submit">Add Inventory</button>
+      </form>
+      <h3>Inventory</h3>
+      <table id="distributor-inventory"></table>
+      <h3>Seller Orders</h3>
+      <ul id="seller-orders"></ul>
     </div>
 
     <!-- Seller Dashboard -->
-    <div id="sellerDashboard" class="dashboard" style="display:none">
+    <div id="seller-dashboard" style="display:none;">
       <h2>Seller Dashboard</h2>
-      <button onclick="logout()">Logout</button>
-      <div id="sellerContent">
-        <h3>Place Customer Order</h3>
-        <form id="placeCustomerOrderForm">
-          <input type="text" id="customerItem" placeholder="Item Name" required />
-          <input type="number" id="customerQty" placeholder="Quantity" required />
-          <button type="submit">Place Order</button>
-        </form>
-
-        <h3>My Orders</h3>
-        <div id="sellerOrders"></div>
-
-        <h3>Request from Distributor</h3>
-        <form id="requestFromDistributorForm">
-          <input type="text" id="distributorItem" placeholder="Item Name" required />
-          <input type="number" id="distributorQty" placeholder="Quantity" required />
-          <button type="submit">Request</button>
-        </form>
-      </div>
+      <button id="logout-btn">Logout</button>
+      <form id="placeOrderForm">
+        <input type="text" id="order-name" placeholder="Item Name" required />
+        <input type="number" id="order-qty" placeholder="Quantity" required />
+        <input type="text" id="order-customer" placeholder="Customer Name" required />
+        <button type="submit">Place Order</button>
+      </form>
+      <h3>Inventory</h3>
+      <table id="seller-inventory"></table>
     </div>
 
   </div>
