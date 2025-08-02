@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => 
+document.addEventListener("DOMContentLoaded", () => {
 let token = localStorage.getItem("token");
 let role = localStorage.getItem("role");
 
@@ -216,3 +216,4 @@ document.getElementById("placeOrderForm").addEventListener("submit", async e => 
   }
 });
 });
+
