@@ -1,42 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Dashboard - Cozy Comfort</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <img src="images/seller_banner.jpg" alt="Seller" class="banner-img">
-        <h1>Seller Dashboard</h1>
-    </header>
+  <header>
+    <img src="images/seller_banner.jpg" alt="Seller" class="banner-img">
+    <h1>Seller Dashboard</h1>
+  </header>
 
-    <section class="stock-section">
-        <h2>Your Stock</h2>
-        <table id="seller-stock-table"></table>
-        <button class="btn popup" onclick="showAddStockPopup()">+ Add Stock</button>
-        <button class="btn" onclick="checkLowStock()">Check Low Stock</button>
-        <div id="low-stock-msg"></div>
-    </section>
+  <section class="stock-section">
+    <h2>Your Stock</h2>
+    <table id="seller-stock-table"></table>
+    <button class="btn popup" onclick="showAddStockPopup()">+ Add Stock</button>
+    <button class="btn" onclick="checkLowStock()">Check Low Stock</button>
+    <div id="low-stock-msg"></div>
+  </section>
 
-    <section class="request-section">
-        <h2>Request More Stock</h2>
-        <input type="text" id="request-model" placeholder="Blanket Model">
-        <input type="number" id="request-qty" placeholder="Quantity">
-        <input type="number" id="distributor-id" placeholder="Distributor ID">
-        <button class="btn popup" onclick="sendStockRequest()">Send Request</button>
-        <p id="request-msg"></p>
-    </section>
+  <section class="request-section">
+    <h2>Request More Stock</h2>
+    <input type="text" id="request-model" placeholder="Blanket Model">
+    <input type="number" id="request-qty" placeholder="Quantity">
+    <input type="number" id="distributor-id" placeholder="Distributor ID">
+    <button class="btn popup" onclick="sendStockRequest()">Send Request</button>
+    <p id="request-msg"></p>
+  </section>
 
-    <div id="popup-form" class="popup-form">
-        <h3>Add Stock</h3>
-        <input type="text" id="add-model" placeholder="Blanket Model">
-        <input type="number" id="add-qty" placeholder="Quantity">
-        <button class="btn" onclick="addSellerStock()">Save</button>
-        <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
-    </div>
+  <!-- Add Stock Popup -->
+  <div id="popup-form" class="popup-form">
+    <h3>Add Stock</h3>
+    <input type="text" id="add-model" placeholder="Blanket Model">
+    <input type="number" id="add-qty" placeholder="Quantity">
+    <button class="btn" onclick="addSellerStock()">Save</button>
+    <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
+  </div>
 
-    <script src="app.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", loadSellerStock);
+  </script>
 </body>
 </html>
