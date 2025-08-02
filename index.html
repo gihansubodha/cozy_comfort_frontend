@@ -1,93 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cozy Comfort Portal</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cozy Comfort - Login</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- 🔐 Login Section -->
-  <div id="login-section">
-    <div>
-      <h2>Login</h2>
-      <form id="loginForm">
-        <input type="text" id="username" placeholder="Username" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-      <p id="loginError" class="error"></p>
-    </div>
-  </div>
-
-  <!-- 📊 Dashboard Section -->
-  <div id="dashboard" style="display:none;">
-
-    <!-- Admin Dashboard -->
-    <div id="admin-dashboard" style="display:none;">
-      <h2>Welcome Admin</h2>
-      <button id="logout-btn">Logout</button>
-      <h3>Create User</h3>
-      <form id="createUserForm">
-        <input type="text" id="new-username" placeholder="New Username" required />
-        <input type="password" id="new-password" placeholder="New Password" required />
-        <select id="new-role">
-          <option value="manufacturer">Manufacturer</option>
-          <option value="distributor">Distributor</option>
-          <option value="seller">Seller</option>
-        </select>
-        <button type="submit">Create User</button>
-      </form>
-      <h3>User List</h3>
-      <ul id="user-list"></ul>
-    </div>
-
-    <!-- Manufacturer Dashboard -->
-    <div id="manufacturer-dashboard" style="display:none;">
-      <h2>Manufacturer Dashboard</h2>
-      <button id="logout-btn">Logout</button>
-      <form id="addBlanketForm">
-        <input type="text" id="blanket-name" placeholder="Blanket Name" required />
-        <input type="text" id="blanket-material" placeholder="Material" required />
-        <input type="number" id="blanket-stock" placeholder="Stock" required />
-        <input type="number" id="blanket-min" placeholder="Min Stock" required />
-        <button type="submit">Add Blanket</button>
-      </form>
-      <h3>Inventory</h3>
-      <table id="manufacturer-inventory"></table>
-    </div>
-
-    <!-- Distributor Dashboard -->
-    <div id="distributor-dashboard" style="display:none;">
-      <h2>Distributor Dashboard</h2>
-      <button id="logout-btn">Logout</button>
-      <form id="addInventoryForm">
-        <input type="text" id="inventory-name" placeholder="Item Name" required />
-        <input type="number" id="inventory-stock" placeholder="Stock" required />
-        <input type="number" id="inventory-min" placeholder="Min Stock" required />
-        <button type="submit">Add Inventory</button>
-      </form>
-      <h3>Inventory</h3>
-      <table id="distributor-inventory"></table>
-      <h3>Seller Orders</h3>
-      <ul id="seller-orders"></ul>
-    </div>
-
-    <!-- Seller Dashboard -->
-    <div id="seller-dashboard" style="display:none;">
-      <h2>Seller Dashboard</h2>
-      <button id="logout-btn">Logout</button>
-      <form id="placeOrderForm">
-        <input type="text" id="order-name" placeholder="Item Name" required />
-        <input type="number" id="order-qty" placeholder="Quantity" required />
-        <input type="text" id="order-customer" placeholder="Customer Name" required />
-        <button type="submit">Place Order</button>
-      </form>
-      <h3>Inventory</h3>
-      <table id="seller-inventory"></table>
-    </div>
-
+  <div class="login-container">
+    <img src="images/logo.png" alt="Logo" class="logo">
+    <h2>Login to Cozy Comfort</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <p id="login-msg"></p>
   </div>
 
   <script src="app.js"></script>
