@@ -80,3 +80,131 @@ input, button {
 .cancel {
   background: #f44336;
 }
+
+/* Color Palette */
+:root {
+  --dark-blue: #011f4b;
+  --medium-blue: #03396c;
+  --blue: #005b96;
+  --light-blue: #6497b1;
+  --pale-blue: #b3cde0;
+  --white: #ffffff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--pale-blue);
+  margin: 0;
+  padding: 0;
+  color: var(--dark-blue);
+}
+
+.header {
+  position: relative;
+  text-align: center;
+  background-color: var(--medium-blue);
+  color: var(--white);
+  padding: 15px;
+}
+
+.banner-img {
+  max-height: 150px;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 3px solid var(--blue);
+}
+
+.logout-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: var(--blue);
+  color: var(--white);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dashboard {
+  display: flex;
+  margin: 20px;
+  gap: 20px;
+}
+
+.left-panel, .right-panel {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.left-panel {
+  flex: 1;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.low-stock-section, .request-section {
+  flex: 1;
+  background: var(--pale-blue);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+h1, h2 {
+  margin: 10px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 8px;
+  border-bottom: 1px solid var(--light-blue);
+  text-align: left;
+}
+
+.btn {
+  background: var(--blue);
+  color: var(--white);
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.popup-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  padding: 20px;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.popup-form.active {
+  display: block;
+}
+
+.cancel {
+  background: #f44336;
+}
+
