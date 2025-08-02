@@ -1,8 +1,39 @@
 // 🔗 API URLs
+const AUTH_URL = "https://auth-service-okqn.onrender.com";
 const SELLER_URL = "https://seller-service-viqu.onrender.com";
 
-// Temporary static seller_id (replace with login-based later)
+//  Temporary seller_id (will link to login later)
 const seller_id = 3;
+
+//  Login Function
+async function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  const res = await fetch(`${AUTH_URL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('role', data.role);
+    localStorage.setItem('username', username);
+
+    if (data.role === "seller") {
+      window.location.href = "seller.html";
+    } else if (data.role === "distributor") {
+      window.location.href = "distributor.html";
+    } else if (data.role === "manufacturer") {
+      window.location.href = "manufacturer.html";
+    }
+  } else {
+    document.getElementById('login-msg').innerText = data.msg;
+  }
+}
 
 // Load Seller Stock
 async function loadSellerStock() {
@@ -52,7 +83,7 @@ async function addSellerStock() {
   loadSellerStock();
 }
 
-//  Edit Stock
+// Edit Stock
 async function editStock(stock_id, current_qty) {
   const new_qty = prompt("Enter new quantity:", current_qty);
   if (!new_qty) return;
@@ -77,7 +108,7 @@ async function deleteStock(stock_id) {
   loadSellerStock();
 }
 
-// Check Low Stock
+//  Check Low Stock
 async function checkLowStock() {
   const res = await fetch(`${SELLER_URL}/check-low-stock/${seller_id}`);
   const data = await res.json();
@@ -85,7 +116,7 @@ async function checkLowStock() {
     data.low_stock.length > 0 ? JSON.stringify(data.low_stock) : "No low stock items.";
 }
 
-//  Send Stock Request
+// Send Stock Request
 async function sendStockRequest() {
   const distributor_id = parseInt(document.getElementById('distributor-id').value);
   const blanket_model = document.getElementById('request-model').value;
