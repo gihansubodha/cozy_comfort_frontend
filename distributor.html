@@ -20,7 +20,7 @@
     </header>
 
     <div class="dashboard">
-        <!-- Left: Distributor Stock -->
+        <!-- LEFT: Distributor Stock -->
         <div class="left-panel">
             <div class="panel-header">
                 <h2>Your Stock</h2>
@@ -29,21 +29,23 @@
             <div class="scrollable-table">
                 <table id="distributor-stock-table"></table>
             </div>
+        </div>
 
-        <!-- Right: Pending Seller Requests -->
+        <!-- RIGHT: Requests & Alerts -->
         <div class="right-panel">
+            <!-- Pending Seller Requests -->
             <div class="low-stock-section">
                 <h2 class="tab-header">Pending Stock Requests</h2>
                 <div id="pending-requests">Loading...</div>
             </div>
 
-          <!-- Low Stock Section -->
+            <!-- Low Stock Alerts -->
             <div class="low-stock-section">
                 <h2 class="tab-header">Low Stock Alerts</h2>
                 <div id="distributor-low-stock">Checking...</div>
             </div>
-        </div>
 
+            <!-- Send to Manufacturer -->
             <div class="request-section">
                 <h2 class="tab-header">Send to Manufacturer</h2>
                 <input type="text" id="request-model" placeholder="Enter Blanket Model">
@@ -71,10 +73,9 @@
             showWelcome();
             loadDistributorStock();
             loadPendingRequests();
-            loadDistributorLowStock(); // ✅ Auto load low stock alerts
-            setInterval(loadDistributorLowStock, 10000); // ✅ Refresh every 10s like other dashboards
+            loadDistributorLowStock();
+            setInterval(loadDistributorLowStock, 10000); // Auto-refresh low stock alerts
         });
     </script>
 </body>
 </html>
-
