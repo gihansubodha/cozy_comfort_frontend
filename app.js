@@ -321,6 +321,11 @@ async function loadLowStockAlerts() {
         data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
 }
 
+async function autoLoadLowStockAlerts() {
+    await loadLowStockAlerts();
+    setInterval(loadLowStockAlerts, 10000);
+}
+
 // ---------------- ADMIN ---------------- //
 async function registerUser() {
     const username = document.getElementById('new-username').value.trim();
@@ -459,4 +464,5 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
