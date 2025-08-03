@@ -353,7 +353,7 @@ async function loadAllUsers() {
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${AUTH_API}/all_users`, {
+        const response = await fetch(`${AUTH_URL}/all_users`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -441,4 +441,5 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
