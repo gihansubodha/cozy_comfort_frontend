@@ -5,23 +5,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cozy Comfort - Login</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f2f6fa;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+    .header-top {
+      width: 100%;
+      text-align: center;
+      background: #347aeb;
+      color: #fff;
+      padding: 32px 0 10px 0;
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+    .header-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #347aeb;
+      padding-bottom: 24px;
+    }
+    .header-logo img {
+      width: 140px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    .login-container {
+      background: url('images/logo.svg') center/cover no-repeat, #fff;
+      box-shadow: 0 6px 24px rgba(52, 122, 235, 0.12), 0 1.5px 6px rgba(0,0,0,0.08);
+      border-radius: 22px;
+      width: 350px;
+      max-width: 96vw;
+      margin: 48px auto 0 auto;
+      padding: 42px 32px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .login-container h2 {
+      margin-bottom: 24px;
+      font-size: 1.3rem;
+      color: #347aeb;
+      letter-spacing: 1.2px;
+      text-shadow: 0 1px 1px #fff4;
+    }
+    .login-container input {
+      width: 90%;
+      padding: 12px 10px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      border: 1px solid #d1e3fa;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .login-container input:focus {
+      border: 1.5px solid #347aeb;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 92%;
+      padding: 12px;
+      background: #347aeb;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .btn:hover {
+      background: #245db7;
+    }
+    #login-msg {
+      color: #e74c3c;
+      font-size: 1rem;
+      margin-top: 4px;
+      min-height: 20px;
+    }
+    @media (max-width: 500px) {
+      .login-container { padding: 28px 10px; width: 97vw; }
+      .header-top { font-size: 1.2rem; padding: 22px 0 8px 0; }
+      .header-logo img { width: 95px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="header-top">
+    Cozy Comfort Login
+  </div>
+  <div class="header-logo">
+    <img src="images/cozylogo.png" alt="Cozy Comfort Logo">
+  </div>
   <div class="login-container">
-    <img src="images/logo.svg" alt="Logo" class="logo">
     <h2>Login to Cozy Comfort</h2>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
-    <button class="btn" onclick="login()">Login</button>
+    <button class="btn" onclick="login()">
+      <!-- Inline login SVG icon -->
+      <svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M21 12H3"></path>
+      </svg>
+      Login
+    </button>
     <p id="login-msg"></p>
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
-
-
-
-
-
-
