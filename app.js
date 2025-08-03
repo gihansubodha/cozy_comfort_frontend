@@ -387,6 +387,34 @@ async function loadAllUsers() {
   }
 }
 
+async function deleteUserFromTable(username) {
+  const token = localStorage.getItem("token");
+  if (!confirm(`Are you sure you want to delete user "${username}"?`)) return;
+
+  try {
+    const response = await fetch(`${AUTH_API}/delete_user`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ username })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert(data.message || "User deleted");
+      loadAllUsers(); // Refresh table
+    } else {
+      alert(data.error || "Failed to delete user");
+    }
+  } catch (error) {
+    console.error("Delete error:", error);
+    alert("Error deleting user");
+  }
+}
+
 // ✅ Logout
 function logout() {
     localStorage.clear();
@@ -439,6 +467,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
