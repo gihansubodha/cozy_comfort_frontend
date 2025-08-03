@@ -47,12 +47,22 @@
       <button class="btn cancel" onclick="deleteUser()">Delete</button>
       <p id="delete-msg"></p>
 
-      <div class="low-stock-section" style="margin-top:20px;">
-        <h2 class="tab-header">All Users</h2>
-        <div id="user-list">Loading...</div>
-      </div>
-    </div>
-  </div>
+<div class="low-stock-section" style="margin-top:20px;">
+  <h2 class="tab-header">All Users</h2>
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="usersTableBody">
+      <!-- Filled dynamically by app.js -->
+    </tbody>
+  </table>
+</div>
+
 
   <script src="app.js"></script>
   <script>
@@ -63,4 +73,5 @@
   </script>
 </body>
 </html>
+
 
