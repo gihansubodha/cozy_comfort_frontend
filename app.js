@@ -43,7 +43,7 @@ async function login() {
             } else if (data.role === "manufacturer") {
                 window.location.href = "manufacturer.html";
             } else if (data.role === "admin") {
-                window.location.href = "admin.html"; // create admin.html dashboard later
+                window.location.href = "register.html"; // create admin.html dashboard later
             }
         } else {
             document.getElementById('login-msg').innerText = data.msg;
@@ -223,3 +223,4 @@ document.addEventListener("DOMContentLoaded", () => {
         autoLoadLowStock();
     }
 });
+
