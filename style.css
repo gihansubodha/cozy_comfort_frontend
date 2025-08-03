@@ -15,14 +15,13 @@ body {
     color: var(--dark-blue);
 }
 
-/* Compact Seller Dashboard Header */
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--dark-blue);
     color: var(--white);
-    padding: 4px 16px; /* Reduced further */
+    padding: 4px 16px;
 }
 
 .header-bottom {
@@ -41,8 +40,8 @@ body {
 
 /* Logo */
 .logo-img {
-    width: 75px;
-    height: 75px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
     border-radius: 8px;
 }
@@ -94,14 +93,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--blue);
-    color: var(--white);
+    background: var(--white);
+    color: var(--blue);
     padding: 8px 12px;
     border-radius: 6px;
     margin-bottom: 10px;
 }
 
-/* Add Stock button styled inside header */
+/* Add Stock button */
 .add-stock-btn {
     background: var(--white);
     color: var(--blue);
@@ -192,7 +191,6 @@ th:last-child, td:last-child {
     background: #f44336;
 }
 
-/* Popup Styling */
 .popup-form {
     position: fixed;
     top: 50%;
@@ -208,3 +206,4 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
