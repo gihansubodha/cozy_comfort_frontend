@@ -361,19 +361,23 @@ async function loadAllUsers() {
             }
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-            const err = await response.json();
-            console.error("Error loading users:", err);
-            throw new Error(err.msg || "Failed to load users");
+            console.error("Error loading users:", data);
+            alert("Unauthorized access or token expired. Please login again.");
+            return;
         }
 
-        const data = await response.json();
-        const users = data.users;
+        if (!data.users || !Array.isArray(data.users)) {
+            console.error("Invalid response format:", data);
+            return;
+        }
 
         const usersTable = document.getElementById("usersTableBody");
         usersTable.innerHTML = "";
 
-        users.forEach(user => {
+        data.users.forEach(user => {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${user.username}</td>
@@ -387,6 +391,7 @@ async function loadAllUsers() {
         console.error("loadAllUsers failed:", error);
     }
 }
+
 
 
 // ✅ Logout
@@ -441,5 +446,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
