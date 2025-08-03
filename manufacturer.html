@@ -27,7 +27,9 @@
                 <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Model</button>
             </div>
             <div class="scrollable-table">
-                <table id="manufacturer-stock-table"></table>
+                <table id="manufacturer-stock-table">
+                    <tr><th>Model</th><th>Quantity</th></tr>
+                </table>
             </div>
         </div>
 
@@ -49,7 +51,7 @@
     <div id="popup-form" class="popup-form">
         <h3>Add Blanket Model</h3>
         <div class="popup-content">
-            <input type="text" id="add-model" placeholder="Enter Blanket Model">
+            <input type="text" id="add-model" placeholder="Enter Model Name">
             <input type="number" id="add-qty" placeholder="Initial Quantity">
             <button class="btn" onclick="addManufacturerStock()">Save</button>
             <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
