@@ -1,302 +1,316 @@
 :root {
-    --primary: #829CBA;
-    --secondary: #000000;
-    --light: #EFE9E8;
-    --white: #ffffff;
-    --header-bg: #101f30;
-    --delete-btn: #9e342c;
-    --edit-btn: #101f30;
+  --primary: #829CBA;
+  --secondary: #000000;
+  --light: #EFE9E8;
+  --white: #ffffff;
+  --header-bg: #101f30;
+  --delete-btn: #9e342c;
+  --edit-btn: #101f30;
 }
 
 /* Faded Background Image */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: var(--secondary);
-    background: url('images/background.jpg') no-repeat center center fixed;
-    background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--secondary);
+  background: url('images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
 body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(255,255,255,0.7);
-    z-index: -1;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: -1;
 }
 
-/* Top Header with Welcome Message */
+/* Top Header */
 .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--primary);
-    color: var(--white);
-    padding: 4px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 4px 16px;
 }
 
-/* Second Header */
+/* Welcome Header */
 .header-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--header-bg);
-    color: var(--white);
-    padding: 4px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-bg);
+  color: var(--white);
+  padding: 4px 16px;
 }
 
 #welcome-msg {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--white);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--white);
 }
 
 /* Logo */
 .logo-img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    border-radius: 8px;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 /* Logout Button */
 .logout-btn {
-    background-color: red;
-    color: var(--white);
-    border: none;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  background-color: red;
+  color: var(--white);
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .logout-btn:hover {
-    background-color: var(--secondary);
+  background-color: var(--secondary);
 }
 
 /* Dashboard Layout */
 .dashboard {
-    display: flex;
-    margin: 20px;
-    gap: 20px;
+  display: flex;
+  margin: 20px;
+  gap: 20px;
 }
 
 /* Panels */
-.left-panel, .right-panel {
-    background: var(--white);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    flex: 1;
-    color: var(--secondary);
+.left-panel,
+.right-panel {
+  background: var(--white);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  color: var(--secondary);
 }
 
 /* Scrollable Stock Table */
 .scrollable-table {
-    max-height: 500px;
-    overflow-y: auto;
-    border: 1px solid var(--light);
-    border-radius: 6px;
-    background: var(--white);
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid var(--light);
+  border-radius: 6px;
+  background: var(--white);
 }
 
 /* Panel Header */
 .panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--header-bg);
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--header-bg);
+  color: var(--white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 /* Add Stock Button */
 .add-stock-btn {
-    background: var(--edit-btn);
-    color: var(--white);
-    font-weight: bold;
-    font-size: 14px;
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
+  background: var(--edit-btn);
+  color: var(--white);
+  font-weight: bold;
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
 }
 
-/* Low Stock and Request Tabs */
+/* Section Headers */
 .tab-header {
-    background: var(--header-bg);
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-weight: bold;
+  background: var(--header-bg);
+  color: var(--white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 /* Low Stock Section */
 .low-stock-section {
-    background: var(--light);
-    border-radius: 8px;
-    padding: 15px;
-    flex: 1;
-    margin-bottom: 12px;
-    color: var(--secondary);
+  background: var(--light);
+  border-radius: 8px;
+  padding: 15px;
+  flex: 1;
+  margin-bottom: 12px;
+  color: var(--secondary);
 }
 
 /* Request Section */
 .request-section {
-    background: var(--light);
-    border-radius: 8px;
-    padding: 15px;
-    flex: 1;
-    color: var(--secondary);
+  background: var(--light);
+  border-radius: 8px;
+  padding: 15px;
+  flex: 1;
+  color: var(--secondary);
 }
 
-/* Form Inputs */
+/* History Section - aligned */
+.history-section.align-header {
+  background: var(--light);
+  border-radius: 8px;
+  padding: 15px;
+  flex: 1;
+  color: var(--secondary);
+  margin-top: 12px;
+}
+
+/* Inputs */
 .request-section input,
 .popup-form input,
 .admin-section input,
 .admin-section select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: none;
-    border-bottom: 2px solid var(--secondary);
-    background: transparent;
-    outline: none;
-    font-size: 14px;
-    color: var(--secondary);
-    transition: border-color 0.3s ease;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-bottom: 2px solid var(--secondary);
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: var(--secondary);
+  transition: border-color 0.3s ease;
 }
 
 .request-section input::placeholder,
 .popup-form input::placeholder,
 .admin-section input::placeholder {
-    color: var(--secondary);
-    opacity: 0.8;
+  color: var(--secondary);
+  opacity: 0.8;
 }
 
 .request-section input:focus,
 .popup-form input:focus,
 .admin-section input:focus,
 .admin-section select:focus {
-    border-bottom: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
 }
 
 /* Table Styles */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    color: var(--secondary);
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--secondary);
 }
 
-th, td {
-    padding: 8px;
-    border-bottom: 1px solid var(--light);
-    border-right: 1px solid var(--light);
-    text-align: center;
+th,
+td {
+  padding: 8px;
+  border-bottom: 1px solid var(--light);
+  border-right: 1px solid var(--light);
+  text-align: center;
 }
 
-th:last-child, td:last-child {
-    border-right: none;
+th:last-child,
+td:last-child {
+  border-right: none;
 }
 
 /* Buttons */
 .btn {
-    background: var(--edit-btn);
-    color: var(--white);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.2s;
+  background: var(--edit-btn);
+  color: var(--white);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .btn:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Delete Button */
 .cancel {
-    background: var(--delete-btn);
-    color: var(--white);
+  background: var(--delete-btn);
+  color: var(--white);
 }
 
 /* Popup Styling */
 .popup-form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--white);
-    padding: 0;
-    display: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    width: 300px;
-    color: var(--secondary);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  padding: 0;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  color: var(--secondary);
 }
 
 /* Popup Header */
 .popup-form h3 {
-    background: var(--header-bg);
-    color: var(--white);
-    margin: 0;
-    padding: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 16px;
-    text-align: center;
+  background: var(--header-bg);
+  color: var(--white);
+  margin: 0;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 16px;
+  text-align: center;
 }
 
-/* Popup visibility toggle */
+/* Show Popup */
 .popup-form.active {
-    display: block;
+  display: block;
 }
 
-/* Admin Add User Section */
+/* Admin Section */
 .admin-section {
-    background: var(--light);
-    border-radius: 8px;
-    padding: 15px;
-    max-width: 400px;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: var(--secondary);
+  background: var(--light);
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 400px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--secondary);
 }
 
-/* Admin Header */
 .admin-section h2 {
-    background: var(--header-bg);
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-top: 0;
-    margin-bottom: 10px;
+  background: var(--header-bg);
+  color: var(--white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
-/* Select Dropdown */
+/* Select Styling */
 .admin-section select {
-    color: var(--primary);
-    background: transparent;
+  color: var(--primary);
+  background: transparent;
 }
 
 /* Request Item Styling */
 .request-item {
-    border: 1px solid #ccc;
-    padding: 8px;
-    margin-bottom: 5px;
-    border-radius: 6px;
-    background: #f9f9f9;
-    color: var(--secondary);
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  background: #f9f9f9;
+  color: var(--secondary);
 }
 
 .request-item p {
-    margin: 4px 0;
+  margin: 4px 0;
 }
