@@ -1,15 +1,15 @@
 // 🔗 API URLs
 const AUTH_URL = "https://auth-service-okqn.onrender.com";
 const SELLER_URL = "https://seller-service-viqu.onrender.com";
-const DISTRIBUTOR_URL = "https://distributor-service-abc.onrender.com"; // Replace with your actual URL
-const MANUFACTURER_URL = "https://manufacturer-service-xyz.onrender.com"; // Replace with your actual URL
+const DISTRIBUTOR_URL = "https://distributor-service-abc.onrender.com";
+const MANUFACTURER_URL = "https://manufacturer-service-xyz.onrender.com";
 
-// ✅ Dynamic IDs from login
+//  Dynamic IDs
 const seller_id = localStorage.getItem('seller_id');
 const distributor_id = localStorage.getItem('distributor_id');
 const manufacturer_id = localStorage.getItem('manufacturer_id');
 
-// ✅ Login Function
+//  Login Function
 async function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -24,7 +24,6 @@ async function login() {
         const data = await res.json();
 
         if (res.ok) {
-            // ✅ Fetch user details
             const userRes = await fetch(`${AUTH_URL}/get_user/${username}`);
             const userData = await userRes.json();
 
@@ -38,11 +37,10 @@ async function login() {
                 if (data.role === "manufacturer") localStorage.setItem('manufacturer_id', userData.id);
             }
 
-            // ✅ Redirect based on role
             if (data.role === "seller") window.location.href = "seller.html";
             else if (data.role === "distributor") window.location.href = "distributor.html";
             else if (data.role === "manufacturer") window.location.href = "manufacturer.html";
-            else if (data.role === "admin") window.location.href = "register.html";
+            else if (data.role === "admin") window.location.href = "admin.html";
         } else {
             document.getElementById('login-msg').innerText = data.msg;
         }
@@ -52,7 +50,7 @@ async function login() {
     }
 }
 
-// ✅ Welcome Message
+//  Welcome Message
 function showWelcome() {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
@@ -60,43 +58,36 @@ function showWelcome() {
     if (msg && username && role) msg.innerText = `Welcome, ${username} | ${role}`;
 }
 
-// ---------------- SELLER FUNCTIONS ---------------- //
+// ---------------- SELLER ---------------- //
 async function loadSellerStock() {
     if (!seller_id) return;
-    try {
-        const res = await fetch(`${SELLER_URL}/stock/${seller_id}`);
-        const stock = await res.json();
-        const table = document.getElementById("seller-stock-table");
-        table.innerHTML = "<tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>";
-        stock.forEach(item => {
-            table.innerHTML += `
-                <tr>
-                    <td>${item.blanket_model}</td>
-                    <td>${item.quantity}</td>
-                    <td>
-                        <button class="btn" onclick="editStock(${item.id}, ${item.quantity})">Edit</button>
-                        <button class="btn cancel" onclick="deleteStock(${item.id})">Delete</button>
-                    </td>
-                </tr>`;
-        });
-    } catch (err) { console.error("Seller Stock Error:", err); }
+    const res = await fetch(`${SELLER_URL}/stock/${seller_id}`);
+    const stock = await res.json();
+    const table = document.getElementById("seller-stock-table");
+    table.innerHTML = "<tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>";
+    stock.forEach(item => {
+        table.innerHTML += `
+            <tr>
+                <td>${item.blanket_model}</td>
+                <td>${item.quantity}</td>
+                <td>
+                    <button class="btn" onclick="editStock(${item.id}, ${item.quantity})">Edit</button>
+                    <button class="btn cancel" onclick="deleteStock(${item.id})">Delete</button>
+                </td>
+            </tr>`;
+    });
 }
 
 async function addSellerStock() {
-    if (!seller_id) return alert("Seller ID missing. Login again.");
     const blanket_model = document.getElementById('add-model').value;
     const quantity = parseInt(document.getElementById('add-qty').value);
-    try {
-        const res = await fetch(`${SELLER_URL}/stock`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ seller_id, blanket_model, quantity })
-        });
-        const data = await res.json();
-        alert(data.msg);
-        hideAddStockPopup();
-        loadSellerStock();
-    } catch (err) { console.error("Add Seller Stock Error:", err); }
+    await fetch(`${SELLER_URL}/stock`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seller_id, blanket_model, quantity })
+    });
+    hideAddStockPopup();
+    loadSellerStock();
 }
 
 async function editStock(stock_id, current_qty) {
@@ -123,18 +114,15 @@ async function autoLoadLowStock() {
 
 async function loadLowStock() {
     if (!seller_id) return;
-    try {
-        const res = await fetch(`${SELLER_URL}/check-low-stock/${seller_id}`);
-        const data = await res.json();
-        const listDiv = document.getElementById('low-stock-list');
-        listDiv.innerHTML = data.low_stock.length === 0 ?
-            "<p>No low stock items.</p>" :
-            data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
-    } catch (err) { console.error("Low Stock Error:", err); }
+    const res = await fetch(`${SELLER_URL}/check-low-stock/${seller_id}`);
+    const data = await res.json();
+    const listDiv = document.getElementById('low-stock-list');
+    listDiv.innerHTML = data.low_stock.length === 0 ?
+        "<p>No low stock items.</p>" :
+        data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
 }
 
 async function sendStockRequest() {
-    if (!seller_id) return;
     const distributor_id = parseInt(document.getElementById('distributor-id').value);
     const blanket_model = document.getElementById('request-model').value;
     const quantity = parseInt(document.getElementById('request-qty').value);
@@ -146,7 +134,7 @@ async function sendStockRequest() {
     document.getElementById('request-msg').innerText = "Request sent!";
 }
 
-// ---------------- DISTRIBUTOR FUNCTIONS ---------------- //
+// ---------------- DISTRIBUTOR ---------------- //
 async function loadDistributorStock() {
     if (!distributor_id) return;
     const res = await fetch(`${DISTRIBUTOR_URL}/stock/${distributor_id}`);
@@ -158,24 +146,21 @@ async function loadDistributorStock() {
     });
 }
 
-async function addDistributorStock() {
-    const blanket_model = document.getElementById('add-model').value;
-    const quantity = parseInt(document.getElementById('add-qty').value);
-    await fetch(`${DISTRIBUTOR_URL}/stock`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ distributor_id, blanket_model, quantity })
-    });
-    hideAddStockPopup();
-    loadDistributorStock();
-}
-
 async function loadPendingRequests() {
     const res = await fetch(`${DISTRIBUTOR_URL}/pending-requests/${distributor_id}`);
     const data = await res.json();
     const div = document.getElementById("pending-requests");
     div.innerHTML = data.length === 0 ? "<p>No pending requests.</p>" :
         data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Seller ${r.seller_id})</p>`).join('');
+}
+
+async function loadDistributorLowStock() {
+    const res = await fetch(`${DISTRIBUTOR_URL}/check-low-stock/${distributor_id}`);
+    const data = await res.json();
+    const div = document.getElementById("distributor-low-stock");
+    div.innerHTML = data.low_stock.length === 0 ?
+        "<p>No low stock items.</p>" :
+        data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
 }
 
 async function sendManufacturerRequest() {
@@ -189,7 +174,7 @@ async function sendManufacturerRequest() {
     document.getElementById('request-msg').innerText = "Request sent!";
 }
 
-// ---------------- MANUFACTURER FUNCTIONS ---------------- //
+// ---------------- MANUFACTURER ---------------- //
 async function loadManufacturerStock() {
     if (!manufacturer_id) return;
     const res = await fetch(`${MANUFACTURER_URL}/stock/${manufacturer_id}`);
@@ -201,29 +186,12 @@ async function loadManufacturerStock() {
     });
 }
 
-async function addManufacturerStock() {
-    const blanket_model = document.getElementById('add-model').value;
-    const quantity = parseInt(document.getElementById('add-qty').value);
-    await fetch(`${MANUFACTURER_URL}/stock`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ manufacturer_id, blanket_model, quantity })
-    });
-    hideAddStockPopup();
-    loadManufacturerStock();
-}
-
 async function loadDistributorRequests() {
     const res = await fetch(`${MANUFACTURER_URL}/distributor-requests/${manufacturer_id}`);
     const data = await res.json();
     const div = document.getElementById("distributor-requests");
     div.innerHTML = data.length === 0 ? "<p>No distributor requests.</p>" :
         data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Distributor ${r.distributor_id})</p>`).join('');
-}
-
-async function autoLoadLowStockAlerts() {
-    await loadLowStockAlerts();
-    setInterval(loadLowStockAlerts, 10000);
 }
 
 async function loadLowStockAlerts() {
@@ -235,13 +203,53 @@ async function loadLowStockAlerts() {
         data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
 }
 
-// ✅ Logout Function
+// ---------------- ADMIN ---------------- //
+async function registerUser() {
+    const username = document.getElementById('new-username').value;
+    const password = document.getElementById('new-password').value;
+    const role = document.getElementById('new-role').value;
+    const res = await fetch(`${AUTH_URL}/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ username, password, role })
+    });
+    const data = await res.json();
+    document.getElementById('register-msg').innerText = data.msg;
+    loadAllUsers();
+}
+
+async function deleteUser() {
+    const username = document.getElementById('delete-username').value;
+    const res = await fetch(`${AUTH_URL}/delete_user`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ username })
+    });
+    const data = await res.json();
+    document.getElementById('delete-msg').innerText = data.msg;
+    loadAllUsers();
+}
+
+async function loadAllUsers() {
+    const res = await fetch(`${AUTH_URL}/all_users`);
+    const users = await res.json();
+    const list = document.getElementById('user-list');
+    list.innerHTML = users.map(u => `<p>${u.username} | ${u.role}</p>`).join('');
+}
+
+//  Logout
 function logout() {
     localStorage.clear();
     window.location.href = "index.html";
 }
 
-// ✅ Run on Dashboard Load
+//  Dashboard Loader
 document.addEventListener("DOMContentLoaded", () => {
     showWelcome();
     if (window.location.pathname.includes("seller.html")) {
@@ -250,9 +258,14 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (window.location.pathname.includes("distributor.html")) {
         loadDistributorStock();
         loadPendingRequests();
+        loadDistributorLowStock();
+        setInterval(loadDistributorLowStock, 10000);
     } else if (window.location.pathname.includes("manufacturer.html")) {
         loadManufacturerStock();
         loadDistributorRequests();
-        autoLoadLowStockAlerts();
+        loadLowStockAlerts();
+        setInterval(loadLowStockAlerts, 10000);
+    } else if (window.location.pathname.includes("admin.html")) {
+        loadAllUsers();
     }
 });
