@@ -42,7 +42,9 @@
                 <h2 class="tab-header">Request More Stock</h2>
                 <input type="text" id="request-model" placeholder="Enter Blanket Model">
                 <input type="number" id="request-qty" placeholder="Enter Quantity">
-                <input type="number" id="distributor-id" placeholder="Distributor ID">
+               <select id="distributor-select">
+                <option value="">Select Distributor</option>
+                </select>
                 <button class="btn popup" onclick="sendStockRequest()">Send Request</button>
                 <p id="request-msg"></p>
             </div>
@@ -70,4 +72,5 @@
     </script>
 </body>
 </html>
+
 
