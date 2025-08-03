@@ -15,14 +15,29 @@ body {
     color: var(--dark-blue);
 }
 
-/* Top Header - Dashboard Title + Logo */
+/* Top Header - 50% height reduced */
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--dark-blue);
     color: var(--white);
-    padding: 12px 20px;
+    padding: 6px 20px; /* 50% less height */
+}
+
+/* Welcome Header - 50% height reduced */
+.header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--medium-blue);
+    color: var(--white);
+    padding: 4px 20px; /* 50% less height */
+}
+
+#welcome-msg {
+    font-size: 14px;
+    font-weight: bold;
 }
 
 /* Logo */
@@ -33,29 +48,14 @@ body {
     border-radius: 8px;
 }
 
-/* Welcome Header with Logout */
-.header-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--medium-blue);
-    color: var(--white);
-    padding: 8px 20px;
-}
-
-#welcome-msg {
-    font-size: 16px;
-    font-weight: bold;
-}
-
 /* Logout Button */
 .logout-btn {
     background-color: red;
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 4px 10px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     transition: background 0.3s ease;
 }
@@ -100,8 +100,8 @@ body {
 .add-stock-btn {
     background: var(--blue);
     font-size: 12px;
-    padding: 6px 10px;
-    margin-top: 0;
+    padding: 5px 8px;
+    margin: 0;
 }
 
 /* Low Stock aligned top */
@@ -110,7 +110,7 @@ body {
     border-radius: 8px;
     padding: 15px;
     flex: 1;
-    margin-bottom: 15px; /* Small gap to Request More Stock */
+    margin-bottom: 12px; /* Small gap to Request More Stock */
 }
 
 /* Request Section */
@@ -121,8 +121,9 @@ body {
     flex: 1;
 }
 
-/* Stylish Modern Inputs */
-.request-section input {
+/* Stylish Modern Inputs for Request + Add Stock Popup */
+.request-section input,
+.popup-form input {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
@@ -135,13 +136,15 @@ body {
     transition: border-color 0.3s ease;
 }
 
-.request-section input::placeholder {
+.request-section input::placeholder,
+.popup-form input::placeholder {
     color: var(--blue);
     opacity: 0.7;
     font-style: italic;
 }
 
-.request-section input:focus {
+.request-section input:focus,
+.popup-form input:focus {
     border-bottom: 2px solid var(--dark-blue);
 }
 
@@ -176,7 +179,6 @@ th, td {
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
-    margin-top: 10px;
     transition: transform 0.2s;
 }
 
