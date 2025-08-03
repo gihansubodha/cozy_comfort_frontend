@@ -81,7 +81,6 @@ input, button {
   background: #f44336;
 }
 
-/* Color Palette */
 :root {
     --dark-blue: #011f4b;
     --medium-blue: #b2cbde;
@@ -90,6 +89,16 @@ input, button {
     --pale-blue: #d8e1e8;
     --white: #ffffff;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    line-height: 1.5;
+    font-size: 16px;
+}
+
 
 body {
     font-family: Arial, sans-serif;
@@ -100,11 +109,12 @@ body {
 }
 
 .header {
-    position: relative;
-    text-align: center;
-    background-color: var(--medium-blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--dark-blue);
     color: var(--white);
-    padding: 15px;
+    padding: 10px 20px;
 }
 
 .banner-img {
@@ -116,16 +126,17 @@ body {
 
 .logout-btn {
     position: fixed;
-    bottom: 30px;       
-    right: 30px;       
+    bottom: 30px;
+    right: 30px;
     background-color: red;
     color: white;
     border: none;
-    padding: 10px 16px;
-    border-radius: 50px;  
+    padding: 6px 12px;
+    border-radius: 6px; /* Not too rounded */
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-    z-index: 999;    
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
 }
 
 .dashboard {
@@ -134,12 +145,15 @@ body {
     gap: 20px;
 }
 
-.left-panel, .right-panel {
-    background: var(--white);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+.left-panel h2,
+.right-panel h2 {
+    background: var(--medium-blue); /* Tab color */
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
 }
+
 
 .left-panel {
     flex: 1;
@@ -226,7 +240,7 @@ th, td {
 
 #welcome-msg {
     font-size: 14px;
-    color: var(--pale-blue);
+    color: var(--white);
     margin: 0;
 }
 
@@ -241,4 +255,5 @@ th, td {
     width: auto;
     border-radius: 8px;
 }
+
 
