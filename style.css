@@ -40,8 +40,8 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--medium-blue);
-    color: var(--dark-blu);
+    background-color: var(--pale-blue);
+    color: var(--dark-blue);
     padding: 4px 16px;
 }
 
@@ -228,6 +228,7 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
 
