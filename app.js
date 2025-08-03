@@ -350,11 +350,44 @@ async function deleteUser() {
 }
 
 async function loadAllUsers() {
-    const res = await fetch(`${AUTH_URL}/all_users`);
-    const users = await res.json();
-    const list = document.getElementById('user-list');
-    list.innerHTML = users.map(u => `<p>${u.username} | ${u.role}</p>`).join('');
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`${AUTH_API}/all_users`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            console.error("Error loading users:", err);
+            throw new Error(err.msg || "Failed to load users");
+        }
+
+        const data = await response.json();
+        const users = data.users;
+
+        const usersTable = document.getElementById("usersTableBody");
+        usersTable.innerHTML = "";
+
+        users.forEach(user => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${user.username}</td>
+                <td>${user.role}</td>
+                <td><button class="deleteUserBtn" data-username="${user.username}">Delete</button></td>
+            `;
+            usersTable.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("loadAllUsers failed:", error);
+    }
 }
+
 
 // ✅ Logout
 function logout() {
@@ -408,3 +441,4 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
