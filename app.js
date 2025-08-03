@@ -350,53 +350,41 @@ async function deleteUser() {
 }
 
 async function loadAllUsers() {
-    const token = localStorage.getItem("token");
-    if (!token) {
-        alert("Missing token. Please login again.");
-        return;
+  const token = localStorage.getItem("token");
+  const usersTable = document.getElementById("usersTableBody");
+  usersTable.innerHTML = ""; // Clear table first
+
+  try {
+    const response = await fetch(`${AUTH_API}/all_users`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.users) {
+      data.users.forEach(user => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${user.username}</td>
+          <td>${user.role}</td>
+          <td>
+            <button class="btn cancel" onclick="deleteUserFromTable('${user.username}')">Delete</button>
+          </td>
+        `;
+
+        usersTable.appendChild(row);
+      });
+    } else {
+      usersTable.innerHTML = `<tr><td colspan="3">Failed to load users</td></tr>`;
     }
-
-    try {
-        const response = await fetch(`${AUTH_URL}/all_users`, {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            const errData = await response.json();
-            console.error("Error loading users:", errData);
-            alert("Unauthorized access or token expired. Please login again.");
-            return;
-        }
-
-        const data = await response.json();
-        const users = data.users;
-
-        if (!Array.isArray(users)) {
-            console.error("Invalid users data:", data);
-            return;
-        }
-
-        const usersTable = document.getElementById("usersTableBody");
-        usersTable.innerHTML = "";
-
-        users.forEach(user => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${user.username}</td>
-                <td>${user.role}</td>
-                <td><button class="deleteUserBtn" data-username="${user.username}">Delete</button></td>
-            `;
-            usersTable.appendChild(row);
-        });
-
-    } catch (error) {
-        console.error("loadAllUsers failed:", error);
-        alert("Failed to load users.");
-    }
+  } catch (err) {
+    console.error("loadAllUsers failed:", err);
+    usersTable.innerHTML = `<tr><td colspan="3">Error loading users</td></tr>`;
+  }
 }
 
 // ✅ Logout
@@ -451,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
