@@ -4,6 +4,34 @@ const SELLER_URL = "https://seller-service-viqu.onrender.com";
 const DISTRIBUTOR_URL = "https://distributor-service-smne.onrender.com";
 const MANUFACTURER_URL = "https://manufacturer-api-ez0s.onrender.com";
 
+// ✅ Dashboard Loader
+document.addEventListener("DOMContentLoaded", () => {
+    showWelcome();
+
+    if (window.location.pathname.includes("seller.html")) {
+        loadSellerStock();
+        autoLoadLowStock();
+        loadDistributors(); // ✅ Load distributors for dropdown
+
+    } else if (window.location.pathname.includes("distributor.html")) {
+        loadDistributorStock();
+        loadPendingRequests();
+        loadDistributorLowStock();
+        loadDistributorRequestHistory(); // ✅ Load history on distributor dashboard
+        setInterval(loadDistributorLowStock, 10000);
+
+    } else if (window.location.pathname.includes("manufacturer.html")) {
+        loadManufacturerStock();
+        autoLoadLowStockAlerts();
+        loadDistributorRequests();
+        loadDistributorRequestHistory(); // ✅ Load history on manufacturer dashboard
+
+    } else if (window.location.pathname.includes("admin.html")) {
+        loadAllUsers();
+    }
+});
+
+
 // ✅ Dynamic IDs
 const seller_id = localStorage.getItem('seller_id');
 const distributor_id = localStorage.getItem('distributor_id');
@@ -630,6 +658,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
