@@ -60,7 +60,7 @@ function showWelcome() {
     const role = localStorage.getItem('role');
     const msg = document.getElementById('welcome-msg');
     if (msg && username && role) {
-        msg.innerText = `Welcome, ${username} | ${role}`;
+        msg.innerText = `Welcome, ${username} | Roll : ${role}`;
     }
 }
 
@@ -223,4 +223,5 @@ document.addEventListener("DOMContentLoaded", () => {
         autoLoadLowStock();
     }
 });
+
 
