@@ -14,7 +14,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--secondary);
-  background: url('images/background.jpg') no-repeat center center fixed;
+  background: url('images/bluebackground.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -314,3 +314,4 @@ td:last-child {
 .request-item p {
   margin: 4px 0;
 }
+
