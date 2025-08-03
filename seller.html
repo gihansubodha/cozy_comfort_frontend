@@ -10,23 +10,25 @@
     <!-- Top Header for Dashboard Title -->
     <header class="header-top">
         <h1>Seller Dashboard</h1>
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
     </header>
 
-    <!-- Second Header for Welcome Message + Logo -->
+    <!-- Second Header for Welcome Message + Logout -->
     <header class="header-bottom">
         <p id="welcome-msg">Welcome!</p>
-        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
     <div class="dashboard">
         <!-- Left: Stock Table -->
         <div class="left-panel">
-            <h2>Your Stock</h2>
+            <div class="panel-header">
+                <h2>Your Stock</h2>
+                <button class="btn add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
+            </div>
             <div class="scrollable-table">
                 <table id="seller-stock-table"></table>
             </div>
-            <button class="btn popup" onclick="showAddStockPopup()">+ Add Stock</button>
         </div>
 
         <!-- Right: Low Stock + Request Form -->
@@ -38,8 +40,8 @@
 
             <div class="request-section">
                 <h2>Request More Stock</h2>
-                <input type="text" id="request-model" placeholder="Blanket Model">
-                <input type="number" id="request-qty" placeholder="Quantity">
+                <input type="text" id="request-model" placeholder="Enter Blanket Model">
+                <input type="number" id="request-qty" placeholder="Enter Quantity">
                 <input type="number" id="distributor-id" placeholder="Distributor ID">
                 <button class="btn popup" onclick="sendStockRequest()">Send Request</button>
                 <p id="request-msg"></p>
