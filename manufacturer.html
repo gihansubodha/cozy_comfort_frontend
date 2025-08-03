@@ -28,7 +28,7 @@
             </div>
             <div class="scrollable-table">
                 <table id="manufacturer-stock-table">
-                    <tr><th>Model</th><th>Quantity</th></tr>
+                    <tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>
                 </table>
             </div>
         </div>
@@ -43,6 +43,11 @@
             <div class="request-section">
                 <h2 class="tab-header">Low Stock Alerts</h2>
                 <div id="low-stock-alerts">Checking...</div>
+            </div>
+
+            <div class="history-section">
+                <h2 class="tab-header">Distributor Request History</h2>
+                <div id="distributor-request-history">Loading...</div>
             </div>
         </div>
     </div>
@@ -65,6 +70,7 @@
             loadManufacturerStock();
             autoLoadLowStockAlerts();
             loadDistributorRequests();
+            loadDistributorRequestHistory();
         });
     </script>
 </body>
