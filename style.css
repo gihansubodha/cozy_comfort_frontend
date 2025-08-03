@@ -4,7 +4,6 @@
     --sky-blue: #70cbff;
     --light-blue: #6497b1;
     --white: #ffffff;
-     
 }
 
 /* Faded Background Image */
@@ -22,10 +21,11 @@ body::before {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background-color: rgba(255,255,255,0.7); /* Faded overlay */
+    background-color: rgba(255,255,255,0.7);
     z-index: -1;
 }
 
+/* Top Header */
 .header-top {
     display: flex;
     justify-content: space-between;
@@ -35,6 +35,7 @@ body::before {
     padding: 4px 16px;
 }
 
+/* Second Header */
 .header-bottom {
     display: flex;
     justify-content: space-between;
@@ -91,14 +92,14 @@ body::before {
 
 /* Scrollable Stock Table */
 .scrollable-table {
-    max-height: 500px; /* Increased further */
+    max-height: 500px;
     overflow-y: auto;
     border: 1px solid var(--light-blue);
     border-radius: 6px;
     background: var(--white);
 }
 
-/* Panel Header with blue background */
+/* Panel Header */
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -122,7 +123,7 @@ body::before {
     cursor: pointer;
 }
 
-/* Low Stock and Request Headers - Blue Tab Style */
+/* Low Stock and Request Tabs */
 .tab-header {
     background: #ff9b57;
     color: var(--white);
@@ -175,7 +176,7 @@ body::before {
     border-bottom: 2px solid var(--dark-blue);
 }
 
-/* Table with vertical separators and centered text */
+/* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -218,25 +219,30 @@ th:last-child, td:last-child {
     left: 50%;
     transform: translate(-50%, -50%);
     background: var(--white);
-    padding: 20px;
+    padding: 0;
     display: none;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    width: 300px;
+}
+
+/* ✅ Popup Header with Blue Bar */
+.popup-form h3 {
+    background: var(--blue);
+    color: var(--white);
+    margin: 0;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 16px;
+    text-align: center;
 }
 
 .popup-form.active {
     display: block;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+.popup-form input {
+    padding: 12px;
+    margin: 12px;
+}
