@@ -5,7 +5,7 @@
     --white: #ffffff;
     --header-bg: #101f30;
     --delete-btn: #9e342c;
-    --edit-btn: #829CBA;
+    --edit-btn: #101f30;
 }
 
 /* Faded Background Image */
@@ -50,7 +50,7 @@ body::before {
 #welcome-msg {
     font-size: 14px;
     font-weight: bold;
-    color: var(--secondary);
+    color: var(--white);
 }
 
 /* Logo */
@@ -118,8 +118,8 @@ body::before {
 
 /* Add Stock Button */
 .add-stock-btn {
-    background: var(--white);
-    color: var(--secondary);
+    background: var(--edit-btn);
+    color: var(--white);
     font-weight: bold;
     font-size: 14px;
     padding: 4px 10px;
