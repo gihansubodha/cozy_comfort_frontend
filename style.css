@@ -150,7 +150,7 @@ body::before {
     flex: 1;
 }
 
-/* ✅ Modern Inputs for Request + Add Stock Popup */
+/*  Modern Inputs for Request + Add Stock Popup */
 .request-section input,
 .popup-form input,
 .admin-section input,
@@ -273,6 +273,7 @@ th:last-child, td:last-child {
 
 /*  Admin Select Styling */
 .admin-section select {
-    color: var(--dark-blue);
+    color: #67080C;
     background: transparent;
 }
+
