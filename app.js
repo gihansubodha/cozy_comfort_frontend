@@ -81,7 +81,7 @@ async function loadSellerStock() {
 async function addSellerStock() {
     const blanket_model = document.getElementById('add-model').value.trim();
     const quantity = parseInt(document.getElementById('add-qty').value);
-    
+
     if (!seller_id) {
         alert("Seller ID missing. Please log in again.");
         return;
@@ -175,7 +175,11 @@ async function sendStockRequest() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ seller_id, distributor_id, blanket_model, quantity })
     });
-    document.getElementById('request-msg').innerText = "Request sent!";
+
+    document.getElementById('request-msg').innerText = "Stock request saved to database!";
+    document.getElementById('request-model').value = "";
+    document.getElementById('request-qty').value = "";
+    document.getElementById('distributor-select').value = "";
 }
 
 // ---------------- DISTRIBUTOR ---------------- //
@@ -184,10 +188,35 @@ async function loadDistributorStock() {
     const res = await fetch(`${DISTRIBUTOR_URL}/stock/${distributor_id}`);
     const stock = await res.json();
     const table = document.getElementById("distributor-stock-table");
-    table.innerHTML = "<tr><th>Model</th><th>Quantity</th></tr>";
+    table.innerHTML = "<tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>";
     stock.forEach(item => {
-        table.innerHTML += `<tr><td>${item.blanket_model}</td><td>${item.quantity}</td></tr>`;
+        table.innerHTML += `
+            <tr>
+                <td>${item.blanket_model}</td>
+                <td>${item.quantity}</td>
+                <td>
+                    <button class="btn" onclick="editDistributorStock(${item.id}, ${item.quantity})">Edit</button>
+                    <button class="btn cancel" onclick="deleteDistributorStock(${item.id})">Delete</button>
+                </td>
+            </tr>`;
     });
+}
+
+async function editDistributorStock(stock_id, current_qty) {
+    const new_qty = prompt("Enter new quantity:", current_qty);
+    if (!new_qty) return;
+    await fetch(`${DISTRIBUTOR_URL}/stock/${stock_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: parseInt(new_qty) })
+    });
+    loadDistributorStock();
+}
+
+async function deleteDistributorStock(stock_id) {
+    if (!confirm("Are you sure?")) return;
+    await fetch(`${DISTRIBUTOR_URL}/stock/${stock_id}`, { method: "DELETE" });
+    loadDistributorStock();
 }
 
 async function addDistributorStock() {
@@ -229,7 +258,24 @@ async function loadPendingRequests() {
     const data = await res.json();
     const div = document.getElementById("pending-requests");
     div.innerHTML = data.length === 0 ? "<p>No pending requests.</p>" :
-        data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Seller ${r.seller_id})</p>`).join('');
+        data.map(r => `
+            <p>
+                ${r.blanket_model} - ${r.quantity} (Seller: ${r.seller_name || r.seller_id}) 
+                [Status: ${r.status || 'Pending'}]
+                <button onclick="updateRequestStatus(${r.id}, 'Completed')">Complete</button>
+                <button onclick="updateRequestStatus(${r.id}, 'Denied')">Deny</button>
+                <button onclick="updateRequestStatus(${r.id}, 'Pending')">Pending</button>
+            </p>
+        `).join('');
+}
+
+async function updateRequestStatus(request_id, status) {
+    await fetch(`${DISTRIBUTOR_URL}/seller-requests/${request_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
+    });
+    loadPendingRequests();
 }
 
 async function loadDistributorLowStock() {
@@ -255,7 +301,10 @@ async function sendManufacturerRequest() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ distributor_id, blanket_model, quantity })
     });
-    document.getElementById('request-msg').innerText = "Request sent!";
+
+    document.getElementById('request-msg').innerText = "Stock request saved to database!";
+    document.getElementById('request-model').value = "";
+    document.getElementById('request-qty').value = "";
 }
 
 // ---------------- MANUFACTURER ---------------- //
@@ -437,7 +486,8 @@ function showAddStockPopup() {
     if (modelInput) modelInput.value = '';
     if (qtyInput) qtyInput.value = '';
 
-    if (window.location.pathname.includes("seller.html")) {
+    if (window.location.pathname.includes("seller.html"))
+ {
         modelInput.placeholder = "Enter Blanket Model";
     } else if (window.location.pathname.includes("distributor.html")) {
         modelInput.placeholder = "Enter Stock Model";
@@ -471,6 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
