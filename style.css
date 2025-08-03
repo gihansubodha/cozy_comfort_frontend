@@ -140,7 +140,7 @@ body {
 .popup-form input::placeholder {
     color: var(--blue);
     opacity: 0.7;
-    font-style: italic;
+    
 }
 
 .request-section input:focus,
@@ -206,3 +206,4 @@ th, td {
 .popup-form.active {
     display: block;
 }
+
