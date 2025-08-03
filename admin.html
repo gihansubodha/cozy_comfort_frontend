@@ -25,17 +25,18 @@
       <div class="panel-header">
         <h2>Register New User</h2>
       </div>
-      <input type="text" id="new-username" placeholder="Enter Username">
-      <input type="password" id="new-password" placeholder="Enter Password">
-      <select id="new-role">
+     <input type="text" id="new-username" placeholder="Enter Username">
+    <input type="password" id="new-password" placeholder="Enter Password">
+    <select id="new-role">
+        <option value="">Select Role</option>
         <option value="seller">Seller</option>
         <option value="distributor">Distributor</option>
         <option value="manufacturer">Manufacturer</option>
         <option value="admin">Admin</option>
-      </select>
-      <button class="btn" onclick="registerUser()">Register</button>
-      <p id="register-msg"></p>
-    </div>
+    </select>
+    <button class="btn" onclick="registerUser()">Add User</button>
+    <p id="register-msg"></p>
+  </div>
 
     <!-- Right: Manage Users -->
     <div class="right-panel">
@@ -62,3 +63,4 @@
   </script>
 </body>
 </html>
+
