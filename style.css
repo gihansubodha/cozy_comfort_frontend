@@ -228,7 +228,7 @@ th, td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--medium-blue);
+    background-color: var(304674);
     color: var(--white);
     padding: 10px 20px;
 }
@@ -255,5 +255,6 @@ th, td {
     width: auto;
     border-radius: 8px;
 }
+
 
 
