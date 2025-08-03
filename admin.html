@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Cozy Comfort</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Header -->
+  <header class="header-top">
+    <h1>Admin Dashboard</h1>
+    <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
+  </header>
+
+  <!-- Second Header -->
+  <header class="header-bottom">
+    <p id="welcome-msg">Welcome!</p>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <div class="dashboard">
+    <!-- Left: Register User -->
+    <div class="left-panel">
+      <div class="panel-header">
+        <h2>Register New User</h2>
+      </div>
+      <input type="text" id="new-username" placeholder="Enter Username">
+      <input type="password" id="new-password" placeholder="Enter Password">
+      <select id="new-role">
+        <option value="seller">Seller</option>
+        <option value="distributor">Distributor</option>
+        <option value="manufacturer">Manufacturer</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button class="btn" onclick="registerUser()">Register</button>
+      <p id="register-msg"></p>
+    </div>
+
+    <!-- Right: Manage Users -->
+    <div class="right-panel">
+      <div class="panel-header">
+        <h2>Delete User</h2>
+      </div>
+      <input type="text" id="delete-username" placeholder="Enter Username to Delete">
+      <button class="btn cancel" onclick="deleteUser()">Delete</button>
+      <p id="delete-msg"></p>
+
+      <div class="low-stock-section" style="margin-top:20px;">
+        <h2 class="tab-header">All Users</h2>
+        <div id="user-list">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      showWelcome();
+      loadAllUsers();
+    });
+  </script>
+</body>
+</html>
