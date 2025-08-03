@@ -27,9 +27,7 @@
                 <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
             </div>
             <div class="scrollable-table">
-                <table id="distributor-stock-table">
-                    <tr><th>Model</th><th>Quantity</th></tr>
-                </table>
+                <table id="distributor-stock-table"></table>
             </div>
         </div>
 
@@ -41,7 +39,7 @@
             </div>
 
             <div class="request-section">
-                <h2 class="tab-header">Send Request to Manufacturer</h2>
+                <h2 class="tab-header">Send to Manufacturer</h2>
                 <input type="text" id="request-model" placeholder="Enter Blanket Model">
                 <input type="number" id="request-qty" placeholder="Enter Quantity">
                 <button class="btn popup" onclick="sendManufacturerRequest()">Send Request</button>
@@ -68,7 +66,6 @@
             loadDistributorStock();
             loadPendingRequests();
             loadDistributorLowStock();
-            setInterval(loadDistributorLowStock, 10000); // Auto refresh low stock
         });
     </script>
 </body>
