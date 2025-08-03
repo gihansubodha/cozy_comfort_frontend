@@ -4,15 +4,15 @@ const SELLER_URL = "https://seller-service-viqu.onrender.com";
 const DISTRIBUTOR_URL = "https://distributor-service-abc.onrender.com";
 const MANUFACTURER_URL = "https://manufacturer-service-xyz.onrender.com";
 
-//  Dynamic IDs
+// ✅ Dynamic IDs
 const seller_id = localStorage.getItem('seller_id');
 const distributor_id = localStorage.getItem('distributor_id');
 const manufacturer_id = localStorage.getItem('manufacturer_id');
 
-//  Login Function
+// ✅ Login Function
 async function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     try {
         const res = await fetch(`${AUTH_URL}/login`, {
@@ -50,7 +50,7 @@ async function login() {
     }
 }
 
-//  Welcome Message
+// ✅ Welcome Message
 function showWelcome() {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
@@ -79,15 +79,37 @@ async function loadSellerStock() {
 }
 
 async function addSellerStock() {
-    const blanket_model = document.getElementById('add-model').value;
+    const blanket_model = document.getElementById('add-model').value.trim();
     const quantity = parseInt(document.getElementById('add-qty').value);
-    await fetch(`${SELLER_URL}/stock`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seller_id, blanket_model, quantity })
-    });
-    hideAddStockPopup();
-    loadSellerStock();
+    
+    if (!seller_id) {
+        alert("Seller ID missing. Please log in again.");
+        return;
+    }
+    if (!blanket_model || isNaN(quantity) || quantity < 0) {
+        alert("Please enter a valid model and quantity.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${SELLER_URL}/stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ seller_id: parseInt(seller_id), blanket_model, quantity })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            alert(data.msg || "Stock item added!");
+            hideAddStockPopup();
+            loadSellerStock();
+        } else {
+            alert("Failed to add stock: " + (data.msg || "Unknown error"));
+        }
+    } catch (err) {
+        console.error("Add Seller Stock Error:", err);
+        alert("Server error while adding stock.");
+    }
 }
 
 async function editStock(stock_id, current_qty) {
@@ -124,8 +146,14 @@ async function loadLowStock() {
 
 async function sendStockRequest() {
     const distributor_id = parseInt(document.getElementById('distributor-id').value);
-    const blanket_model = document.getElementById('request-model').value;
+    const blanket_model = document.getElementById('request-model').value.trim();
     const quantity = parseInt(document.getElementById('request-qty').value);
+
+    if (!blanket_model || isNaN(quantity) || quantity <= 0) {
+        alert("Enter valid request details.");
+        return;
+    }
+
     await fetch(`${SELLER_URL}/request-stock`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,6 +174,40 @@ async function loadDistributorStock() {
     });
 }
 
+async function addDistributorStock() {
+    const blanket_model = document.getElementById('add-model').value.trim();
+    const quantity = parseInt(document.getElementById('add-qty').value);
+
+    if (!distributor_id) {
+        alert("Distributor ID missing. Please log in again.");
+        return;
+    }
+    if (!blanket_model || isNaN(quantity) || quantity < 0) {
+        alert("Please enter a valid model and quantity.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${DISTRIBUTOR_URL}/stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ distributor_id: parseInt(distributor_id), blanket_model, quantity })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            alert(data.msg || "Distributor stock item added!");
+            hideAddStockPopup();
+            loadDistributorStock();
+        } else {
+            alert("Failed to add stock: " + (data.msg || "Unknown error"));
+        }
+    } catch (err) {
+        console.error("Add Distributor Stock Error:", err);
+        alert("Server error while adding distributor stock.");
+    }
+}
+
 async function loadPendingRequests() {
     const res = await fetch(`${DISTRIBUTOR_URL}/pending-requests/${distributor_id}`);
     const data = await res.json();
@@ -164,8 +226,14 @@ async function loadDistributorLowStock() {
 }
 
 async function sendManufacturerRequest() {
-    const blanket_model = document.getElementById('request-model').value;
+    const blanket_model = document.getElementById('request-model').value.trim();
     const quantity = parseInt(document.getElementById('request-qty').value);
+
+    if (!blanket_model || isNaN(quantity) || quantity <= 0) {
+        alert("Enter valid request details.");
+        return;
+    }
+
     await fetch(`${DISTRIBUTOR_URL}/request-manufacturer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -184,6 +252,40 @@ async function loadManufacturerStock() {
     stock.forEach(item => {
         table.innerHTML += `<tr><td>${item.blanket_model}</td><td>${item.quantity}</td></tr>`;
     });
+}
+
+async function addManufacturerStock() {
+    const blanket_model = document.getElementById('add-model').value.trim();
+    const quantity = parseInt(document.getElementById('add-qty').value);
+
+    if (!manufacturer_id) {
+        alert("Manufacturer ID missing. Please log in again.");
+        return;
+    }
+    if (!blanket_model || isNaN(quantity) || quantity < 0) {
+        alert("Please enter a valid model and quantity.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/stock`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ manufacturer_id: parseInt(manufacturer_id), blanket_model, quantity })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            alert(data.msg || "Manufacturer stock item added!");
+            hideAddStockPopup();
+            loadManufacturerStock();
+        } else {
+            alert("Failed to add stock: " + (data.msg || "Unknown error"));
+        }
+    } catch (err) {
+        console.error("Add Manufacturer Stock Error:", err);
+        alert("Server error while adding manufacturer stock.");
+    }
 }
 
 async function loadDistributorRequests() {
@@ -205,9 +307,15 @@ async function loadLowStockAlerts() {
 
 // ---------------- ADMIN ---------------- //
 async function registerUser() {
-    const username = document.getElementById('new-username').value;
-    const password = document.getElementById('new-password').value;
-    const role = document.getElementById('new-role').value;
+    const username = document.getElementById('new-username').value.trim();
+    const password = document.getElementById('new-password').value.trim();
+    const role = document.getElementById('new-role').value.trim();
+
+    if (!username || !password || !role) {
+        alert("Please fill all fields.");
+        return;
+    }
+
     const res = await fetch(`${AUTH_URL}/register`, {
         method: "POST",
         headers: {
@@ -222,7 +330,12 @@ async function registerUser() {
 }
 
 async function deleteUser() {
-    const username = document.getElementById('delete-username').value;
+    const username = document.getElementById('delete-username').value.trim();
+    if (!username) {
+        alert("Enter a username to delete.");
+        return;
+    }
+
     const res = await fetch(`${AUTH_URL}/delete_user`, {
         method: "DELETE",
         headers: {
@@ -243,13 +356,39 @@ async function loadAllUsers() {
     list.innerHTML = users.map(u => `<p>${u.username} | ${u.role}</p>`).join('');
 }
 
-//  Logout
+// ✅ Logout
 function logout() {
     localStorage.clear();
     window.location.href = "index.html";
 }
 
-//  Dashboard Loader
+// ✅ Universal Add Stock Popups (Seller / Distributor / Manufacturer)
+function showAddStockPopup() {
+    const popup = document.getElementById('popup-form');
+    popup.classList.add('active');
+
+    // ✅ Clear previous values every time popup opens
+    const modelInput = document.getElementById('add-model');
+    const qtyInput = document.getElementById('add-qty');
+    if (modelInput) modelInput.value = '';
+    if (qtyInput) qtyInput.value = '';
+
+    // ✅ Dynamic placeholder based on dashboard
+    if (window.location.pathname.includes("seller.html")) {
+        modelInput.placeholder = "Enter Blanket Model";
+    } else if (window.location.pathname.includes("distributor.html")) {
+        modelInput.placeholder = "Enter Stock Model";
+    } else if (window.location.pathname.includes("manufacturer.html")) {
+        modelInput.placeholder = "Enter Production Model";
+    }
+}
+
+function hideAddStockPopup() {
+    document.getElementById('popup-form').classList.remove('active');
+}
+
+
+// ✅ Dashboard Loader
 document.addEventListener("DOMContentLoaded", () => {
     showWelcome();
     if (window.location.pathname.includes("seller.html")) {
