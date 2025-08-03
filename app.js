@@ -355,7 +355,7 @@ async function loadAllUsers() {
   usersTable.innerHTML = ""; // Clear table first
 
   try {
-    const response = await fetch(`${AUTH_API}/all_users`, {
+    const response = await fetch(`${AUTH_URL}/all_users`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -392,7 +392,7 @@ async function deleteUserFromTable(username) {
   if (!confirm(`Are you sure you want to delete user "${username}"?`)) return;
 
   try {
-    const response = await fetch(`${AUTH_API}/delete_user`, {
+    const response = await fetch(`${AUTH_URL}/delete_user`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -467,6 +467,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
