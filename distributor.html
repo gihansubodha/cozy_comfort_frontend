@@ -29,6 +29,12 @@
             <div class="scrollable-table">
                 <table id="distributor-stock-table"></table>
             </div>
+
+            <!-- ✅ Low Stock Section -->
+            <div class="low-stock-section">
+                <h2 class="tab-header">Low Stock Alerts</h2>
+                <div id="distributor-low-stock">Checking...</div>
+            </div>
         </div>
 
         <!-- Right: Pending Seller Requests -->
@@ -65,7 +71,8 @@
             showWelcome();
             loadDistributorStock();
             loadPendingRequests();
-            loadDistributorLowStock();
+            loadDistributorLowStock(); // ✅ Auto load low stock alerts
+            setInterval(loadDistributorLowStock, 10000); // ✅ Refresh every 10s like other dashboards
         });
     </script>
 </body>
