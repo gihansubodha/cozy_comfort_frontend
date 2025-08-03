@@ -225,7 +225,7 @@ async function addDistributorStock() {
 }
 
 async function loadPendingRequests() {
-    const res = await fetch(`${DISTRIBUTOR_URL}/pending-requests/${distributor_id}`);
+    const res = await fetch(`${DISTRIBUTOR_URL}/seller-requests/${distributor_id}`);
     const data = await res.json();
     const div = document.getElementById("pending-requests");
     div.innerHTML = data.length === 0 ? "<p>No pending requests.</p>" :
@@ -261,7 +261,7 @@ async function sendManufacturerRequest() {
 // ---------------- MANUFACTURER ---------------- //
 async function loadManufacturerStock() {
     if (!manufacturer_id) return;
-    const res = await fetch(`${MANUFACTURER_URL}/stock/${manufacturer_id}`);
+    const res = await fetch(`${MANUFACTURER_URL}/blankets`);
     const stock = await res.json();
     const table = document.getElementById("manufacturer-stock-table");
     table.innerHTML = "<tr><th>Model</th><th>Quantity</th></tr>";
@@ -305,7 +305,7 @@ async function addManufacturerStock() {
 }
 
 async function loadDistributorRequests() {
-    const res = await fetch(`${MANUFACTURER_URL}/distributor-requests/${manufacturer_id}`);
+    const res = await fetch(`${MANUFACTURER_URL}/distributor-requests`);
     const data = await res.json();
     const div = document.getElementById("distributor-requests");
     div.innerHTML = data.length === 0 ? "<p>No distributor requests.</p>" :
@@ -313,7 +313,7 @@ async function loadDistributorRequests() {
 }
 
 async function loadLowStockAlerts() {
-    const res = await fetch(`${MANUFACTURER_URL}/check-low-stock/${manufacturer_id}`);
+    const res = await fetch(`${MANUFACTURER_URL}/check-low-stock`);
     const data = await res.json();
     const div = document.getElementById("low-stock-alerts");
     div.innerHTML = data.low_stock.length === 0 ?
@@ -459,3 +459,4 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
