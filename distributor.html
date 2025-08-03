@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributor Dashboard - Cozy Comfort</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="header-top">
+        <h1>Distributor Dashboard</h1>
+        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
+    </header>
+
+    <!-- Welcome Header -->
+    <header class="header-bottom">
+        <p id="welcome-msg">Welcome!</p>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <div class="dashboard">
+        <!-- Left: Distributor Stock -->
+        <div class="left-panel">
+            <div class="panel-header">
+                <h2>Your Stock</h2>
+                <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
+            </div>
+            <div class="scrollable-table">
+                <table id="distributor-stock-table"></table>
+            </div>
+        </div>
+
+        <!-- Right: Pending Seller Requests -->
+        <div class="right-panel">
+            <div class="low-stock-section">
+                <h2 class="tab-header">Pending Stock Requests</h2>
+                <div id="pending-requests">Loading...</div>
+            </div>
+
+            <div class="request-section">
+                <h2 class="tab-header">Send to Manufacturer</h2>
+                <input type="text" id="request-model" placeholder="Enter Blanket Model">
+                <input type="number" id="request-qty" placeholder="Enter Quantity">
+                <button class="btn popup" onclick="sendManufacturerRequest()">Send Request</button>
+                <p id="request-msg"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Stock Popup -->
+    <div id="popup-form" class="popup-form">
+        <h3>Add Stock</h3>
+        <div class="popup-content">
+            <input type="text" id="add-model" placeholder="Enter Blanket Model">
+            <input type="number" id="add-qty" placeholder="Enter Quantity">
+            <button class="btn" onclick="addDistributorStock()">Save</button>
+            <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            showWelcome();
+            loadDistributorStock();
+            loadPendingRequests();
+        });
+    </script>
+</body>
+</html>

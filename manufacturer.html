@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturer Dashboard - Cozy Comfort</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="header-top">
+        <h1>Manufacturer Dashboard</h1>
+        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
+    </header>
+
+    <!-- Welcome Header -->
+    <header class="header-bottom">
+        <p id="welcome-msg">Welcome!</p>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <div class="dashboard">
+        <!-- Left: Manufacturer Stock -->
+        <div class="left-panel">
+            <div class="panel-header">
+                <h2>Blanket Models</h2>
+                <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Model</button>
+            </div>
+            <div class="scrollable-table">
+                <table id="manufacturer-stock-table"></table>
+            </div>
+        </div>
+
+        <!-- Right: Distributor Requests + Alerts -->
+        <div class="right-panel">
+            <div class="low-stock-section">
+                <h2 class="tab-header">Distributor Requests</h2>
+                <div id="distributor-requests">Loading...</div>
+            </div>
+
+            <div class="request-section">
+                <h2 class="tab-header">Low Stock Alerts</h2>
+                <div id="low-stock-alerts">Checking...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Model Popup -->
+    <div id="popup-form" class="popup-form">
+        <h3>Add Blanket Model</h3>
+        <div class="popup-content">
+            <input type="text" id="add-model" placeholder="Enter Blanket Model">
+            <input type="number" id="add-qty" placeholder="Initial Quantity">
+            <button class="btn" onclick="addManufacturerStock()">Save</button>
+            <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            showWelcome();
+            loadManufacturerStock();
+            autoLoadLowStockAlerts();
+            loadDistributorRequests();
+        });
+    </script>
+</body>
+</html>
