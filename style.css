@@ -41,7 +41,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #a65721;
+    background-color: #ff9b57;
     color: var(--dark-blue);
     padding: 4px 16px;
 }
@@ -126,7 +126,7 @@ body::before {
 
 /* Low Stock and Request Headers - Blue Tab Style */
 .tab-header {
-    background: var(--cream);
+    background: #ff9b57;
     color: var(--white);
     padding: 8px 12px;
     border-radius: 6px;
@@ -229,6 +229,7 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
 
