@@ -3,7 +3,7 @@
     --medium-blue: #99daff;
     --blue: #70cbff;
     --light-blue: #6497b1;
-    --pale-blue: #b3cde0;
+    --pale-blue: #e2f6f8;
     --white: #ffffff;
     --cream: #ff9b57
 }
@@ -228,6 +228,7 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
 
