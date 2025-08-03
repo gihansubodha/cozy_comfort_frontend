@@ -1,104 +1,11 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #fff;
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
-
-header {
-  text-align: center;
-  padding: 10px;
-  background: #f7f7f7;
-}
-
-.banner-img {
-  max-width: 100%;
-  border-radius: 10px;
-}
-
-h1, h2 {
-  margin: 10px 0;
-}
-
-.login-container, .stock-section, .request-section {
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 400px;
-  background: #fefefe;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-input, button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.btn {
-  background: #4CAF50;
-  color: white;
-  cursor: pointer;
-  border: none;
-  transition: transform 0.2s ease-in-out;
-}
-
-.btn:hover {
-  transform: scale(1.05);
-}
-
-.popup {
-  animation: pop 0.3s ease-in-out;
-}
-
-@keyframes pop {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.popup-form {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  display: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.popup-form.active {
-  display: block;
-  animation: pop 0.3s ease-in-out;
-}
-
-.cancel {
-  background: #f44336;
-}
-
 :root {
     --dark-blue: #011f4b;
-    --medium-blue: #b2cbde;
+    --medium-blue: #03396c;
     --blue: #005b96;
     --light-blue: #6497b1;
-    --pale-blue: #d8e1e8;
+    --pale-blue: #b3cde0;
     --white: #ffffff;
 }
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    line-height: 1.5;
-    font-size: 16px;
-}
-
 
 body {
     font-family: Arial, sans-serif;
@@ -108,155 +15,140 @@ body {
     color: var(--dark-blue);
 }
 
-.header {
+/* Top Header - Dashboard Title */
+.header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--dark-blue);
     color: var(--white);
-    padding: 10px 20px;
+    padding: 12px 20px;
 }
 
-.banner-img {
-    max-height: 150px;
-    width: 100%;
-    object-fit: cover;
-    border-bottom: 3px solid var(--blue);
+/* Welcome Header */
+.header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--medium-blue);
+    color: var(--white);
+    padding: 8px 20px;
 }
 
+#welcome-msg {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Logo Fixed Size */
+.logo-img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Logout Button */
 .logout-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
     background-color: red;
     color: white;
     border: none;
     padding: 6px 12px;
-    border-radius: 6px; /* Not too rounded */
-    cursor: pointer;
+    border-radius: 6px;
     font-size: 14px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 999;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Dashboard Layout */
 .dashboard {
     display: flex;
     margin: 20px;
     gap: 20px;
 }
 
+/* Panels */
+.left-panel, .right-panel {
+    background: var(--white);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Make both sides equal width */
+.left-panel, .right-panel {
+    flex: 1;
+}
+
+/* Scrollable Stock Table */
+.scrollable-table {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--light-blue);
+    border-radius: 6px;
+    padding: 5px;
+    background: var(--pale-blue);
+}
+
+/* Low Stock aligned top */
+.low-stock-section {
+    background: var(--pale-blue);
+    border-radius: 8px;
+    padding: 15px;
+    flex: 1;
+}
+
+/* Request Section aligned width */
+.request-section {
+    background: var(--pale-blue);
+    border-radius: 8px;
+    padding: 15px;
+    flex: 1;
+}
+
+/* Headings inside panels */
 .left-panel h2,
-.right-panel h2 {
-    background: var(--medium-blue); /* Tab color */
+.low-stock-section h2,
+.request-section h2 {
+    background: var(--blue);
     color: var(--white);
     padding: 8px 12px;
     border-radius: 6px;
+    margin-top: 0;
     margin-bottom: 10px;
 }
 
-
-.left-panel {
-    flex: 1;
-}
-
-.right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.low-stock-section, .request-section {
-    flex: 1;
-    background: var(--pale-blue);
-    padding: 15px;
-    border-radius: 8px;
-}
-
-h1, h2 {
-    margin: 10px 0;
-}
-
+/* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
 th, td {
     padding: 8px;
     border-bottom: 1px solid var(--light-blue);
-    text-align: left;
 }
 
+/* Buttons */
 .btn {
     background: var(--blue);
     color: var(--white);
-    cursor: pointer;
     border: none;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 8px 12px;
     border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
     transition: transform 0.2s;
 }
 
-    .btn:hover {
-        transform: scale(1.05);
-    }
-
-.popup-form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--white);
-    padding: 20px;
-    display: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.btn:hover {
+    transform: scale(1.05);
 }
-
-    .popup-form.active {
-        display: block;
-    }
 
 .cancel {
     background: #f44336;
 }
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(304674);
-    color: var(--white);
-    padding: 10px 20px;
-}
-
-.header-left {
-    display: flex;
-    flex-direction: column;
-}
-
-#welcome-msg {
-    font-size: 14px;
-    color: var(--white);
-    margin: 0;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo-img {
-    height: 50px;
-    width: auto;
-    border-radius: 8px;
-}
-
-
-
-
-
