@@ -7,12 +7,23 @@
     --white: #ffffff;
 }
 
+/* Faded Background Image */
 body {
     font-family: Arial, sans-serif;
-    background-color: var(--pale-blue);
     margin: 0;
     padding: 0;
     color: var(--dark-blue);
+    background: url('images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(255,255,255,0.7); /* Faded overlay */
+    z-index: -1;
 }
 
 .header-top {
@@ -78,13 +89,12 @@ body {
     flex: 1;
 }
 
-/* Increased height for Your Stock scroll */
+/* Scrollable Stock Table */
 .scrollable-table {
-    max-height: 450px; /* Increased to use more space */
+    max-height: 500px; /* Increased further */
     overflow-y: auto;
     border: 1px solid var(--light-blue);
     border-radius: 6px;
-    padding: 5px;
     background: var(--pale-blue);
 }
 
@@ -112,6 +122,16 @@ body {
     cursor: pointer;
 }
 
+/* Low Stock and Request Headers - Blue Tab Style */
+.tab-header {
+    background: var(--blue);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
 /* Low Stock Section */
 .low-stock-section {
     background: var(--pale-blue);
@@ -129,7 +149,7 @@ body {
     flex: 1;
 }
 
-/* Modern Inputs (no italic) */
+/* Inputs */
 .request-section input,
 .popup-form input {
     width: 100%;
@@ -165,7 +185,7 @@ th, td {
     padding: 8px;
     border-bottom: 1px solid var(--light-blue);
     border-right: 1px solid var(--light-blue);
-    text-align: center; /* Center alignment */
+    text-align: center;
 }
 
 th:last-child, td:last-child {
@@ -191,6 +211,7 @@ th:last-child, td:last-child {
     background: #f44336;
 }
 
+/* Popup Styling */
 .popup-form {
     position: fixed;
     top: 50%;
@@ -206,5 +227,3 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
-
-
