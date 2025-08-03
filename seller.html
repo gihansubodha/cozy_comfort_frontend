@@ -10,21 +10,21 @@
     <!-- Top Header for Dashboard Title -->
     <header class="header-top">
         <h1>Seller Dashboard</h1>
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
     </header>
 
     <!-- Second Header for Welcome Message + Logo -->
     <header class="header-bottom">
         <p id="welcome-msg">Welcome!</p>
-        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
-    </header>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+            </header>
 
     <div class="dashboard">
         <!-- Left: Stock Table -->
         <div class="left-panel">
             <div class="panel-header">
                 <h2>Your Stock</h2>
-                <button class="btn add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
+                <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
             </div>
             <div class="scrollable-table">
                 <table id="seller-stock-table"></table>
