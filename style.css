@@ -93,8 +93,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--white);
-    color: var(--blue);
+    background: var(--blue);
+    color: var(--white);
     padding: 8px 12px;
     border-radius: 6px;
     margin-bottom: 10px;
@@ -206,4 +206,5 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
