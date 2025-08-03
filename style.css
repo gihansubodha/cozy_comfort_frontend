@@ -276,4 +276,15 @@ th:last-child, td:last-child {
     color: #67080C;
     background: transparent;
 }
+.request-item {
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    background: #f9f9f9;
+}
+.request-item p {
+    margin: 4px 0;
+}
+
 
