@@ -13,7 +13,7 @@
         <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
     </header>
 
-    <!-- Second Header for Welcome Message + Logo -->
+    <!-- Second Header for Welcome Message + Logout -->
     <header class="header-bottom">
         <p id="welcome-msg">Welcome!</p>
         <button class="logout-btn" onclick="logout()">Logout</button>
@@ -34,13 +34,12 @@
         <!-- Right: Low Stock + Request Form -->
         <div class="right-panel">
             <div class="low-stock-section">
-                <div class="panel-header">
-                <h2>Low Stock Items</h2>
+                <h2 class="tab-header">Low Stock Items</h2>
                 <div id="low-stock-list">Loading...</div>
             </div>
 
             <div class="request-section">
-                <h2>Request More Stock</h2>
+                <h2 class="tab-header">Request More Stock</h2>
                 <input type="text" id="request-model" placeholder="Enter Blanket Model">
                 <input type="number" id="request-qty" placeholder="Enter Quantity">
                 <input type="number" id="distributor-id" placeholder="Distributor ID">
@@ -69,5 +68,3 @@
     </script>
 </body>
 </html>
-
-
