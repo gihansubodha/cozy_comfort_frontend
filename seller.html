@@ -7,21 +7,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="header">
-        <div class="header-left">
-            <h1>Seller Dashboard</h1>
-            <p id="welcome-msg">Welcome!</p>
-        </div>
-        <div class="header-right">
-            <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
-        </div>
+    <!-- Top Header for Dashboard Title -->
+    <header class="header-top">
+        <h1>Seller Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
-    <button class="logout-btn" onclick="logout()">Logout</button>
+
+    <!-- Second Header for Welcome Message + Logo -->
+    <header class="header-bottom">
+        <p id="welcome-msg">Welcome!</p>
+        <img src="images/logo.png" alt="Cozy Comfort Logo" class="logo-img">
+    </header>
+
     <div class="dashboard">
         <!-- Left: Stock Table -->
         <div class="left-panel">
             <h2>Your Stock</h2>
-            <table id="seller-stock-table"></table>
+            <div class="scrollable-table">
+                <table id="seller-stock-table"></table>
+            </div>
             <button class="btn popup" onclick="showAddStockPopup()">+ Add Stock</button>
         </div>
 
@@ -55,10 +59,10 @@
     <script src="app.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            showWelcome();
             loadSellerStock();
             autoLoadLowStock();
         });
     </script>
 </body>
 </html>
-
