@@ -351,6 +351,10 @@ async function deleteUser() {
 
 async function loadAllUsers() {
     const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Missing token. Please login again.");
+        return;
+    }
 
     try {
         const response = await fetch(`${AUTH_URL}/all_users`, {
@@ -361,23 +365,25 @@ async function loadAllUsers() {
             }
         });
 
-        const data = await response.json();
-
         if (!response.ok) {
-            console.error("Error loading users:", data);
+            const errData = await response.json();
+            console.error("Error loading users:", errData);
             alert("Unauthorized access or token expired. Please login again.");
             return;
         }
 
-        if (!data.users || !Array.isArray(data.users)) {
-            console.error("Invalid response format:", data);
+        const data = await response.json();
+        const users = data.users;
+
+        if (!Array.isArray(users)) {
+            console.error("Invalid users data:", data);
             return;
         }
 
         const usersTable = document.getElementById("usersTableBody");
         usersTable.innerHTML = "";
 
-        data.users.forEach(user => {
+        users.forEach(user => {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${user.username}</td>
@@ -389,10 +395,9 @@ async function loadAllUsers() {
 
     } catch (error) {
         console.error("loadAllUsers failed:", error);
+        alert("Failed to load users.");
     }
 }
-
-
 
 // ✅ Logout
 function logout() {
@@ -446,6 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
