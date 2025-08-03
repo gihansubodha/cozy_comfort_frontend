@@ -1,8 +1,8 @@
 :root {
-    --dark-blue: #4b281e;
-    --blue: #c4a99b;
-    --sky-blue: #c4a99b;
-    --light-blue: #ede7e1;
+    --dark-blue: #829CBA;
+    --blue: #000000;
+    --sky-blue: #000000;
+    --light-blue: #EFE9E8;
     --white: #ffffff;
 }
 
@@ -40,7 +40,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ede7e1;
+    background-color: #EFE9E8;
     color: var(--dark-blue);
     padding: 4px 16px;
 }
@@ -71,7 +71,7 @@ body::before {
 }
 
 .logout-btn:hover {
-    background-color: #c4a99b;
+    background-color: #000000;
 }
 
 /* Dashboard Layout */
@@ -125,7 +125,7 @@ body::before {
 
 /* Low Stock and Request Tabs */
 .tab-header {
-    background: #c4a99b;
+    background: #000000;
     color: var(--white);
     padding: 8px 12px;
     border-radius: 6px;
@@ -135,7 +135,7 @@ body::before {
 
 /* Low Stock Section */
 .low-stock-section {
-    background: #ede7e1;
+    background: #EFE9E8;
     border-radius: 8px;
     padding: 15px;
     flex: 1;
@@ -144,7 +144,7 @@ body::before {
 
 /* Request Section */
 .request-section {
-    background: #ede7e1;
+    background: #EFE9E8;
     border-radius: 8px;
     padding: 15px;
     flex: 1;
@@ -214,7 +214,7 @@ th:last-child, td:last-child {
 }
 
 .cancel {
-    background: #ede7e1;
+    background: #EFE9E8;
 }
 
 /* Popup Styling */
@@ -254,7 +254,7 @@ th:last-child, td:last-child {
 
 /*  Admin Add User Section */
 .admin-section {
-    background: #ede7e1;
+    background: #EFE9E8;
     border-radius: 8px;
     padding: 15px;
     max-width: 400px;
@@ -263,7 +263,7 @@ th:last-child, td:last-child {
 }
 
 .admin-section h2 {
-    background: #c4a99b;
+    background: #000000;
     color: var(--white);
     padding: 8px 12px;
     border-radius: 6px;
@@ -273,7 +273,7 @@ th:last-child, td:last-child {
 
 /*  Admin Select Styling */
 .admin-section select {
-    color: #4b281e;
+    color: #829CBA;
     background: transparent;
 }
 
