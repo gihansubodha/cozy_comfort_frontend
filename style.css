@@ -1,5 +1,5 @@
 :root {
-    --dark-blue: #011f4b;
+    --dark-blue: #304674;
     --medium-blue: #03396c;
     --blue: #005b96;
     --light-blue: #6497b1;
@@ -227,3 +227,4 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
