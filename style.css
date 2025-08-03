@@ -15,24 +15,23 @@ body {
     color: var(--dark-blue);
 }
 
-/* Top Header - 50% height reduced */
+/* Compact Seller Dashboard Header */
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--dark-blue);
     color: var(--white);
-    padding: 6px 20px; /* 50% less height */
+    padding: 4px 16px; /* Reduced further */
 }
 
-/* Welcome Header - 50% height reduced */
 .header-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--medium-blue);
     color: var(--white);
-    padding: 4px 20px; /* 50% less height */
+    padding: 4px 16px;
 }
 
 #welcome-msg {
@@ -80,9 +79,9 @@ body {
     flex: 1;
 }
 
-/* Scrollable Stock Table */
+/* Increased height for Your Stock scroll */
 .scrollable-table {
-    max-height: 300px;
+    max-height: 450px; /* Increased to use more space */
     overflow-y: auto;
     border: 1px solid var(--light-blue);
     border-radius: 6px;
@@ -90,27 +89,37 @@ body {
     background: var(--pale-blue);
 }
 
-/* Panel Header with Add Stock Button */
+/* Panel Header with blue background */
 .panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.add-stock-btn {
     background: var(--blue);
-    font-size: 12px;
-    padding: 5px 8px;
-    margin: 0;
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
 }
 
-/* Low Stock aligned top */
+/* Add Stock button styled inside header */
+.add-stock-btn {
+    background: var(--white);
+    color: var(--blue);
+    font-weight: bold;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Low Stock Section */
 .low-stock-section {
     background: var(--pale-blue);
     border-radius: 8px;
     padding: 15px;
     flex: 1;
-    margin-bottom: 12px; /* Small gap to Request More Stock */
+    margin-bottom: 12px;
 }
 
 /* Request Section */
@@ -121,7 +130,7 @@ body {
     flex: 1;
 }
 
-/* Stylish Modern Inputs for Request + Add Stock Popup */
+/* Modern Inputs (no italic) */
 .request-section input,
 .popup-form input {
     width: 100%;
@@ -139,8 +148,7 @@ body {
 .request-section input::placeholder,
 .popup-form input::placeholder {
     color: var(--blue);
-    opacity: 0.7;
-    
+    opacity: 0.8;
 }
 
 .request-section input:focus,
@@ -148,19 +156,7 @@ body {
     border-bottom: 2px solid var(--dark-blue);
 }
 
-/* Headings inside panels */
-.left-panel h2,
-.low-stock-section h2,
-.request-section h2 {
-    background: var(--blue);
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-/* Table Styles */
+/* Table with vertical separators and centered text */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -169,6 +165,12 @@ table {
 th, td {
     padding: 8px;
     border-bottom: 1px solid var(--light-blue);
+    border-right: 1px solid var(--light-blue);
+    text-align: center; /* Center alignment */
+}
+
+th:last-child, td:last-child {
+    border-right: none;
 }
 
 /* Buttons */
@@ -206,4 +208,3 @@ th, td {
 .popup-form.active {
     display: block;
 }
-
