@@ -14,118 +14,118 @@
       min-height: 100vh;
     }
     .header-top {
-      width: 100%;
-      text-align: center;
-      background: #829CBA;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #3993ed;
       color: #fff;
-      padding: 32px 0 10px 0;
-      font-size: 2.2rem;
+      padding: 18px 26px 12px 26px;
+      font-size: 1.3rem;
       letter-spacing: 2px;
       font-weight: bold;
-      margin: 0;
+      min-height: 62px;
+      box-sizing: border-box;
     }
-    .header-logo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #829CBA;
-      padding-bottom: 30px;
-      margin-bottom: 0;
+    .header-top .header-title {
+      flex: 1;
+      text-align: left;
     }
-    .header-logo img {
-      width: 140px;
+    .header-top .header-logo {
+      flex-shrink: 0;
+    }
+    .header-top .header-logo img {
+      width: 74px;
       height: auto;
-      margin: 0 auto;
-      display: block;
-      box-shadow: 0 2px 8px #829CBA33;
-      border-radius: 18px;
+      border-radius: 13px;
+      box-shadow: 0 2px 8px #347aeb23;
+      margin-left: 12px;
     }
     .login-container {
-      background: url('images/logo.svg') center/cover no-repeat, #fff;
-      box-shadow: 0 6px 24px rgba(130, 156, 186, 0.12), 0 1.5px 6px rgba(0,0,0,0.08);
-      border-radius: 22px;
+      background: url('images/logo.svg') center/contain no-repeat, #fff;
+      box-shadow: 0 6px 24px rgba(52, 122, 235, 0.12), 0 1.5px 6px rgba(0,0,0,0.08);
+      border-radius: 20px;
       width: 350px;
-      max-width: 96vw;
-      margin: 58px auto 0 auto;
-      padding: 50px 32px 38px 32px;
+      max-width: 94vw;
+      margin: 54px auto 0 auto;
+      padding: 30px 28px 24px 28px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
     }
     .login-container h2 {
-      margin-bottom: 32px;
+      margin-bottom: 20px;
       margin-top: 0;
-      font-size: 1.3rem;
-      color: #829CBA;
-      letter-spacing: 1.2px;
-      text-shadow: 0 1px 1px #fff6;
+      font-size: 1.13rem;
+      color: #3993ed;
       font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 1px #fff7;
     }
     .login-container input {
-      width: 90%;
-      padding: 13px 10px;
-      margin-bottom: 22px;
+      width: 93%;
+      padding: 11px 10px;
+      margin-bottom: 12px;
       border-radius: 8px;
       border: 1px solid #d1e3fa;
-      font-size: 1.05rem;
+      font-size: 1.01rem;
       outline: none;
       transition: border 0.2s;
-      margin-top: 18px;
+      margin-top: 0;
     }
     .login-container input:focus {
-      border: 1.5px solid #829CBA;
+      border: 1.5px solid #3993ed;
       background: #f2f6fa;
     }
     .btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 92%;
-      padding: 14px;
-      background: #829CBA;
+      width: 95%;
+      padding: 11px;
+      background: #3993ed;
       color: #fff;
       border: none;
       border-radius: 7px;
-      font-size: 1.13rem;
+      font-size: 1.09rem;
       font-weight: 500;
       cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 24px;
-      margin-bottom: 8px;
-      gap: 8px;
-      box-shadow: 0 2px 8px #829CBA33;
+      transition: background 0.18s;
+      margin-top: 5px;
+      margin-bottom: 4px;
+      gap: 7px;
+      box-shadow: 0 2px 8px #3993ed22;
     }
     .btn:hover {
-      background: #5a7cb5;
+      background: #2470bb;
     }
     #login-msg {
       color: #e74c3c;
       font-size: 1rem;
-      margin-top: 8px;
+      margin-top: 6px;
       min-height: 20px;
       text-align: center;
     }
-    @media (max-width: 500px) {
-      .login-container { padding: 28px 10px 22px 10px; width: 97vw; }
-      .header-top { font-size: 1.2rem; padding: 22px 0 8px 0; }
-      .header-logo img { width: 95px; }
+    @media (max-width: 550px) {
+      .header-top { font-size: 1rem; padding: 10px 5vw 8px 5vw; min-height: 45px; }
+      .header-top .header-logo img { width: 54px; }
+      .login-container { padding: 18px 6vw 12px 6vw; width: 98vw; }
     }
   </style>
 </head>
 <body>
   <div class="header-top">
-    Cozy Comfort Login
+    <span class="header-title">Cozy Comfort Login</span>
+    <span class="header-logo">
+      <img src="images/cozylogo.png" alt="Cozy Comfort Logo">
+    </span>
   </div>
-  <div class="header-logo">
-    <img src="images/cozylogo.png" alt="Cozy Comfort Logo">
-  </div>
+
   <div class="login-container">
     <h2>Enter Your Credentials</h2>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     <button class="btn" onclick="login()">
-      <!-- Inline login SVG icon -->
       <svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px">
         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M21 12H3"></path>
       </svg>
@@ -136,4 +136,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
