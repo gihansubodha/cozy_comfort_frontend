@@ -2,7 +2,7 @@
 const AUTH_URL = "https://auth-service-okqn.onrender.com";
 const SELLER_URL = "https://seller-service-viqu.onrender.com";
 const DISTRIBUTOR_URL = "https://distributor-service-smne.onrender.com";
-const MANUFACTURER_URL = "https://manufacturer-service-xyz.onrender.com";
+const MANUFACTURER_URL = "https://manufacturer-api-ez0s.onrender.com";
 
 // ✅ Dynamic IDs
 const seller_id = localStorage.getItem('seller_id');
@@ -521,6 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
