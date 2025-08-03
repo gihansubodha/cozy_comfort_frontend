@@ -4,8 +4,8 @@
     --sky-blue: #70cbff;
     --light-blue: #6497b1;
     --white: #ffffff;
-    --cream: #ff9b57
-    --lowcream: #fadcc8
+    --cream: #a65721
+    --low-cream: #fde7d9
     
 }
 
@@ -41,7 +41,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--sky-blue);
+    background-color: var(--low-cream);
     color: var(--dark-blue);
     padding: 4px 16px;
 }
@@ -229,6 +229,7 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
 
