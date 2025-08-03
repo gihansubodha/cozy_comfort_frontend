@@ -189,6 +189,7 @@ async function loadDistributorStock() {
     const stock = await res.json();
     const table = document.getElementById("distributor-stock-table");
     table.innerHTML = "<tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>";
+
     stock.forEach(item => {
         table.innerHTML += `
             <tr>
@@ -253,10 +254,12 @@ async function addDistributorStock() {
     }
 }
 
+// ✅ Load Pending Seller Requests with Actions
 async function loadPendingRequests() {
     const res = await fetch(`${DISTRIBUTOR_URL}/seller-requests/${distributor_id}`);
     const data = await res.json();
     const div = document.getElementById("pending-requests");
+
     div.innerHTML = data.length === 0 ? "<p>No pending requests.</p>" :
         data.map(r => `
             <p>
@@ -269,6 +272,7 @@ async function loadPendingRequests() {
         `).join('');
 }
 
+// ✅ Update Request Status and Refresh
 async function updateRequestStatus(request_id, status) {
     await fetch(`${DISTRIBUTOR_URL}/seller-requests/${request_id}`, {
         method: "PUT",
@@ -276,6 +280,17 @@ async function updateRequestStatus(request_id, status) {
         body: JSON.stringify({ status })
     });
     loadPendingRequests();
+    loadDistributorRequestHistory();
+}
+
+// ✅ Load Distributor Request History (Completed/Denied Requests)
+async function loadDistributorRequestHistory() {
+    const res = await fetch(`${DISTRIBUTOR_URL}/seller-request-history/${distributor_id}`);
+    const data = await res.json();
+    const historyDiv = document.getElementById("request-history");
+
+    historyDiv.innerHTML = data.length === 0 ? "<p>No completed or denied requests.</p>" :
+        data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Seller: ${r.seller_name || r.seller_id}) - <strong>${r.status}</strong></p>`).join('');
 }
 
 async function loadDistributorLowStock() {
@@ -313,9 +328,18 @@ async function loadManufacturerStock() {
         const res = await fetch(`${MANUFACTURER_URL}/blankets`);
         const stock = await res.json();
         const table = document.getElementById("manufacturer-stock-table");
-        table.innerHTML = "<tr><th>Model</th><th>Quantity</th></tr>";
+        table.innerHTML = "<tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>";
+
         stock.forEach(item => {
-            table.innerHTML += `<tr><td>${item.model}</td><td>${item.quantity}</td></tr>`;
+            table.innerHTML += `
+                <tr>
+                    <td>${item.model}</td>
+                    <td>${item.quantity}</td>
+                    <td>
+                        <button class="btn" onclick="editManufacturerStock(${item.id}, ${item.quantity})">Edit</button>
+                        <button class="btn cancel" onclick="deleteManufacturerStock(${item.id})">Delete</button>
+                    </td>
+                </tr>`;
         });
     } catch (err) {
         console.error("Failed to load manufacturer stock:", err);
@@ -352,18 +376,103 @@ async function addManufacturerStock() {
     }
 }
 
+// ✅ Edit Manufacturer Stock
+async function editManufacturerStock(blanket_id, current_qty) {
+    const new_qty = prompt("Enter new quantity:", current_qty);
+    if (!new_qty) return;
+
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/blankets/${blanket_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ quantity: parseInt(new_qty) })
+        });
+        const data = await res.json();
+        alert(data.msg || "Stock updated!");
+        loadManufacturerStock();
+    } catch (err) {
+        console.error("Edit Manufacturer Stock Error:", err);
+        alert("Failed to update stock.");
+    }
+}
+
+// ✅ Delete Manufacturer Stock
+async function deleteManufacturerStock(blanket_id) {
+    if (!confirm("Are you sure you want to delete this model?")) return;
+
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/blankets/${blanket_id}`, { method: "DELETE" });
+        const data = await res.json();
+        alert(data.msg || "Model deleted!");
+        loadManufacturerStock();
+    } catch (err) {
+        console.error("Delete Manufacturer Stock Error:", err);
+        alert("Failed to delete model.");
+    }
+}
+
+// ✅ Load Distributor Requests with Status Dropdown
 async function loadDistributorRequests() {
     try {
         const res = await fetch(`${MANUFACTURER_URL}/distributor-requests`);
         const data = await res.json();
         const div = document.getElementById("distributor-requests");
-        div.innerHTML = data.length === 0 ? "<p>No distributor requests.</p>" :
-            data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Distributor ${r.distributor_id})</p>`).join('');
+
+        if (data.length === 0) {
+            div.innerHTML = "<p>No distributor requests.</p>";
+            return;
+        }
+
+        div.innerHTML = data.map(r => `
+            <div class="request-item">
+                <p><strong>${r.blanket_model}</strong> - ${r.quantity} (Distributor ${r.distributor_id})</p>
+                <select onchange="updateDistributorRequestStatus(${r.id}, this.value)">
+                    <option value="" disabled selected>${r.status || "Pending"}</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Denied">Denied</option>
+                </select>
+            </div>
+        `).join('');
     } catch (err) {
         console.error("Failed to load distributor requests:", err);
     }
 }
 
+// ✅ Update Distributor Request Status and Move to History
+async function updateDistributorRequestStatus(request_id, new_status) {
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/distributor-requests/${request_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: new_status })
+        });
+        const data = await res.json();
+        alert(data.msg || "Status updated!");
+        loadDistributorRequests();
+        loadDistributorRequestHistory();
+    } catch (err) {
+        console.error("Update Distributor Request Status Error:", err);
+        alert("Failed to update request status.");
+    }
+}
+
+// ✅ Load Distributor Request History (Completed/Denied)
+async function loadDistributorRequestHistory() {
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/distributor-request-history`);
+        const data = await res.json();
+        const historyDiv = document.getElementById("distributor-request-history");
+
+        historyDiv.innerHTML = data.length === 0
+            ? "<p>No completed or denied requests.</p>"
+            : data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Distributor ${r.distributor_id}) - <strong>${r.status}</strong></p>`).join('');
+    } catch (err) {
+        console.error("Load Distributor Request History Error:", err);
+    }
+}
+
+// ✅ Low Stock Alerts
 async function loadLowStockAlerts() {
     try {
         const res = await fetch(`${MANUFACTURER_URL}/check-low-stock`);
@@ -521,6 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
