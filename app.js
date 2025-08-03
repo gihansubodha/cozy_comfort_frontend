@@ -1,7 +1,7 @@
 // 🔗 API URLs
 const AUTH_URL = "https://auth-service-okqn.onrender.com";
 const SELLER_URL = "https://seller-service-viqu.onrender.com";
-const DISTRIBUTOR_URL = "https://distributor-service-smne.onrender.com/";
+const DISTRIBUTOR_URL = "https://distributor-service-smne.onrender.com";
 const MANUFACTURER_URL = "https://manufacturer-service-xyz.onrender.com";
 
 // ✅ Dynamic IDs
@@ -471,6 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
 
