@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadDistributorLowStock();
         loadDistributorRequestHistory(); // ✅ Load history on distributor dashboard
         setInterval(loadDistributorLowStock, 10000);
+        setInterval(loadPendingRequests, 10000);
 
     } else if (window.location.pathname.includes("manufacturer.html")) {
         loadManufacturerStock();
@@ -639,27 +640,8 @@ function hideAddStockPopup() {
     document.getElementById('popup-form').classList.remove('active');
 }
 
-// ✅ Dashboard Loader
-document.addEventListener("DOMContentLoaded", () => {
-    showWelcome();
-    if (window.location.pathname.includes("seller.html")) {
-        loadSellerStock();
-        autoLoadLowStock();
-        loadDistributors(); // ✅ Load distributors for dropdown
-    } else if (window.location.pathname.includes("distributor.html")) {
-        loadDistributorStock();
-        loadPendingRequests();
-        loadDistributorLowStock();
-        setInterval(loadDistributorLowStock, 10000);
-    } else if (window.location.pathname.includes("manufacturer.html")) {
-        loadManufacturerStock();
-        loadDistributorRequests();
-        loadLowStockAlerts();
-        setInterval(loadLowStockAlerts, 10000);
-    } else if (window.location.pathname.includes("admin.html")) {
-        loadAllUsers();
-    }
-});
+
+
 
 
 
