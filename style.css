@@ -96,7 +96,7 @@ body::before {
     overflow-y: auto;
     border: 1px solid var(--light-blue);
     border-radius: 6px;
-    background: var(--pale-blue);
+    background: var(--white);
 }
 
 /* Panel Header with blue background */
@@ -228,6 +228,7 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
 
