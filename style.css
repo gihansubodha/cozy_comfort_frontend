@@ -1,10 +1,11 @@
 :root {
-    --dark-blue: #304674;
-    --medium-blue: #98bad5;
-    --blue: #005b96;
+    --dark-blue: #001B3D;
+    --medium-blue: #99daff;
+    --blue: #70cbff;
     --light-blue: #6497b1;
     --pale-blue: #b3cde0;
     --white: #ffffff;
+    --cream: #ff9b57
 }
 
 /* Faded Background Image */
@@ -124,8 +125,8 @@ body::before {
 
 /* Low Stock and Request Headers - Blue Tab Style */
 .tab-header {
-    background: var(--blue);
-    color: var(--white);
+    background: var(--cream);
+    color: var(--dark-blue);
     padding: 8px 12px;
     border-radius: 6px;
     margin-top: 0;
@@ -227,5 +228,6 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
