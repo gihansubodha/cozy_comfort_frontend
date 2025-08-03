@@ -260,34 +260,33 @@ async function sendManufacturerRequest() {
 
 // ---------------- MANUFACTURER ---------------- //
 async function loadManufacturerStock() {
-    if (!manufacturer_id) return;
-    const res = await fetch(`${MANUFACTURER_URL}/blankets`);
-    const stock = await res.json();
-    const table = document.getElementById("manufacturer-stock-table");
-    table.innerHTML = "<tr><th>Model</th><th>Quantity</th></tr>";
-    stock.forEach(item => {
-        table.innerHTML += `<tr><td>${item.blanket_model}</td><td>${item.quantity}</td></tr>`;
-    });
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/blankets`);
+        const stock = await res.json();
+        const table = document.getElementById("manufacturer-stock-table");
+        table.innerHTML = "<tr><th>Model</th><th>Quantity</th></tr>";
+        stock.forEach(item => {
+            table.innerHTML += `<tr><td>${item.model}</td><td>${item.quantity}</td></tr>`;
+        });
+    } catch (err) {
+        console.error("Failed to load manufacturer stock:", err);
+    }
 }
 
 async function addManufacturerStock() {
     const blanket_model = document.getElementById('add-model').value.trim();
     const quantity = parseInt(document.getElementById('add-qty').value);
 
-    if (!manufacturer_id) {
-        alert("Manufacturer ID missing. Please log in again.");
-        return;
-    }
     if (!blanket_model || isNaN(quantity) || quantity < 0) {
         alert("Please enter a valid model and quantity.");
         return;
     }
 
     try {
-        const res = await fetch(`${MANUFACTURER_URL}/stock`, {
+        const res = await fetch(`${MANUFACTURER_URL}/blankets`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ manufacturer_id: parseInt(manufacturer_id), blanket_model, quantity })
+            body: JSON.stringify({ model: blanket_model, material: "Cotton", quantity, production_days: 7 })
         });
         const data = await res.json();
 
@@ -305,20 +304,28 @@ async function addManufacturerStock() {
 }
 
 async function loadDistributorRequests() {
-    const res = await fetch(`${MANUFACTURER_URL}/distributor-requests`);
-    const data = await res.json();
-    const div = document.getElementById("distributor-requests");
-    div.innerHTML = data.length === 0 ? "<p>No distributor requests.</p>" :
-        data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Distributor ${r.distributor_id})</p>`).join('');
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/distributor-requests`);
+        const data = await res.json();
+        const div = document.getElementById("distributor-requests");
+        div.innerHTML = data.length === 0 ? "<p>No distributor requests.</p>" :
+            data.map(r => `<p>${r.blanket_model} - ${r.quantity} (Distributor ${r.distributor_id})</p>`).join('');
+    } catch (err) {
+        console.error("Failed to load distributor requests:", err);
+    }
 }
 
 async function loadLowStockAlerts() {
-    const res = await fetch(`${MANUFACTURER_URL}/check-low-stock`);
-    const data = await res.json();
-    const div = document.getElementById("low-stock-alerts");
-    div.innerHTML = data.low_stock.length === 0 ?
-        "<p>No low stock alerts.</p>" :
-        data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/check-low-stock`);
+        const data = await res.json();
+        const div = document.getElementById("low-stock-alerts");
+        div.innerHTML = data.low_stock.length === 0 ?
+            "<p>No low stock alerts.</p>" :
+            data.low_stock.map(i => `<p><strong>${i.model}</strong> - ${i.quantity} left</p>`).join('');
+    } catch (err) {
+        console.error("Failed to load low stock alerts:", err);
+    }
 }
 
 async function autoLoadLowStockAlerts() {
@@ -464,5 +471,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
+
 
 
