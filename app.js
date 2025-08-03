@@ -144,13 +144,29 @@ async function loadLowStock() {
         data.low_stock.map(i => `<p><strong>${i.blanket_model}</strong> - ${i.quantity} left</p>`).join('');
 }
 
+// ✅ Load Distributor List for Dropdown
+async function loadDistributors() {
+    try {
+        const res = await fetch(`${DISTRIBUTOR_URL}/all`);
+        const distributors = await res.json();
+
+        const select = document.getElementById("distributor-select");
+        select.innerHTML = `<option value="">Select Distributor</option>`;
+        distributors.forEach(d => {
+            select.innerHTML += `<option value="${d.id}">${d.name}</option>`;
+        });
+    } catch (err) {
+        console.error("Failed to load distributors:", err);
+    }
+}
+
 async function sendStockRequest() {
-    const distributor_id = parseInt(document.getElementById('distributor-id').value);
+    const distributor_id = parseInt(document.getElementById('distributor-select').value);
     const blanket_model = document.getElementById('request-model').value.trim();
     const quantity = parseInt(document.getElementById('request-qty').value);
 
-    if (!blanket_model || isNaN(quantity) || quantity <= 0) {
-        alert("Enter valid request details.");
+    if (!distributor_id || !blanket_model || isNaN(quantity) || quantity <= 0) {
+        alert("Select a distributor and enter valid details.");
         return;
     }
 
@@ -329,90 +345,68 @@ async function registerUser() {
     loadAllUsers();
 }
 
-async function deleteUser() {
-    const username = document.getElementById('delete-username').value.trim();
-    if (!username) {
-        alert("Enter a username to delete.");
-        return;
-    }
-
-    const res = await fetch(`${AUTH_URL}/delete_user`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem('token')
-        },
-        body: JSON.stringify({ username })
-    });
-    const data = await res.json();
-    document.getElementById('delete-msg').innerText = data.msg;
-    loadAllUsers();
-}
-
 async function loadAllUsers() {
-  const token = localStorage.getItem("token");
-  const usersTable = document.getElementById("usersTableBody");
-  usersTable.innerHTML = ""; // Clear table first
+    const token = localStorage.getItem("token");
+    const usersTable = document.getElementById("usersTableBody");
+    usersTable.innerHTML = ""; // ✅ Prevent duplicates
 
-  try {
-    const response = await fetch(`${AUTH_URL}/all_users`, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
+    try {
+        const response = await fetch(`${AUTH_URL}/all_users`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (response.ok && data.users) {
-      data.users.forEach(user => {
-        const row = document.createElement("tr");
+        if (response.ok && data.users) {
+            data.users.forEach(user => {
+                const row = document.createElement("tr");
 
-        row.innerHTML = `
-          <td>${user.username}</td>
-          <td>${user.role}</td>
-          <td>
-            <button class="btn cancel" onclick="deleteUserFromTable('${user.username}')">Delete</button>
-          </td>
-        `;
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.role}</td>
+                    <td><button class="btn cancel" onclick="deleteUserFromTable('${user.username}')">Delete</button></td>
+                `;
 
-        usersTable.appendChild(row);
-      });
-    } else {
-      usersTable.innerHTML = `<tr><td colspan="3">Failed to load users</td></tr>`;
+                usersTable.appendChild(row);
+            });
+        } else {
+            usersTable.innerHTML = `<tr><td colspan="3">Failed to load users</td></tr>`;
+        }
+    } catch (err) {
+        console.error("loadAllUsers failed:", err);
+        usersTable.innerHTML = `<tr><td colspan="3">Error loading users</td></tr>`;
     }
-  } catch (err) {
-    console.error("loadAllUsers failed:", err);
-    usersTable.innerHTML = `<tr><td colspan="3">Error loading users</td></tr>`;
-  }
 }
 
 async function deleteUserFromTable(username) {
-  const token = localStorage.getItem("token");
-  if (!confirm(`Are you sure you want to delete user "${username}"?`)) return;
+    const token = localStorage.getItem("token");
+    if (!confirm(`Are you sure you want to delete user "${username}"?`)) return;
 
-  try {
-    const response = await fetch(`${AUTH_URL}/delete_user`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ username })
-    });
+    try {
+        const response = await fetch(`${AUTH_URL}/delete_user`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ username })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (response.ok) {
-      alert(data.message || "User deleted");
-      loadAllUsers(); // Refresh table
-    } else {
-      alert(data.error || "Failed to delete user");
+        if (response.ok) {
+            alert(data.message || "User deleted");
+            loadAllUsers(); // Refresh table
+        } else {
+            alert(data.error || "Failed to delete user");
+        }
+    } catch (error) {
+        console.error("Delete error:", error);
+        alert("Error deleting user");
     }
-  } catch (error) {
-    console.error("Delete error:", error);
-    alert("Error deleting user");
-  }
 }
 
 // ✅ Logout
@@ -421,18 +415,16 @@ function logout() {
     window.location.href = "index.html";
 }
 
-// ✅ Universal Add Stock Popups (Seller / Distributor / Manufacturer)
+// ✅ Universal Add Stock Popups
 function showAddStockPopup() {
     const popup = document.getElementById('popup-form');
     popup.classList.add('active');
 
-    // ✅ Clear previous values every time popup opens
     const modelInput = document.getElementById('add-model');
     const qtyInput = document.getElementById('add-qty');
     if (modelInput) modelInput.value = '';
     if (qtyInput) qtyInput.value = '';
 
-    // ✅ Dynamic placeholder based on dashboard
     if (window.location.pathname.includes("seller.html")) {
         modelInput.placeholder = "Enter Blanket Model";
     } else if (window.location.pathname.includes("distributor.html")) {
@@ -446,13 +438,13 @@ function hideAddStockPopup() {
     document.getElementById('popup-form').classList.remove('active');
 }
 
-
 // ✅ Dashboard Loader
 document.addEventListener("DOMContentLoaded", () => {
     showWelcome();
     if (window.location.pathname.includes("seller.html")) {
         loadSellerStock();
         autoLoadLowStock();
+        loadDistributors(); // ✅ Load distributors for dropdown
     } else if (window.location.pathname.includes("distributor.html")) {
         loadDistributorStock();
         loadPendingRequests();
@@ -467,10 +459,3 @@ document.addEventListener("DOMContentLoaded", () => {
         loadAllUsers();
     }
 });
-
-
-
-
-
-
-
