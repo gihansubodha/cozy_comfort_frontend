@@ -1,7 +1,8 @@
 :root {
     --dark-blue: #001B3D;
     --medium-blue: #99daff;
-    --blue: #70cbff;
+    --blue: #191973;
+    --sky-blue: #70cbff;
     --light-blue: #6497b1;
     --pale-blue: #e2f6f8;
     --white: #ffffff;
@@ -40,7 +41,7 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--pale-blue);
+    background-color: var(--sky-blue);
     color: var(--dark-blue);
     padding: 4px 16px;
 }
@@ -228,6 +229,7 @@ th:last-child, td:last-child {
 .popup-form.active {
     display: block;
 }
+
 
 
 
