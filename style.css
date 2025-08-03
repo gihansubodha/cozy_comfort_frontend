@@ -251,10 +251,11 @@ th, td {
 }
 
 .logo-img {
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: auto;
     border-radius: 8px;
 }
+
 
 
 
