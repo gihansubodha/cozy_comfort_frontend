@@ -19,49 +19,44 @@
     <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
-  <div class="dashboard">
-    <!-- Left: Register User -->
-    <div class="left-panel">
+  <div class="dashboard" style="flex-direction: column;">
+    <!-- Register User Section -->
+    <div class="left-panel" style="margin-bottom:20px;">
       <div class="panel-header">
         <h2>Register New User</h2>
       </div>
-     <input type="text" id="new-username" placeholder="Enter Username">
-    <input type="password" id="new-password" placeholder="Enter Password">
-    <select id="new-role">
+      <input type="text" id="new-username" placeholder="Enter Username">
+      <input type="password" id="new-password" placeholder="Enter Password">
+      <select id="new-role">
         <option value="">Select Role</option>
         <option value="seller">Seller</option>
         <option value="distributor">Distributor</option>
         <option value="manufacturer">Manufacturer</option>
         <option value="admin">Admin</option>
-    </select>
-    <button class="btn" onclick="registerUser()">Add User</button>
-    <p id="register-msg"></p>
-  </div>
+      </select>
+      <button class="btn" onclick="registerUser()">Add User</button>
+      <p id="register-msg"></p>
+    </div>
 
-    <!-- Right: Manage Users -->
+    <!-- All Users Table -->
     <div class="right-panel">
       <div class="panel-header">
-        <h2>Delete User</h2>
+        <h2>All Users</h2>
       </div>
-      <input type="text" id="delete-username" placeholder="Enter Username to Delete">
-      <button class="btn cancel" onclick="deleteUser()">Delete</button>
-      <p id="delete-msg"></p>
-
-<div class="low-stock-section" style="margin-top:20px;">
-  <h2 class="tab-header">All Users</h2>
-  <table id="usersTable">
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="usersTableBody">
-      <!-- Filled dynamically by app.js -->
-    </tbody>
-  </table>
-</div>
+      <table id="usersTable">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <script src="app.js"></script>
   <script>
@@ -72,6 +67,3 @@
   </script>
 </body>
 </html>
-
-
-
