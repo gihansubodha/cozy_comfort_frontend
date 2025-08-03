@@ -16,87 +16,98 @@
     .header-top {
       width: 100%;
       text-align: center;
-      background: #347aeb;
+      background: #829CBA;
       color: #fff;
       padding: 32px 0 10px 0;
       font-size: 2.2rem;
       letter-spacing: 2px;
       font-weight: bold;
+      margin: 0;
     }
     .header-logo {
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #347aeb;
-      padding-bottom: 24px;
+      background: #829CBA;
+      padding-bottom: 30px;
+      margin-bottom: 0;
     }
     .header-logo img {
       width: 140px;
       height: auto;
       margin: 0 auto;
       display: block;
+      box-shadow: 0 2px 8px #829CBA33;
+      border-radius: 18px;
     }
     .login-container {
       background: url('images/logo.svg') center/cover no-repeat, #fff;
-      box-shadow: 0 6px 24px rgba(52, 122, 235, 0.12), 0 1.5px 6px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 24px rgba(130, 156, 186, 0.12), 0 1.5px 6px rgba(0,0,0,0.08);
       border-radius: 22px;
       width: 350px;
       max-width: 96vw;
-      margin: 48px auto 0 auto;
-      padding: 42px 32px 32px 32px;
+      margin: 58px auto 0 auto;
+      padding: 50px 32px 38px 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
     }
     .login-container h2 {
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      margin-top: 0;
       font-size: 1.3rem;
-      color: #347aeb;
+      color: #829CBA;
       letter-spacing: 1.2px;
-      text-shadow: 0 1px 1px #fff4;
+      text-shadow: 0 1px 1px #fff6;
+      font-weight: 600;
     }
     .login-container input {
       width: 90%;
-      padding: 12px 10px;
-      margin-bottom: 18px;
+      padding: 13px 10px;
+      margin-bottom: 22px;
       border-radius: 8px;
       border: 1px solid #d1e3fa;
-      font-size: 1rem;
+      font-size: 1.05rem;
       outline: none;
       transition: border 0.2s;
+      margin-top: 18px;
     }
     .login-container input:focus {
-      border: 1.5px solid #347aeb;
+      border: 1.5px solid #829CBA;
+      background: #f2f6fa;
     }
     .btn {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 92%;
-      padding: 12px;
-      background: #347aeb;
+      padding: 14px;
+      background: #829CBA;
       color: #fff;
       border: none;
       border-radius: 7px;
-      font-size: 1.1rem;
+      font-size: 1.13rem;
       font-weight: 500;
       cursor: pointer;
       transition: background 0.2s;
+      margin-top: 24px;
       margin-bottom: 8px;
       gap: 8px;
+      box-shadow: 0 2px 8px #829CBA33;
     }
     .btn:hover {
-      background: #245db7;
+      background: #5a7cb5;
     }
     #login-msg {
       color: #e74c3c;
       font-size: 1rem;
-      margin-top: 4px;
+      margin-top: 8px;
       min-height: 20px;
+      text-align: center;
     }
     @media (max-width: 500px) {
-      .login-container { padding: 28px 10px; width: 97vw; }
+      .login-container { padding: 28px 10px 22px 10px; width: 97vw; }
       .header-top { font-size: 1.2rem; padding: 22px 0 8px 0; }
       .header-logo img { width: 95px; }
     }
