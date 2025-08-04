@@ -17,10 +17,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #3993ed;
+      /* Gradient background */
+      background: linear-gradient(90deg, #3993ed 0%, #1a4078 100%);
       color: #fff;
-      /* Height increased by 25% from ~62px to ~77px */
-      min-height: 77px;
+      min-height: 130px;  /* Much taller */
       padding: 0 32px 0 26px;
       box-sizing: border-box;
     }
@@ -49,15 +49,15 @@
       border-radius: 20px;
       width: 360px;
       max-width: 95vw;
-      margin: 68px auto 0 auto;
-      padding: 52px 32px 48px 32px; /* Increased padding for height */
+      margin: 95px auto 0 auto;   /* More top margin for visual balance */
+      padding: 85px 32px 55px 32px;  /* Increased height and more padding-top */
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
     }
     .login-container h2 {
-      margin-bottom: 26px;
+      margin-bottom: 45px;
       margin-top: 0;
       font-size: 1.25rem;
       color: #3993ed;
@@ -69,7 +69,7 @@
     .login-container input {
       width: 92%;
       padding: 12px 11px;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
       border-radius: 8px;
       border: 1px solid #d1e3fa;
       font-size: 1.07rem;
@@ -78,10 +78,7 @@
       margin-top: 0;
       font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
     }
-    .login-container input:focus {
-      border: 1.5px solid #3993ed;
-      background: #f2f6fa;
-    }
+    .login-container input:first-of-type { margin-top: 28px; } /* Username lower down */
     .btn {
       display: flex;
       align-items: center;
@@ -97,7 +94,7 @@
       font-weight: 500;
       cursor: pointer;
       transition: background 0.18s;
-      margin-top: 6px;
+      margin-top: 15px;
       margin-bottom: 4px;
       gap: 8px;
       box-shadow: 0 2px 8px #3993ed22;
@@ -113,9 +110,9 @@
       text-align: center;
     }
     @media (max-width: 600px) {
-      .header-top { font-size: 1.13rem; min-height: 52px; padding: 0 4vw 0 4vw;}
+      .header-top { font-size: 1.13rem; min-height: 60px; padding: 0 4vw 0 4vw;}
       .header-logo img { width: 58px; }
-      .login-container { padding: 18px 3vw 12px 3vw; width: 98vw; }
+      .login-container { padding: 18px 3vw 12px 3vw; width: 98vw; margin-top: 28px;}
       .header-title { font-size: 1.18rem; }
     }
   </style>
