@@ -5,6 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Manufacturer Dashboard - Cozy Comfort</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 70% 30%;
+      gap: 18px;
+      align-items: start;
+    }
+    .left-panel {
+
+      min-width: 0;
+    }
+    .right-panel {
+      min-width: 0;
+    }
+
+
+    .right-panel .low-stock-section,
+    .right-panel .history-section {
+      margin-bottom: 14px;
+    }
+    .right-panel .scrollable-table {
+      max-height: 260px;      
+      overflow: auto;
+    }
+
+    .scrollable-table table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;     
+    }
+    .scrollable-table th, .scrollable-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e6eef7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .scrollable-table th {
+      position: sticky;
+      top: 0;
+      background: #f7fbff;
+      z-index: 1;
+    }
+
+    .right-panel .scrollable-table th,
+    .right-panel .scrollable-table td {
+      font-size: 0.95rem;
+    }
+
+    /* Responsive: stack on narrow screens */
+    @media (max-width: 1100px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      .right-panel .scrollable-table {
+        max-height: none;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Top Header -->
@@ -28,16 +88,16 @@
       </div>
       <div class="scrollable-table">
         <table id="manufacturer-stock-table">
-           <tr>
-    <th>Model</th>
-    <th>Model #</th>
-    <th>Material</th>
-    <th>Price</th>
-    <th>Quantity</th>
-    <th>Production Days</th>
-    <th>Min Required</th>
-    <th>Actions</th>
-  </tr>
+          <tr>
+            <th>Model</th>
+            <th>Model #</th>
+            <th>Material</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Production Days</th>
+            <th>Min Required</th>
+            <th>Actions</th>
+          </tr>
         </table>
       </div>
     </div>
@@ -48,7 +108,14 @@
         <h2 class="tab-header">Distributor Requests</h2>
         <div class="scrollable-table">
           <table id="distributor-requests">
-            <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Distributor</th><th>Status</th></tr>
+            <tr>
+              <th>Model</th>
+              <th>Model No.</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Distributor</th>
+              <th>Status</th>
+            </tr>
           </table>
         </div>
       </div>
@@ -62,7 +129,14 @@
         <h2 class="tab-header">Distributor Request History</h2>
         <div class="scrollable-table">
           <table id="distributor-request-history">
-            <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Distributor</th><th>Status</th></tr>
+            <tr>
+              <th>Model</th>
+              <th>Model No.</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Distributor</th>
+              <th>Status</th>
+            </tr>
           </table>
         </div>
       </div>
@@ -70,28 +144,4 @@
   </div>
 
   <!-- Add Model Popup -->
-  <div id="popup-form" class="popup-form">
-    <h3>Add Production Model</h3>
-    <div class="popup-content">
-      <input type="text" id="add-model" placeholder="Enter Model Name" />
-      <input type="text" id="add-model-number" placeholder="Enter Model Number" />
-      <input type="number" id="add-price" placeholder="Enter Price" />
-      <input type="number" id="add-qty" placeholder="Initial Quantity" />
-      <button class="btn" onclick="addManufacturerStock()">Save</button>
-      <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      showWelcome();
-      loadManufacturerStock();
-      autoLoadLowStockAlerts();
-      loadDistributorRequests();
-      loadDistributorRequestHistory();
-    });
-  </script>
-</body>
-</html>
-
+  <div id="p
