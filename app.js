@@ -37,15 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-//  Login Function
+// ✅ Login Function (fixed)
 async function login() {
-  const usernameEl = document.getElementById('username');
-  const passwordEl = document.getElementById('password');
+  const username = document.getElementById('username')?.value.trim() || "";
+  const password = document.getElementById('password')?.value.trim() || "";
+
   const msg = document.getElementById('login-msg');
-
-  const username = (usernameEl?.value || "").trim();
-  const password = (passwordEl?.value || "").trim();
-
   if (!username || !password) {
     if (msg) msg.innerText = "Please enter username and password.";
     return;
@@ -60,38 +57,44 @@ async function login() {
 
     const data = await res.json();
 
-    if (!res.ok) {
+    if (res.ok) {
+      const userRes = await fetch(`${AUTH_URL}/get_user/${username}`);
+      const userData = await userRes.json();
+
+      if (userRes.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+        localStorage.setItem('username', username);
+
+        if (data.role === "seller") localStorage.setItem('seller_id', userData.id);
+        if (data.role === "distributor") localStorage.setItem('distributor_id', userData.id);
+        if (data.role === "manufacturer") localStorage.setItem('manufacturer_id', userData.id);
+      }
+
+      if (data.role === "seller")       window.location.href = "seller.html";
+      else if (data.role === "distributor") window.location.href = "distributor.html";
+      else if (data.role === "manufacturer") window.location.href = "manufacturer.html";
+      else if (data.role === "admin")   window.location.href = "admin.html";
+    } else {
       if (msg) msg.innerText = data.msg || "Login failed.";
-      return;
     }
-
-    // get user id/role details
-    const userRes = await fetch(`${AUTH_URL}/get_user/${encodeURIComponent(username)}`);
-    const userData = await userRes.json();
-
-    // save auth + identity
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('role', data.role);
-    localStorage.setItem('username', username);
-
-    if (data.role === "seller")       localStorage.setItem('seller_id', userData.id);
-    if (data.role === "distributor")  localStorage.setItem('distributor_id', userData.id);
-    if (data.role === "manufacturer") localStorage.setItem('manufacturer_id', userData.id);
-
-    // route by role
-    if (data.role === "seller")        window.location.href = "seller.html";
-    else if (data.role === "distributor") window.location.href = "distributor.html";
-    else if (data.role === "manufacturer") window.location.href = "manufacturer.html";
-    else if (data.role === "admin")      window.location.href = "admin.html";
-    else if (msg) msg.innerText = "Unknown role.";
   } catch (err) {
     console.error("Login Error:", err);
     if (msg) msg.innerText = "Login failed. Check server.";
   }
 }
 
-// make it available for onclick="login()"
+// ✅ Welcome Message (fixed backticks)
+function showWelcome() {
+  const username = localStorage.getItem('username');
+  const role = localStorage.getItem('role');
+  const el = document.getElementById('welcome-msg');
+  if (el && username && role) el.innerText = `Welcome, ${username} | ${role}`;
+}
+
+// ✅ Make sure login() is available for onclick="login()"
 window.login = login;
+
 
 //  Welcome Message
 function showWelcome() {
@@ -651,4 +654,5 @@ function showAddStockPopup() {
 function hideAddStockPopup() {
     document.getElementById('popup-form').classList.remove('active');
 }
+
 
