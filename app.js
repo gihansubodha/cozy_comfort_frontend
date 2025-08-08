@@ -11,6 +11,9 @@ const manufacturer_id = localStorage.getItem('manufacturer_id');
 
 //  Dashboard Loader
 document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('login-btn')?.addEventListener('click', login);
+document.querySelectorAll('.logout-btn')?.forEach(btn => btn.addEventListener('click', logout));
+
   showWelcome();
 
   if (window.location.pathname.includes("seller.html")) {
@@ -715,3 +718,4 @@ Object.assign(window, {
   showAddStockPopup,
   hideAddStockPopup
 });
+
