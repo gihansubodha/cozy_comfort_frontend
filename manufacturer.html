@@ -6,35 +6,31 @@
   <title>Manufacturer Dashboard - Cozy Comfort</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-
+    /* Make left side larger so the stock table isn't squeezed */
     .dashboard {
       display: grid;
-      grid-template-columns: 55% 45%;
+      grid-template-columns: 65% 35%;
       gap: 18px;
       align-items: start;
     }
-    .left-panel {
-
-      min-width: 0;
-    }
+    .left-panel,
     .right-panel {
-      min-width: 0;
+      min-width: 0; /* prevent overflow */
     }
-
 
     .right-panel .low-stock-section,
     .right-panel .history-section {
       margin-bottom: 14px;
     }
     .right-panel .scrollable-table {
-      max-height: 260px;      
+      max-height: 260px;      /* keep right-side lists compact */
       overflow: auto;
     }
 
     .scrollable-table table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed;     
+      table-layout: fixed;     /* avoid huge columns */
     }
     .scrollable-table th, .scrollable-table td {
       padding: 8px 10px;
@@ -55,12 +51,19 @@
       font-size: 0.95rem;
     }
 
+    /* Let the left table be taller on big screens */
+    .left-panel .scrollable-table {
+      max-height: 70vh;
+      overflow: auto;
+    }
+
     /* Responsive: stack on narrow screens */
     @media (max-width: 1100px) {
       .dashboard {
         grid-template-columns: 1fr;
       }
-      .right-panel .scrollable-table {
+      .right-panel .scrollable-table,
+      .left-panel .scrollable-table {
         max-height: none;
       }
     }
@@ -88,14 +91,15 @@
       </div>
       <div class="scrollable-table">
         <table id="manufacturer-stock-table">
+          <!-- App will replace the header, but this mirrors the SQL order you requested -->
           <tr>
-            <th>Name</th>
+            <th>Model</th>
             <th>Model #</th>
             <th>Material</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Lead time</th>
-            <th>Minumum Qty</th>
+            <th>Production Days</th>
+            <th>Min Required</th>
             <th>Actions</th>
           </tr>
         </table>
@@ -122,6 +126,7 @@
 
       <div class="low-stock-section">
         <h2 class="tab-header">Low Stock Alerts</h2>
+        <!-- app.js will inject a small table inside this div -->
         <div id="low-stock-alerts">Checking...</div>
       </div>
 
@@ -144,6 +149,19 @@
   </div>
 
   <!-- Add Model Popup -->
-  <div id="p
+  <div id="popup-form" class="popup-form">
+    <h3>Add Production Model</h3>
+    <div class="popup-content">
+      <input type="text" id="add-model" placeholder="Enter Model Name" />
+      <input type="text" id="add-model-number" placeholder="Enter Model Number (optional)" />
+      <input type="number" id="add-price" placeholder="Enter Price (optional)" step="0.01" />
+      <input type="number" id="add-qty" placeholder="Initial Quantity" />
+      <button class="btn" onclick="addManufacturerStock()">Save</button>
+      <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
+    </div>
+  </div>
 
-
+  <!-- Make sure app.js loads after DOM so onclick handlers exist -->
+  <script src="app.js" defer></script>
+</body>
+</html>
