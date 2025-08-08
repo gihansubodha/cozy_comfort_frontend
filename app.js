@@ -4,21 +4,32 @@ const SELLER_URL = "https://seller-service-viqu.onrender.com";
 const DISTRIBUTOR_URL = "https://distributor-service-smne.onrender.com";
 const MANUFACTURER_URL = "https://manufacturer-api-ez0s.onrender.com";
 
-// 🔑 Dynamic IDs
-const seller_id = localStorage.getItem('seller_id');
-const distributor_id = localStorage.getItem('distributor_id');
-const manufacturer_id = localStorage.getItem('manufacturer_id');
+// 🔑 Always read latest IDs from localStorage
+const getSellerId = () => {
+  const v = localStorage.getItem('seller_id');
+  return v ? parseInt(v, 10) : null;
+};
+const getDistributorId = () => {
+  const v = localStorage.getItem('distributor_id');
+  return v ? parseInt(v, 10) : null;
+};
+const getManufacturerId = () => {
+  const v = localStorage.getItem('manufacturer_id');
+  return v ? parseInt(v, 10) : null;
+};
 
 // 🚀 Dashboard Loader
 document.addEventListener("DOMContentLoaded", () => {
   showWelcome();
 
-  if (window.location.pathname.includes("seller.html")) {
+  const path = window.location.pathname;
+
+  if (path.includes("seller.html")) {
     loadSellerStock();
     autoLoadLowStock();
     loadDistributors();
 
-  } else if (window.location.pathname.includes("distributor.html")) {
+  } else if (path.includes("distributor.html")) {
     loadDistributorStock();
     loadPendingRequests();
     loadDistributorLowStock();
@@ -26,13 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(loadDistributorLowStock, 10000);
     setInterval(loadPendingRequests, 10000);
 
-  } else if (window.location.pathname.includes("manufacturer.html")) {
+  } else if (path.includes("manufacturer.html")) {
     loadManufacturerStock();
     autoLoadLowStockAlerts();
     loadDistributorRequests();
     loadDistributorRequestHistory();
 
-  } else if (window.location.pathname.includes("admin.html")) {
+  } else if (path.includes("admin.html")) {
     loadAllUsers();
   }
 });
@@ -41,14 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
    AUTH
    ===================== */
 
-// 🔐 Login
 async function login() {
   const username = document.getElementById('username')?.value.trim() || "";
   const password = document.getElementById('password')?.value.trim() || "";
 
   if (!username || !password) {
-    const m = document.getElementById('login-msg');
-    if (m) m.innerText = "Please enter username and password.";
+    document.getElementById('login-msg')?.innerText = "Please enter username and password.";
     return;
   }
 
@@ -58,7 +67,6 @@ async function login() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password })
     });
-
     const data = await res.json();
 
     if (res.ok) {
@@ -80,17 +88,14 @@ async function login() {
       else if (data.role === "manufacturer") window.location.href = "manufacturer.html";
       else if (data.role === "admin") window.location.href = "admin.html";
     } else {
-      const m = document.getElementById('login-msg');
-      if (m) m.innerText = data.msg || "Login failed.";
+      document.getElementById('login-msg')?.innerText = data.msg || "Login failed.";
     }
   } catch (err) {
     console.error("Login Error:", err);
-    const m = document.getElementById('login-msg');
-    if (m) m.innerText = "Login failed. Check server.";
+    document.getElementById('login-msg')?.innerText = "Login failed. Check server.";
   }
 }
 
-// 👋 Welcome banner
 function showWelcome() {
   const username = localStorage.getItem('username');
   const role = localStorage.getItem('role');
@@ -103,14 +108,14 @@ function showWelcome() {
    ===================== */
 
 async function loadSellerStock() {
+  const seller_id = getSellerId();
   if (!seller_id) return;
+
   const res = await fetch(`${SELLER_URL}/stock/${seller_id}`);
   const stock = await res.json();
-
   const table = document.getElementById("seller-stock-table");
   if (!table) return;
 
-  // New columns (Model, Model No., Price, Quantity)
   table.innerHTML = `
     <tr>
       <th>Model</th>
@@ -118,13 +123,11 @@ async function loadSellerStock() {
       <th>Price</th>
       <th>Quantity</th>
       <th>Actions</th>
-    </tr>
-  `;
+    </tr>`;
 
   stock.forEach(item => {
     const price = (item.price ?? "") !== "" && !Number.isNaN(Number(item.price))
-      ? Number(item.price).toFixed(2)
-      : "-";
+      ? Number(item.price).toFixed(2) : "-";
     const modelNumber = item.model_number ?? "-";
     table.innerHTML += `
       <tr>
@@ -141,6 +144,7 @@ async function loadSellerStock() {
 }
 
 async function addSellerStock() {
+  const seller_id = getSellerId();
   const blanket_model = document.getElementById('add-model')?.value.trim() || "";
   const model_number = document.getElementById('add-model-number')?.value.trim() || "";
   const priceRaw = document.getElementById('add-price')?.value;
@@ -150,24 +154,19 @@ async function addSellerStock() {
   if (!seller_id) return alert("Seller ID missing. Please log in again.");
   if (!blanket_model || isNaN(quantity) || quantity < 0) return alert("Enter valid details.");
 
-  try {
-    const res = await fetch(`${SELLER_URL}/stock`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ seller_id: parseInt(seller_id), blanket_model, model_number, price, quantity })
-    });
-    const data = await res.json();
+  const res = await fetch(`${SELLER_URL}/stock`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ seller_id, blanket_model, model_number, price, quantity })
+  });
+  const data = await res.json();
 
-    if (res.ok) {
-      alert(data.msg || "Stock item added!");
-      hideAddStockPopup();
-      loadSellerStock();
-    } else {
-      alert("Failed to add stock: " + (data.msg || "Unknown error"));
-    }
-  } catch (err) {
-    console.error("Add Seller Stock Error:", err);
-    alert("Server error while adding stock.");
+  if (res.ok) {
+    alert(data.msg || "Stock item added!");
+    hideAddStockPopup();
+    loadSellerStock();
+  } else {
+    alert("Failed to add stock: " + (data.msg || "Unknown error"));
   }
 }
 
@@ -194,13 +193,14 @@ async function autoLoadLowStock() {
 }
 
 async function loadLowStock() {
+  const seller_id = getSellerId();
   if (!seller_id) return;
+
   const res = await fetch(`${SELLER_URL}/check-low-stock/${seller_id}`);
   const data = await res.json();
   const div = document.getElementById('low-stock-list');
   if (!div) return;
 
-  // Show as a compact table (with fall back)
   const rows = data.low_stock.map(i => `
     <tr>
       <td>${i.blanket_model}</td>
@@ -211,13 +211,9 @@ async function loadLowStock() {
 
   div.innerHTML = data.low_stock.length === 0
     ? "<p>No low stock items.</p>"
-    : `<table>
-         <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th></tr>
-         ${rows}
-       </table>`;
+    : `<table><tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th></tr>${rows}</table>`;
 }
 
-// 📇 Distributor list for seller dropdown
 async function loadDistributors() {
   try {
     const res = await fetch(`${DISTRIBUTOR_URL}/all`);
@@ -234,8 +230,8 @@ async function loadDistributors() {
   }
 }
 
-// 📨 Seller → Distributor stock request (with model no. & price)
 async function sendStockRequest() {
+  const seller_id = getSellerId();
   const selectEl = document.getElementById('distributor-select');
   const distributor_id = selectEl ? parseInt(selectEl.value) : NaN;
   const blanket_model = (document.getElementById('request-model')?.value || "").trim();
@@ -245,7 +241,7 @@ async function sendStockRequest() {
   const qtyRaw = document.getElementById('request-qty')?.value;
   const quantity = qtyRaw ? parseInt(qtyRaw) : NaN;
 
-  if (!distributor_id || !blanket_model || isNaN(quantity) || quantity <= 0) {
+  if (!seller_id || !distributor_id || !blanket_model || isNaN(quantity) || quantity <= 0) {
     alert("Select a distributor and enter valid details.");
     return;
   }
@@ -256,8 +252,7 @@ async function sendStockRequest() {
     body: JSON.stringify({ seller_id, distributor_id, blanket_model, model_number, price, quantity })
   });
 
-  const msg = document.getElementById('request-msg');
-  if (msg) msg.innerText = "Stock request saved to database!";
+  document.getElementById('request-msg')?.innerText = "Stock request saved to database!";
   document.getElementById('request-model')?.value = "";
   document.getElementById('request-model-number')?.value = "";
   document.getElementById('request-price')?.value = "";
@@ -270,13 +265,14 @@ async function sendStockRequest() {
    ===================== */
 
 async function loadDistributorStock() {
+  const distributor_id = getDistributorId();
   if (!distributor_id) return;
+
   const res = await fetch(`${DISTRIBUTOR_URL}/stock/${distributor_id}`);
   const stock = await res.json();
   const table = document.getElementById("distributor-stock-table");
   if (!table) return;
 
-  // Expanded columns
   table.innerHTML = `
     <tr>
       <th>Model</th>
@@ -288,8 +284,7 @@ async function loadDistributorStock() {
 
   stock.forEach(item => {
     const price = (item.price ?? "") !== "" && !Number.isNaN(Number(item.price))
-      ? Number(item.price).toFixed(2)
-      : "-";
+      ? Number(item.price).toFixed(2) : "-";
     const modelNumber = item.model_number ?? "-";
 
     table.innerHTML += `
@@ -324,6 +319,7 @@ async function deleteDistributorStock(stock_id) {
 }
 
 async function addDistributorStock() {
+  const distributor_id = getDistributorId();
   const blanket_model = document.getElementById('add-model')?.value.trim() || "";
   const model_number = document.getElementById('add-model-number')?.value.trim() || "";
   const priceRaw = document.getElementById('add-price')?.value;
@@ -333,34 +329,31 @@ async function addDistributorStock() {
   if (!distributor_id) return alert("Distributor ID missing. Please log in again.");
   if (!blanket_model || isNaN(quantity) || quantity < 0) return alert("Enter valid details.");
 
-  try {
-    const res = await fetch(`${DISTRIBUTOR_URL}/stock`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ distributor_id: parseInt(distributor_id), blanket_model, model_number, price, quantity })
-    });
-    const data = await res.json();
+  const res = await fetch(`${DISTRIBUTOR_URL}/stock`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ distributor_id, blanket_model, model_number, price, quantity })
+  });
+  const data = await res.json();
 
-    if (res.ok) {
-      alert(data.msg || "Stock item added!");
-      hideAddStockPopup();
-      loadDistributorStock();
-    } else {
-      alert("Failed to add stock: " + (data.msg || "Unknown error"));
-    }
-  } catch (err) {
-    console.error("Add Distributor Stock Error:", err);
-    alert("Server error while adding distributor stock.");
+  if (res.ok) {
+    alert(data.msg || "Stock item added!");
+    hideAddStockPopup();
+    loadDistributorStock();
+  } else {
+    alert("Failed to add stock: " + (data.msg || "Unknown error"));
   }
 }
 
 async function loadPendingRequests() {
+  const distributor_id = getDistributorId();
+  if (!distributor_id) return;
+
   const res = await fetch(`${DISTRIBUTOR_URL}/seller-requests/${distributor_id}`);
   const data = await res.json();
   const el = document.getElementById("pending-requests");
   if (!el) return;
 
-  // If it's a TABLE, render a table; else render a simple list for older HTML
   if (el.tagName === "TABLE") {
     if (data.length === 0) {
       el.innerHTML = "<tr><td colspan='7'>No pending requests.</td></tr>";
@@ -369,8 +362,7 @@ async function loadPendingRequests() {
     el.innerHTML = "<tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th><th>Seller</th><th>Status</th><th>Actions</th></tr>";
     data.forEach(r => {
       const price = (r.price ?? "") !== "" && !Number.isNaN(Number(r.price))
-        ? Number(r.price).toFixed(2)
-        : "-";
+        ? Number(r.price).toFixed(2) : "-";
       el.innerHTML += `
         <tr>
           <td>${r.blanket_model}</td>
@@ -412,6 +404,9 @@ async function updateRequestStatus(request_id, status) {
 }
 
 async function loadDistributorRequestHistory() {
+  const distributor_id = getDistributorId();
+  if (!distributor_id) return;
+
   const res = await fetch(`${DISTRIBUTOR_URL}/seller-request-history/${distributor_id}`);
   const data = await res.json();
   const el = document.getElementById("request-history");
@@ -425,8 +420,7 @@ async function loadDistributorRequestHistory() {
     el.innerHTML = "<tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th><th>Seller</th><th>Status</th></tr>";
     data.forEach(r => {
       const price = (r.price ?? "") !== "" && !Number.isNaN(Number(r.price))
-        ? Number(r.price).toFixed(2)
-        : "-";
+        ? Number(r.price).toFixed(2) : "-";
       el.innerHTML += `
         <tr>
           <td>${r.blanket_model}</td>
@@ -444,6 +438,9 @@ async function loadDistributorRequestHistory() {
 }
 
 async function loadDistributorLowStock() {
+  const distributor_id = getDistributorId();
+  if (!distributor_id) return;
+
   const res = await fetch(`${DISTRIBUTOR_URL}/check-low-stock/${distributor_id}`);
   const data = await res.json();
   const div = document.getElementById("distributor-low-stock");
@@ -459,14 +456,11 @@ async function loadDistributorLowStock() {
 
   div.innerHTML = data.low_stock.length === 0
     ? "<p>No low stock items.</p>"
-    : `<table>
-         <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th></tr>
-         ${rows}
-       </table>`;
+    : `<table><tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th></tr>${rows}</table>`;
 }
 
-// 📨 Distributor → Manufacturer request (with model no. & price)
 async function sendManufacturerRequest() {
+  const distributor_id = getDistributorId();
   const blanket_model = (document.getElementById('request-model')?.value || "").trim();
   const model_number = (document.getElementById('request-model-number')?.value || "").trim() || null;
   const priceRaw = document.getElementById('request-price')?.value;
@@ -474,7 +468,7 @@ async function sendManufacturerRequest() {
   const qtyRaw = document.getElementById('request-qty')?.value;
   const quantity = qtyRaw ? parseInt(qtyRaw) : NaN;
 
-  if (!blanket_model || isNaN(quantity) || quantity <= 0) {
+  if (!distributor_id || !blanket_model || isNaN(quantity) || quantity <= 0) {
     alert("Enter valid request details.");
     return;
   }
@@ -485,8 +479,7 @@ async function sendManufacturerRequest() {
     body: JSON.stringify({ distributor_id, blanket_model, model_number, price, quantity })
   });
 
-  const msg = document.getElementById('request-msg');
-  if (msg) msg.innerText = "Stock request saved to database!";
+  document.getElementById('request-msg')?.innerText = "Stock request saved to database!";
   document.getElementById('request-model')?.value = "";
   document.getElementById('request-model-number')?.value = "";
   document.getElementById('request-price')?.value = "";
@@ -504,7 +497,6 @@ async function loadManufacturerStock() {
     const table = document.getElementById("manufacturer-stock-table");
     if (!table) return;
 
-    // Full SQL-order columns
     table.innerHTML = `
       <tr>
         <th>Model</th>
@@ -519,22 +511,16 @@ async function loadManufacturerStock() {
 
     stock.forEach(item => {
       const price = (item.price ?? "") !== "" && !Number.isNaN(Number(item.price))
-        ? Number(item.price).toFixed(2)
-        : "-";
-      const modelNumber = item.model_number ?? "-";
-      const material = item.material ?? "-";
-      const productionDays = item.production_days ?? "-";
-      const minRequired = item.min_required ?? "-";
-
+        ? Number(item.price).toFixed(2) : "-";
       table.innerHTML += `
         <tr>
           <td>${item.model}</td>
-          <td>${modelNumber}</td>
-          <td>${material}</td>
+          <td>${item.model_number ?? "-"}</td>
+          <td>${item.material ?? "-"}</td>
           <td>${price}</td>
           <td>${item.quantity}</td>
-          <td>${productionDays}</td>
-          <td>${minRequired}</td>
+          <td>${item.production_days ?? "-"}</td>
+          <td>${item.min_required ?? "-"}</td>
           <td>
             <button class="btn" onclick="editManufacturerStock(${item.id}, ${item.quantity})">Edit</button>
             <button class="btn cancel" onclick="deleteManufacturerStock(${item.id})">Delete</button>
@@ -561,15 +547,7 @@ async function addManufacturerStock() {
   await fetch(`${MANUFACTURER_URL}/blankets`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model,
-      model_number,
-      price,
-      material: "Cotton",
-      quantity,
-      production_days: 7
-      // backend defaults min_required if omitted
-    })
+    body: JSON.stringify({ model, model_number, price, material: "Cotton", quantity, production_days: 7 })
   });
 
   alert("Manufacturer stock item added!");
@@ -600,7 +578,6 @@ async function loadDistributorRequests() {
   const el = document.getElementById("distributor-requests");
   if (!el) return;
 
-  // Manufacturer HTML uses a TABLE — build table if present; fallback otherwise.
   if (el.tagName === "TABLE") {
     if (data.length === 0) {
       el.innerHTML = "<tr><td colspan='6'>No distributor requests.</td></tr>";
@@ -608,9 +585,7 @@ async function loadDistributorRequests() {
     }
     el.innerHTML = "<tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Distributor</th><th>Status</th></tr>";
     data.forEach(r => {
-      const price = (r.price ?? "") !== "" && !Number.isNaN(Number(r.price))
-        ? Number(r.price).toFixed(2)
-        : "-";
+      const price = (r.price ?? "") !== "" && !Number.isNaN(Number(r.price)) ? Number(r.price).toFixed(2) : "-";
       el.innerHTML += `
         <tr>
           <td>${r.blanket_model}</td>
@@ -667,9 +642,7 @@ async function loadDistributorRequestHistory() {
     }
     el.innerHTML = "<tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Distributor</th><th>Status</th></tr>";
     data.forEach(r => {
-      const price = (r.price ?? "") !== "" && !Number.isNaN(Number(r.price))
-        ? Number(r.price).toFixed(2)
-        : "-";
+      const price = (r.price ?? "") !== "" && !Number.isNaN(Number(r.price)) ? Number(r.price).toFixed(2) : "-";
       el.innerHTML += `
         <tr>
           <td>${r.blanket_model}</td>
@@ -703,10 +676,7 @@ async function loadLowStockAlerts() {
 
   div.innerHTML = data.low_stock.length === 0
     ? "<p>No low stock alerts.</p>"
-    : `<table>
-         <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th></tr>
-         ${rows}
-       </table>`;
+    : `<table><tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th></tr>${rows}</table>`;
 }
 
 async function autoLoadLowStockAlerts() {
@@ -754,7 +724,6 @@ async function loadAllUsers() {
       method: "GET",
       headers: { "Authorization": `Bearer ${token}` }
     });
-
     const data = await response.json();
 
     if (response.ok && data.users) {
@@ -789,7 +758,6 @@ async function deleteUserFromTable(username) {
       },
       body: JSON.stringify({ username })
     });
-
     const data = await response.json();
 
     if (response.ok) {
@@ -818,19 +786,17 @@ function showAddStockPopup() {
   if (!popup) return;
   popup.classList.add('active');
 
-  // Clear common fields if present
-  const ids = ['add-model','add-model-number','add-price','add-qty'];
-  ids.forEach(id => {
+  ['add-model','add-model-number','add-price','add-qty'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
 
-  // Nice placeholder per page (optional)
   const modelInput = document.getElementById('add-model');
   if (modelInput) {
-    if (window.location.pathname.includes("seller.html")) modelInput.placeholder = "Enter Blanket Model";
-    else if (window.location.pathname.includes("distributor.html")) modelInput.placeholder = "Enter Stock Model";
-    else if (window.location.pathname.includes("manufacturer.html")) modelInput.placeholder = "Enter Production Model";
+    const p = window.location.pathname;
+    if (p.includes("seller.html")) modelInput.placeholder = "Enter Blanket Model";
+    else if (p.includes("distributor.html")) modelInput.placeholder = "Enter Stock Model";
+    else if (p.includes("manufacturer.html")) modelInput.placeholder = "Enter Production Model";
   }
 }
 
@@ -840,7 +806,7 @@ function hideAddStockPopup() {
 }
 
 /* =========================
-   MAKE FUNCTIONS GLOBAL (for inline onclick=)
+   MAKE FUNCTIONS GLOBAL
    ========================= */
 Object.assign(window, {
   // Auth
