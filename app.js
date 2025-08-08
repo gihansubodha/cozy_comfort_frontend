@@ -372,24 +372,52 @@ async function sendManufacturerRequest() {
 
 // ---------------- MANUFACTURER ---------------- //
 async function loadManufacturerStock() {
-    const res = await fetch(`${MANUFACTURER_URL}/blankets`);
-    const stock = await res.json();
-    const table = document.getElementById("manufacturer-stock-table");
-    table.innerHTML = "<tr><th>Model</th><th>Model No.</th><th>Price</th><th>Qty</th><th>Actions</th></tr>";
+    try {
+        const res = await fetch(`${MANUFACTURER_URL}/blankets`);
+        const stock = await res.json();
 
-    stock.forEach(item => {
-        table.innerHTML += `
+        const table = document.getElementById("manufacturer-stock-table");
+        table.innerHTML = `
             <tr>
-                <td>${item.model}</td>
-                <td>${item.model_number || "-"}</td>
-                <td>${item.price || "-"}</td>
-                <td>${item.quantity}</td>
-                <td>
-                    <button class="btn" onclick="editManufacturerStock(${item.id}, ${item.quantity})">Edit</button>
-                    <button class="btn cancel" onclick="deleteManufacturerStock(${item.id})">Delete</button>
-                </td>
-            </tr>`;
-    });
+                <th>Model</th>
+                <th>Model #</th>
+                <th>Material</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Production Days</th>
+                <th>Min Required</th>
+                <th>Actions</th>
+            </tr>
+        `;
+
+        stock.forEach(item => {
+            const price =
+              (item.price !== undefined && item.price !== null && !Number.isNaN(Number(item.price)))
+                ? Number(item.price).toFixed(2)
+                : "-";
+            const modelNumber = item.model_number ?? "-";
+            const material = item.material ?? "-";
+            const productionDays = item.production_days ?? "-";
+            const minRequired = item.min_required ?? "-";
+
+            table.innerHTML += `
+                <tr>
+                    <td>${item.model}</td>
+                    <td>${modelNumber}</td>
+                    <td>${material}</td>
+                    <td>${price}</td>
+                    <td>${item.quantity}</td>
+                    <td>${productionDays}</td>
+                    <td>${minRequired}</td>
+                    <td>
+                        <button class="btn" onclick="editManufacturerStock(${item.id}, ${item.quantity})">Edit</button>
+                        <button class="btn cancel" onclick="deleteManufacturerStock(${item.id})">Delete</button>
+                    </td>
+                </tr>`;
+        });
+    } catch (err) {
+        console.error("Failed to load manufacturer stock:", err);
+    }
 }
 
 async function addManufacturerStock() {
@@ -609,3 +637,4 @@ function showAddStockPopup() {
 function hideAddStockPopup() {
     document.getElementById('popup-form').classList.remove('active');
 }
+
