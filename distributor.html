@@ -7,60 +7,65 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Top Header -->
     <header class="header-top">
         <h1>Distributor Dashboard</h1>
         <img src="images/cozylogo.png" alt="Cozy Comfort Logo" class="logo-img">
     </header>
 
-    <!-- Welcome Header -->
     <header class="header-bottom">
         <p id="welcome-msg">Welcome!</p>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
     <div class="dashboard">
-        <!-- LEFT: Distributor Stock -->
         <div class="left-panel">
             <div class="panel-header">
                 <h2>Your Stock</h2>
                 <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
             </div>
             <div class="scrollable-table">
-                <table id="distributor-stock-table"></table>
+                <table id="distributor-stock-table">
+                  <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Actions</th></tr>
+                </table>
             </div>
         </div>
 
-        <!-- RIGHT: Requests & Alerts -->
         <div class="right-panel">
-            <!-- Pending Seller Requests -->
             <div class="low-stock-section">
                 <h2 class="tab-header">Pending Stock Requests</h2>
-                <div id="pending-requests">Loading...</div>
+                <div class="scrollable-table">
+                  <table id="pending-requests">
+                    <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Seller</th><th>Status</th><th>Actions</th></tr>
+                  </table>
+                </div>
             </div>
 
-            <!-- Low Stock Alerts -->
             <div class="low-stock-section">
                 <h2 class="tab-header">Low Stock Alerts</h2>
-                <div id="distributor-low-stock">Checking...</div>
+                <div class="scrollable-table">
+                  <table id="distributor-low-stock">
+                    <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th></tr>
+                  </table>
+                </div>
             </div>
 
-            <!-- Send to Manufacturer -->
             <div class="request-section">
                 <h2 class="tab-header">Send to Manufacturer</h2>
                 <input type="text" id="request-model" placeholder="Enter Blanket Model">
+                <input type="text" id="request-model-number" placeholder="Enter Model Number">
+                <input type="number" id="request-price" placeholder="Enter Price">
                 <input type="number" id="request-qty" placeholder="Enter Quantity">
                 <button class="btn popup" onclick="sendManufacturerRequest()">Send Request</button>
-                <p id="request-msg"></p>
             </div>
         </div>
     </div>
 
-    <!-- Add Stock Popup -->
     <div id="popup-form" class="popup-form">
         <h3>Add Stock</h3>
         <div class="popup-content">
             <input type="text" id="add-model" placeholder="Enter Blanket Model">
+            <input type="text" id="add-model-number" placeholder="Enter Model Number">
+            <input type="number" id="add-price" placeholder="Enter Price">
             <input type="number" id="add-qty" placeholder="Enter Quantity">
             <button class="btn" onclick="addDistributorStock()">Save</button>
             <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
@@ -74,9 +79,10 @@
             loadDistributorStock();
             loadPendingRequests();
             loadDistributorLowStock();
-            setInterval(loadDistributorLowStock, 10000); // Auto-refresh low stock alerts
+            loadDistributorRequestHistory();
+            setInterval(loadDistributorLowStock, 10000);
+            setInterval(loadPendingRequests, 10000);
         });
     </script>
 </body>
 </html>
-
