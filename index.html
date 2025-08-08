@@ -19,23 +19,23 @@
       color: #273249;
     }
 
-      .header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(
-    90deg,
-    #1a4078 0%,
-    #1a4078 36%,   
-    #347aeb 65%,    
-    #347aeb 100%
-  );
-  color: #fff;
-  min-height: 130px;
-  padding: 0 32px 0 26px;
-  box-sizing: border-box;
-}
-    
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(
+        90deg,
+        #1a4078 0%,
+        #1a4078 36%,
+        #347aeb 65%,
+        #347aeb 100%
+      );
+      color: #fff;
+      min-height: 130px;
+      padding: 0 32px 0 26px;
+      box-sizing: border-box;
+    }
+
     .header-title {
       font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
       font-size: 2.3rem;
@@ -54,6 +54,7 @@
       box-shadow: 0 2px 8px #347aeb23;
       margin-left: 18px;
     }
+
     .login-container {
       font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
       background: url('images/logo.svg') center/contain no-repeat, #fff;
@@ -61,7 +62,7 @@
       border-radius: 20px;
       width: 360px;
       max-width: 95vw;
-      margin: 40px auto 0 auto;   /* Moved up */
+      margin: 40px auto 0 auto;
       padding: 85px 32px 55px 32px;
       display: flex;
       flex-direction: column;
@@ -91,6 +92,7 @@
       font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
     }
     .login-container input:first-of-type { margin-top: 28px; }
+
     .btn {
       display: flex;
       align-items: center;
@@ -114,6 +116,7 @@
     .btn:hover {
       background: #2470bb;
     }
+
     #login-msg {
       color: #e74c3c;
       font-size: 1rem;
@@ -121,10 +124,11 @@
       min-height: 20px;
       text-align: center;
     }
+
     @media (max-width: 600px) {
-      .header-top { font-size: 1.13rem; min-height: 60px; padding: 0 4vw 0 4vw;}
+      .header-top { font-size: 1.13rem; min-height: 60px; padding: 0 4vw; }
       .header-logo img { width: 58px; }
-      .login-container { padding: 18px 3vw 12px 3vw; width: 98vw; margin-top: 16px;}
+      .login-container { padding: 18px 3vw 12px; width: 98vw; margin-top: 16px; }
       .header-title { font-size: 1.18rem; }
     }
   </style>
@@ -139,22 +143,34 @@
 
   <div class="login-container">
     <h2>Enter Your Credentials</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button class="btn" onclick="login()">
+
+    <input type="text" id="username" placeholder="Username" autocomplete="username">
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+
+    <!-- Use an id, no inline onclick -->
+    <button class="btn" id="login-btn">
       <svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px">
         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M21 12H3"></path>
       </svg>
       Login
     </button>
+
     <p id="login-msg"></p>
   </div>
-  <script src="app.js"></script>
+
+  <!-- Load JS with defer so functions exist by the time you click -->
+  <script src="app.js?v=8" defer></script>
+  <script>
+    // Optional: allow pressing Enter to submit
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('login-btn');
+      const tryLogin = () => window.login && window.login();
+
+      btn?.addEventListener('click', tryLogin);
+      document.getElementById('password')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') tryLogin();
+      });
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
