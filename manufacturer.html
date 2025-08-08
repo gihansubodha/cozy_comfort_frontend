@@ -28,7 +28,7 @@
       </div>
       <div class="scrollable-table">
         <table id="manufacturer-stock-table">
-          <tr><th>Model</th><th>Quantity</th><th>Actions</th></tr>
+          <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Actions</th></tr>
         </table>
       </div>
     </div>
@@ -37,18 +37,25 @@
     <div class="right-panel">
       <div class="low-stock-section">
         <h2 class="tab-header">Distributor Requests</h2>
-        <div id="distributor-requests">Loading...</div>
+        <div class="scrollable-table">
+          <table id="distributor-requests">
+            <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Distributor</th><th>Status</th></tr>
+          </table>
+        </div>
       </div>
 
-      <div class="request-section">
+      <div class="low-stock-section">
         <h2 class="tab-header">Low Stock Alerts</h2>
         <div id="low-stock-alerts">Checking...</div>
       </div>
 
-      <!-- Updated: Aligned + Spaced Distributor Request History -->
       <div class="history-section align-header">
         <h2 class="tab-header">Distributor Request History</h2>
-        <div id="distributor-request-history">Loading...</div>
+        <div class="scrollable-table">
+          <table id="distributor-request-history">
+            <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Distributor</th><th>Status</th></tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -58,6 +65,8 @@
     <h3>Add Production Model</h3>
     <div class="popup-content">
       <input type="text" id="add-model" placeholder="Enter Model Name" />
+      <input type="text" id="add-model-number" placeholder="Enter Model Number" />
+      <input type="number" id="add-price" placeholder="Enter Price" />
       <input type="number" id="add-qty" placeholder="Initial Quantity" />
       <button class="btn" onclick="addManufacturerStock()">Save</button>
       <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
@@ -76,4 +85,3 @@
   </script>
 </body>
 </html>
-
