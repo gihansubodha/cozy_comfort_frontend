@@ -182,27 +182,36 @@ async function loadDistributors() {
 }
 
 async function sendStockRequest() {
-    const distributor_id = parseInt(document.getElementById('distributor-select').value);
-    const blanket_model = document.getElementById('request-model').value.trim();
-    const model_number = document.getElementById('request-model-number').value.trim();
-    const price = parseFloat(document.getElementById('request-price').value) || null;
-    const quantity = parseInt(document.getElementById('request-qty').value);
+  const selectEl = document.getElementById('distributor-select');
+  const distributor_id = selectEl ? parseInt(selectEl.value) : NaN;
+  const blanket_model = (document.getElementById('request-model')?.value || "").trim();
+  const model_number = (document.getElementById('request-model-number')?.value || "").trim() || null;
+  const priceRaw = document.getElementById('request-price')?.value;
+  const price = priceRaw !== undefined && priceRaw !== "" ? parseFloat(priceRaw) : null;
+  const qtyRaw = document.getElementById('request-qty')?.value;
+  const quantity = qtyRaw ? parseInt(qtyRaw) : NaN;
 
-    if (!distributor_id || !blanket_model || isNaN(quantity) || quantity <= 0) return alert("Enter valid request details.");
+  if (!distributor_id || !blanket_model || isNaN(quantity) || quantity <= 0) {
+    alert("Select a distributor and enter valid details.");
+    return;
+  }
 
-    await fetch(`${SELLER_URL}/request-stock`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seller_id, distributor_id, blanket_model, model_number, price, quantity })
-    });
+  await fetch(`${SELLER_URL}/request-stock`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ seller_id, distributor_id, blanket_model, model_number, price, quantity })
+  });
 
-    alert("Request sent to Distributor");
-    document.getElementById('request-model').value = "";
-    document.getElementById('request-model-number').value = "";
-    document.getElementById('request-price').value = "";
-    document.getElementById('request-qty').value = "";
-    document.getElementById('distributor-select').value = "";
+  alert("Request sent to Distributor");
+
+  // Clear if they exist
+  document.getElementById('request-model')?.value = "";
+  document.getElementById('request-model-number')?.value = "";
+  document.getElementById('request-price')?.value = "";
+  document.getElementById('request-qty')?.value = "";
+  if (selectEl) selectEl.value = "";
 }
+
 
 // ---------------- DISTRIBUTOR ---------------- //
 async function loadDistributorStock() {
@@ -347,27 +356,31 @@ async function loadDistributorLowStock() {
 }
 
 async function sendManufacturerRequest() {
-    const blanket_model = document.getElementById('request-model').value.trim();
-    const model_number = document.getElementById('request-model-number').value.trim();
-    const price = parseFloat(document.getElementById('request-price').value) || null;
-    const quantity = parseInt(document.getElementById('request-qty').value);
+  const blanket_model = (document.getElementById('request-model')?.value || "").trim();
+  const model_number = (document.getElementById('request-model-number')?.value || "").trim() || null;
+  const priceRaw = document.getElementById('request-price')?.value;
+  const price = priceRaw !== undefined && priceRaw !== "" ? parseFloat(priceRaw) : null;
+  const qtyRaw = document.getElementById('request-qty')?.value;
+  const quantity = qtyRaw ? parseInt(qtyRaw) : NaN;
 
-    if (!blanket_model || isNaN(quantity) || quantity <= 0) {
-        alert("Enter valid request details.");
-        return;
-    }
+  if (!blanket_model || isNaN(quantity) || quantity <= 0) {
+    alert("Enter valid request details.");
+    return;
+  }
 
-    await fetch(`${DISTRIBUTOR_URL}/request-manufacturer`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ distributor_id, blanket_model, model_number, price, quantity })
-    });
+  await fetch(`${DISTRIBUTOR_URL}/request-manufacturer`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ distributor_id, blanket_model, model_number, price, quantity })
+  });
 
-    alert("Request sent to Manufacturer");
-    document.getElementById('request-model').value = "";
-    document.getElementById('request-model-number').value = "";
-    document.getElementById('request-price').value = "";
-    document.getElementById('request-qty').value = "";
+  alert("Request sent to Manufacturer");
+
+  // Clear if they exist
+  document.getElementById('request-model')?.value = "";
+  document.getElementById('request-model-number')?.value = "";
+  document.getElementById('request-price')?.value = "";
+  document.getElementById('request-qty')?.value = "";
 }
 
 // ---------------- MANUFACTURER ---------------- //
@@ -637,4 +650,5 @@ function showAddStockPopup() {
 function hideAddStockPopup() {
     document.getElementById('popup-form').classList.remove('active');
 }
+
 
