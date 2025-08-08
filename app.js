@@ -37,49 +37,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-
-
 //  Login Function
 async function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+  const usernameEl = document.getElementById('username');
+  const passwordEl = document.getElementById('password');
+  const msg = document.getElementById('login-msg');
 
-    try {
-        const res = await fetch(${AUTH_URL}/login, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
+  const username = (usernameEl?.value || "").trim();
+  const password = (passwordEl?.value || "").trim();
 
-        const data = await res.json();
+  if (!username || !password) {
+    if (msg) msg.innerText = "Please enter username and password.";
+    return;
+  }
 
-        if (res.ok) {
-            const userRes = await fetch(${AUTH_URL}/get_user/${username});
-            const userData = await userRes.json();
+  try {
+    const res = await fetch(`${AUTH_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
 
-            if (userRes.ok) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('role', data.role);
-                localStorage.setItem('username', username);
+    const data = await res.json();
 
-                if (data.role === "seller") localStorage.setItem('seller_id', userData.id);
-                if (data.role === "distributor") localStorage.setItem('distributor_id', userData.id);
-                if (data.role === "manufacturer") localStorage.setItem('manufacturer_id', userData.id);
-            }
-
-            if (data.role === "seller") window.location.href = "seller.html";
-            else if (data.role === "distributor") window.location.href = "distributor.html";
-            else if (data.role === "manufacturer") window.location.href = "manufacturer.html";
-            else if (data.role === "admin") window.location.href = "admin.html";
-        } else {
-            document.getElementById('login-msg').innerText = data.msg;
-        }
-    } catch (err) {
-        console.error("Login Error:", err);
-        document.getElementById('login-msg').innerText = "Login failed. Check server.";
+    if (!res.ok) {
+      if (msg) msg.innerText = data.msg || "Login failed.";
+      return;
     }
+
+    // get user id/role details
+    const userRes = await fetch(`${AUTH_URL}/get_user/${encodeURIComponent(username)}`);
+    const userData = await userRes.json();
+
+    // save auth + identity
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('role', data.role);
+    localStorage.setItem('username', username);
+
+    if (data.role === "seller")       localStorage.setItem('seller_id', userData.id);
+    if (data.role === "distributor")  localStorage.setItem('distributor_id', userData.id);
+    if (data.role === "manufacturer") localStorage.setItem('manufacturer_id', userData.id);
+
+    // route by role
+    if (data.role === "seller")        window.location.href = "seller.html";
+    else if (data.role === "distributor") window.location.href = "distributor.html";
+    else if (data.role === "manufacturer") window.location.href = "manufacturer.html";
+    else if (data.role === "admin")      window.location.href = "admin.html";
+    else if (msg) msg.innerText = "Unknown role.";
+  } catch (err) {
+    console.error("Login Error:", err);
+    if (msg) msg.innerText = "Login failed. Check server.";
+  }
 }
+
+// make it available for onclick="login()"
+window.login = login;
 
 //  Welcome Message
 function showWelcome() {
@@ -639,3 +651,4 @@ function showAddStockPopup() {
 function hideAddStockPopup() {
     document.getElementById('popup-form').classList.remove('active');
 }
+
