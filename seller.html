@@ -7,60 +7,64 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Top Header for Dashboard Title -->
     <header class="header-top">
         <h1>Seller Dashboard</h1>
         <img src="images/cozylogo.png" alt="Cozy Comfort Logo" class="logo-img">
     </header>
 
-    <!-- Second Header for Welcome Message + Logout -->
     <header class="header-bottom">
         <p id="welcome-msg">Welcome!</p>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
     <div class="dashboard">
-        <!-- Left: Stock Table -->
         <div class="left-panel">
             <div class="panel-header">
                 <h2>Your Stock</h2>
                 <button class="add-stock-btn" onclick="showAddStockPopup()">+ Add Stock</button>
             </div>
             <div class="scrollable-table">
-                <table id="seller-stock-table"></table>
+                <table id="seller-stock-table">
+                  <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th><th>Actions</th></tr>
+                </table>
             </div>
         </div>
 
-        <!-- Right: Low Stock + Request Form -->
         <div class="right-panel">
             <div class="low-stock-section">
                 <h2 class="tab-header">Low Stock Items</h2>
-                <div id="low-stock-list">Loading...</div>
+                <div class="scrollable-table">
+                  <table id="low-stock-list">
+                    <tr><th>Model</th><th>Model No.</th><th>Price</th><th>Quantity</th></tr>
+                  </table>
+                </div>
             </div>
 
             <div class="request-section">
                 <h2 class="tab-header">Request More Stock</h2>
                 <input type="text" id="request-model" placeholder="Enter Blanket Model">
+                <input type="text" id="request-model-number" placeholder="Enter Model Number">
+                <input type="number" id="request-price" placeholder="Enter Price">
                 <input type="number" id="request-qty" placeholder="Enter Quantity">
-               <select id="distributor-select">
-                <option value="">Select Distributor</option>
+                <select id="distributor-select">
+                  <option value="">Select Distributor</option>
                 </select>
                 <button class="btn popup" onclick="sendStockRequest()">Send Request</button>
-                <p id="request-msg"></p>
             </div>
         </div>
     </div>
 
-<!-- Add Stock Popup -->
-<div id="popup-form" class="popup-form">
-    <h3>Add Stock</h3>
-    <div class="popup-content">
-        <input type="text" id="add-model" placeholder="Enter Blanket Model">
-        <input type="number" id="add-qty" placeholder="Enter Quantity">
-        <button class="btn" onclick="addSellerStock()">Save</button>
-        <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
+    <div id="popup-form" class="popup-form">
+        <h3>Add Stock</h3>
+        <div class="popup-content">
+            <input type="text" id="add-model" placeholder="Enter Blanket Model">
+            <input type="text" id="add-model-number" placeholder="Enter Model Number">
+            <input type="number" id="add-price" placeholder="Enter Price">
+            <input type="number" id="add-qty" placeholder="Enter Quantity">
+            <button class="btn" onclick="addSellerStock()">Save</button>
+            <button class="btn cancel" onclick="hideAddStockPopup()">Cancel</button>
+        </div>
     </div>
-</div>
 
     <script src="app.js"></script>
     <script>
@@ -68,10 +72,8 @@
             showWelcome();
             loadSellerStock();
             autoLoadLowStock();
+            loadDistributors();
         });
     </script>
 </body>
 </html>
-
-
-
